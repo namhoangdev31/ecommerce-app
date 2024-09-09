@@ -1,0 +1,38 @@
+{
+  "name": "next-app",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@emotion/react": "^11.13.3",
+    "@emotion/styled": "^11.13.0",
+    "@expo/next-adapter": "5.0.2",
+    "@mui/icons-material": "^6.0.2",
+    "@mui/material": "^6.0.2",
+    "@payloadcms/bundler-webpack": "^1.0.7",
+    "@payloadcms/db-mongodb": "^1.7.2",
+    "@payloadcms/plugin-cloud": "^3.0.2",
+    "@payloadcms/plugin-nested-docs": "^1.0.12",
+    "@payloadcms/plugin-redirects": "^1.0.2",
+    "@payloadcms/plugin-seo": "^2.3.2",
+    "@payloadcms/plugin-stripe": "^0.0.19",
+    "@payloadcms/richtext-slate": "^1.5.2",
+    "app": "*",
+    "express": "^4.19.2",
+    "next": "13.4.19",
+    "payload": "^2.28.0",
+    "raf": "^3.4.1",
+    "setimmediate": "^1.0.5"
+  },
+  "devDependencies": {
+    "@types/node": "17.0.21",
+    "autoprefixer": "^10.4.7",
+    "eslint-config-next": "13.2.0",
+    "tailwindcss": "^3.0.24"
+  }
+}
