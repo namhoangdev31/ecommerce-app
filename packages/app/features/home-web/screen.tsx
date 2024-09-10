@@ -1,39 +1,48 @@
 import { useState } from "react";
-import { AppBar, Toolbar, IconButton, Typography, Button, Drawer } from "@mui/material";
+import { AppBar, Toolbar, IconButton, Typography, Button, Drawer, Switch } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
+import Brightness4Icon from "@mui/icons-material/Brightness4";
+import Brightness7Icon from "@mui/icons-material/Brightness7";
 
 export function HomeWeb() {
     const [drawerOpen, setDrawerOpen] = useState(false);
+    const [isDarkTheme, setIsDarkTheme] = useState(false);
 
     const toggleDrawer = () => {
         setDrawerOpen(!drawerOpen);
     };
 
+    const toggleTheme = () => {
+        setIsDarkTheme(!isDarkTheme);
+        // Here you would typically update your theme context or apply the theme change
+    };
+
     return (
-        <div className="flex-1">
-            <AppBar position="static">
-                <Toolbar>
-                    <IconButton edge="start" color="inherit" aria-label="menu" onClick={toggleDrawer}>
-                        <MenuIcon />
-                    </IconButton>
-                    <Typography variant="h6" style={{ flexGrow: 1 }}>
-                        Home Web
-                    </Typography>
-                    <Button color="inherit">Login</Button>
-                </Toolbar>
-            </AppBar>
-            <Drawer anchor="left" open={drawerOpen} onClose={toggleDrawer}>
-                <div
-                    role="presentation"
-                    onClick={toggleDrawer}
-                    onKeyDown={toggleDrawer}
-                >
-                    <p>Drawer Content</p>
-                </div>
-            </Drawer>
-            <div className="flex-1 justify-center items-center p-10">
-                <h4>ádasd</h4>
-            </div>
+        <div className={`flex-1 justify-center items-center p-10 ${isDarkTheme ? 'bg-gray-900 text-white' : 'bg-white text-black'}`}>
+            <h4>ádasd</h4>
+            <h4>ádasd</h4>
+            <h4>ádasd</h4>
+            <h4>ádasd</h4>
+            <h4>ádasd</h4>
+
+            <h4>ádasd</h4>
+            <h4>ádasd</h4>
+            <h4>ádasd</h4>
+            <h4>ádasd</h4>
+            <h4>ádasd</h4>
+            <h4>ádasd</h4>
+            <h4>ádasd</h4>
+            <h4>ádasd</h4>
+            <h4>ádasd</h4>
+            <h4>ádasd</h4>
+            <h4>ádasd</h4>
+            <h4>ádasd</h4>
+            <h4>ádasd</h4>
+
+            <h4>ádasd</h4>
+            <h4>ádasd</h4>
+
+            <h4>ádasd</h4><h4>ádasd</h4>
         </div>
     );
 }
