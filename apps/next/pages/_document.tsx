@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from 'react'
 import { AppRegistry } from 'react-native'
 
 import NextDocument, { Html, Head, Main, NextScript } from 'next/document'
