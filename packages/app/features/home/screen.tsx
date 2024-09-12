@@ -1,52 +1,45 @@
-import { A, H1, P, Text, TextLink } from 'app/design/typography'
-import { Button, Column } from "app/design/total-design";
-import { Row } from "app/design/layout";
-import { View } from "app/design/view";
-import { ScrollView } from 'react-native';
+import { Text } from 'app/design/typography'
+import { Column } from "app/design/total-design"
+import { View } from "app/design/view"
+import { ScrollView } from 'react-native'
+import { useState } from 'react'
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
+
+const Tab = createBottomTabNavigator()
+
+function HomeTab() {
+  return (
+    <ScrollView className='py-10 flex-1 scroll-smooth md:scroll-auto'>
+      <Column className='flex-1 justify-center items-center px-20 overflow-y-auto'>
+        <Text className='text-2xl font-bold'>Home</Text>
+        {/* Repeat the Text component as needed */}
+      </Column>
+    </ScrollView>
+  )
+}
+
+function AboutTab() {
+  return (
+    <View className="flex-1 justify-center items-center">
+      <Text className='text-2xl font-bold'>About</Text>
+    </View>
+  )
+}
+
+function ContactTab() {
+  return (
+    <View className="flex-1 justify-center items-center">
+      <Text className='text-2xl font-bold'>Contact</Text>
+    </View>
+  )
+}
 
 export function HomeScreen() {
   return (
-    <ScrollView className='py-10 h-full scroll-smooth md:scroll-auto' >
-      <Column className='flex-1 justify-center items-center pl-20 pr-20 overflow-y-auto'>
-        <Text className='text-2xl font-bold'>Home</Text>
-        <Text className='text-2xl font-bold'>Home</Text>
-        <Text className='text-2xl font-bold'>Home</Text>
-        <Text className='text-2xl font-bold'>Home</Text>
-        <Text className='text-2xl font-bold'>Home</Text>
-        <Text className='text-2xl font-bold'>Home</Text>
-        <Text className='text-2xl font-bold'>Home</Text>
-        <Text className='text-2xl font-bold'>Home</Text>
-        <Text className='text-2xl font-bold'>Home</Text>
-        <Text className='text-2xl font-bold'>Home</Text>
-        <Text className='text-2xl font-bold'>Home</Text>
-        <View className="gap-4">
-          <Text>0</Text>
-          <Text>1</Text>
-          <Text>2</Text>
-        </View>
-        <Text>Home</Text>
-        <Text>Home</Text>
-        <Text>Home</Text>
-        <Text>Home</Text>
-        <Text>Home</Text>
-        <Text>Home</Text>
-        <Text>Home</Text>
-        <Text>Home</Text>
-        <Text>Home</Text>
-        <Text>Home</Text>
-        <Text>Home</Text>
-        <Text>Home</Text>
-        <Text>Home</Text>
-        <Text>Home</Text>
-        <Text>Home</Text>
-        <Text>Home</Text>
-        <Text>Home</Text>
-        <Text>Home</Text>
-        <Text>Home</Text>
-        <Text>Home</Text>
-        <Text>Home</Text>
-        <Text>Home</Text>
-      </Column>
-    </ScrollView>
+    <Tab.Navigator>
+      <Tab.Screen name="Home" options={{ headerShown: false }} component={HomeTab} />
+      <Tab.Screen name="About" options={{ headerShown: false }} component={AboutTab} />
+      <Tab.Screen name="Contact" options={{ headerShown: false }} component={ContactTab} />
+    </Tab.Navigator>
   )
 }
