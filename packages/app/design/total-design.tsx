@@ -1,4 +1,4 @@
-import { Button as ReactNativeBtn, View as ReactNativeView } from "react-native";
+import { Button as ReactNativeBtn, View as ReactNativeView , SafeAreaView as ReactNativeSafeAreaView , ScrollView as ReactNativeScrollView} from "react-native";
 import { styled } from 'nativewind';
 
 export const Button = styled(ReactNativeBtn);
@@ -12,3 +12,9 @@ export const Row = styled(ReactNativeView, {
     className: 'flex flex-row'
   }
 });
+
+export const Div = styled(ReactNativeView)
+
+export const SafeAreaView = styled(ReactNativeSafeAreaView)
+
+export const ScrollView = styled(ReactNativeScrollView)

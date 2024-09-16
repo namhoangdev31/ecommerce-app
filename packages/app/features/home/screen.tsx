@@ -1,20 +1,23 @@
 import { Text } from 'app/design/typography'
-import { Column } from "app/design/total-design"
+import { Column, Div, SafeAreaView, ScrollView } from "app/design/total-design"
 import { View } from "app/design/view"
-import { ScrollView } from 'react-native'
 import { useState } from 'react'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
+import { SafeArea } from "app/provider/safe-area";
 
 const Tab = createBottomTabNavigator()
 
 function HomeTab() {
   return (
-    <ScrollView className='py-10 flex-1 scroll-smooth md:scroll-auto'>
-      <Column className='flex-1 justify-center items-center px-20 overflow-y-auto'>
-        <Text className='text-2xl font-bold'>Home</Text>
-        {/* Repeat the Text component as needed */}
-      </Column>
-    </ScrollView>
+    <SafeAreaView className="flex-1">
+      <ScrollView >
+        <Column className='pl-1.5 pr-1.5 items-center justify-center'>
+          {[...Array(50)].map((_, index) => (
+            <Text key={index} className='text-2xl font-bold mb-4'>Home ${index}</Text>
+          ))}
+        </Column>
+      </ScrollView>
+    </SafeAreaView>
   )
 }
 
@@ -34,12 +37,21 @@ function ContactTab() {
   )
 }
 
+function SettingsTab() {
+  return (
+    <View className="flex-1 justify-center items-center">
+      <Text className='text-2xl font-bold'>Settings</Text>
+    </View>
+  )
+}
+
 export function HomeScreen() {
   return (
     <Tab.Navigator>
-      <Tab.Screen name="Home" options={{ headerShown: false }} component={HomeTab} />
+      <Tab.Screen name="Home" options={{ headerShown: true }} component={HomeTab} />
       <Tab.Screen name="About" options={{ headerShown: false }} component={AboutTab} />
       <Tab.Screen name="Contact" options={{ headerShown: false }} component={ContactTab} />
+      <Tab.Screen name="Settings" options={{ headerShown: false }} component={SettingsTab} />
     </Tab.Navigator>
   )
 }
