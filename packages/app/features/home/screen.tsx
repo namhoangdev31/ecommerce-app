@@ -134,7 +134,7 @@ function CustomDrawerContent(props) {
 
       <Text className='ml-4 mt-4 font-bold'>Tiêu chí bất động sản</Text>
       <View className='flex-row justify-between mx-4 my-4'>
-        <TouchableOpacity className='bg-blue-500 py-2 px-4 rounded'>
+        <TouchableOpacity className='bg-blue-500 py-2 px-4 rounded' onPress={() => { props.navigation.closeDrawer() }}>
           <Text className='text-white text-center'>Tìm kiếm</Text>
         </TouchableOpacity>
         <TouchableOpacity className='border border-blue-500 py-2 px-4 rounded'>
