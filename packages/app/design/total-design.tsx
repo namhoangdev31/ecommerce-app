@@ -4,9 +4,12 @@ import {
   SafeAreaView as ReactNativeSafeAreaView,
   ScrollView as ReactNativeScrollView,
   TouchableOpacity as ReactNativeTouchableOpacity,
+  TextInput as ReactNativeTextInput,
+  Alert as ReactNativeAlert,
 } from 'react-native'
+import { CupertinoSectionList as ReactNativeCupertinoSectionList} from 'react-native-cupertino-list';
 import { styled } from 'nativewind'
-
+import * as ReactNativeCheckBox from '@react-native-community/checkbox';
 export const Button = styled(ReactNativeBtn)
 export const Column = styled(ReactNativeView, {
   props: {
@@ -26,3 +29,5 @@ export const SafeAreaView = styled(ReactNativeSafeAreaView)
 export const ScrollView = styled(ReactNativeScrollView)
 
 export const TouchableOpacity = styled(ReactNativeTouchableOpacity)
+
+export const TextInput = styled(ReactNativeTextInput)
