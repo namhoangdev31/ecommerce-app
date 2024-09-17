@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "@react-navigation/stack": "^6.4.1",
     "app": "*",
     "expo": "^49.0.0",
     "expo-linking": "~5.0.2",
