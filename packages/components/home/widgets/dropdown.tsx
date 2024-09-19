@@ -1,31 +1,35 @@
+import { View } from 'app/design/view'
+import { Text } from 'app/design/typography'
 import React, { useState } from 'react'
-import { StyleSheet, View, Text } from 'react-native'
-import { Dropdown } from 'react-native-element-dropdown'
+import { styled } from 'nativewind'
+import { StyledDropDownPicker } from 'app/design/total-design'
+import { StyleSheet } from 'react-native'
 
-
-interface DropdownWithHookProps {
-  data: Array<{ label: string; value: string }>
-}
-
-const DropdownWithHook: React.FC<DropdownWithHookProps> = ({ data }) => {
-  const [selectedValue, setSelectedValue] = useState<string | null>(data[0]?.value || null)
-  const [isFocused, setIsFocused] = useState(false)
+const DropdownWithHook = () => {
+  const [open, setOpen] = useState(false)
+  const [value, setValue] = useState<string | null>(null)
+  const [items, setItems] = useState([
+    { label: 'Option 1', value: 'option1' },
+    { label: 'Option 2', value: 'option2' },
+    { label: 'Option 3', value: 'option3' },
+  ])
 
   return (
-    <View style={styles.container}>
-      <Dropdown
-        style={[styles.dropdown, isFocused && { borderColor: 'blue' }]}
-        data={data}
-        labelField="label"
-        valueField="value"
-        placeholder='Select an item'
-        value={selectedValue}
-        onFocus={() => setIsFocused(true)}
-        onBlur={() => setIsFocused(false)}
-        onChange={(item) => {
-          // setSelectedValue(item.value)
-          setIsFocused(false)
-        }}
+    <View>
+      <StyledDropDownPicker
+        className="text text-2 w-[30vw] max-w-full flex-1 justify-center"
+        open={open}
+        value={value}
+        items={items}
+        setOpen={setOpen}
+        setValue={setValue}
+        setItems={setItems}
+        placeholder="Select an option"
+        style={styles.dropdown}
+        mode="SIMPLE"
+        theme="LIGHT"
+        modalAnimationType="fade"
+        dropDownContainerStyle={styles.dropdownContainer}
       />
     </View>
   )
@@ -33,19 +37,26 @@ const DropdownWithHook: React.FC<DropdownWithHookProps> = ({ data }) => {
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
+    justifyContent: 'center',
     padding: 16,
   },
+  label: {
+    fontSize: 12,
+    marginBottom: 8,
+  },
   dropdown: {
-    height: 50,
-    borderColor: 'gray',
-    borderWidth: 0.5,
-    borderRadius: 8,
-    paddingHorizontal: 8,
+    borderColor: '#ffffff',
+    borderWidth: 1,
+    borderRadius: 4,
   },
-  icon: {
-    marginRight: 5,
+  dropdownContainer: {
+    borderColor: '#ccc',
+    borderWidth: 1,
+    borderRadius: 4,
+    paddingTop: 2,
   },
-  text: {
+  selectedOption: {
     marginTop: 16,
     fontSize: 16,
   },

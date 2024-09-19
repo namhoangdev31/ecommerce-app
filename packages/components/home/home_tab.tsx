@@ -158,9 +158,9 @@ function MainContent() {
   return (
     <SafeAreaView className="flex-1">
       <ScrollView>
-        <View className="flex-row flex-wrap items-center justify-between py-4">
+        <View className="flex-row flex-wrap items-start justify-between py-4">
           <Text className="px-4 text-2xl font-bold">Home</Text>
-          <Text className="px-4 text-2xl font-bold">Home</Text>
+          <DropdownWithHook />
         </View>
       </ScrollView>
     </SafeAreaView>
