@@ -5761,6 +5761,7 @@ __metadata:
     react-dom: 18.2.0
     react-native: 0.72.4
     react-native-cupertino-list: ^0.0.8
+    react-native-element-dropdown: ^2.12.1
     react-native-gesture-handler: ~2.12.0
     react-native-paper: ^5.12.5
     react-native-reanimated: ~3.3.0
@@ -10215,6 +10216,18 @@ __metadata:
     react-native-gesture-handler: "*"
     react-native-vector-icons: "*"
   checksum: 415e1a8b9452b54c2399994ffd612eabea3ec63ba512e98b7e2a535dde75b9da1e180e260f732262336567a81a3d64a49cf1cd09dd7caf28a723a4cdf397fdb3
+  languageName: node
+  linkType: hard
+
+"react-native-element-dropdown@npm:^2.12.1":
+  version: 2.12.1
+  resolution: "react-native-element-dropdown@npm:2.12.1"
+  dependencies:
+    lodash: ^4.17.21
+  peerDependencies:
+    react: "*"
+    react-native: "*"
+  checksum: 5eaa4a78a0ba7a3dc25b913035e959c0876dc7f61498bd31eeaca73027453bb51f77e2ec8ab72ef6aa622db04f40fef4b0c2b4e27f367152a3b6dff0e35b6596
   languageName: node
   linkType: hard
 
