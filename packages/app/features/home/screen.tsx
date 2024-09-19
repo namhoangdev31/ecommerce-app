@@ -18,12 +18,11 @@ import { useNavigation } from 'expo-router'
 
 import React from 'react'
 import { Entypo, Ionicons } from '@expo/vector-icons'
-import { IconButton, MD3Colors , Button } from 'react-native-paper';
+import { IconButton, MD3Colors, Button } from 'react-native-paper'
 
 const Tab = createBottomTabNavigator()
 
-import { MainTab } from "../../../components/home/home_tab";
-
+import { MainTab } from '../../../components/home/home_tab'
 
 function AboutTab() {
   const userLinkProps = useLink({
@@ -62,7 +61,7 @@ export function HomeScreen() {
     navigation.setOptions({
       headerShown: false,
     })
-  }, [navigation]);
+  }, [navigation])
 
   return (
     <Tab.Navigator initialRouteName="Home">
@@ -70,7 +69,9 @@ export function HomeScreen() {
         name="Home"
         options={{
           headerShown: false,
-          tabBarIcon: ({ color }) => <Ionicons size={24} name="home" color={color} />,
+          tabBarIcon: ({ color }) => (
+            <Ionicons size={24} name="home" color={color} />
+          ),
         }}
         component={MainTab}
       />
@@ -79,41 +80,56 @@ export function HomeScreen() {
         options={{
           headerShown: false,
           title: 'House Sale',
-          tabBarIcon: ({ color }) => <Ionicons size={24} name="ios-compass-sharp" color={color} />,
+          tabBarIcon: ({ color }) => (
+            <Ionicons size={24} name="ios-compass-sharp" color={color} />
+          ),
           headerTintColor: MD3Colors.neutral10,
           headerTitleAlign: 'center',
           headerShadowVisible: false,
         }}
         component={AboutTab}
       />
-        <Tab.Screen
-            name="Customer"
-            options={{
-                headerShown: false,
-                title: 'Customer',
-                tabBarIcon: ({ color }) => <Ionicons size={24} name="ios-people" color={color} />,
-                headerTintColor: MD3Colors.neutral10,
-                headerTitleAlign: 'center',
-                headerShadowVisible: false,
-            }}
-            component={AboutTab}
-        />
-        <Tab.Screen
-            name="Notifications"
-            options={{
-                headerShown: false,
-                title: 'Notifications',
-                tabBarIcon: ({ color }) => <Ionicons size={24} name="ios-notifications" color={color} />,
-                headerTintColor: MD3Colors.neutral10,
-                headerTitleAlign: 'center',
-                headerShadowVisible: false,
-            }}
-            component={AboutTab}
-        />
+      <Tab.Screen
+        name="Customer"
+        options={{
+          headerShown: false,
+          title: 'Customer',
+          tabBarIcon: ({ color }) => (
+            <Ionicons size={24} name="ios-people" color={color} />
+          ),
+          headerTintColor: MD3Colors.neutral10,
+          headerTitleAlign: 'center',
+          headerShadowVisible: false,
+        }}
+        component={AboutTab}
+      />
+      <Tab.Screen
+        name="Notifications"
+        options={{
+          headerShown: false,
+          title: 'Notifications',
+          tabBarIcon: ({ color }) => (
+            <Ionicons size={24} name="ios-notifications" color={color} />
+          ),
+          headerTintColor: MD3Colors.neutral10,
+          headerTitleAlign: 'center',
+          headerShadowVisible: false,
+        }}
+        component={AboutTab}
+      />
 
       <Tab.Screen
         name="Profile"
-        options={{ headerShown: false, tabBarIcon: ({ color }) => <Ionicons size={24} name="ios-person-circle-outline" color={color} /> }}
+        options={{
+          headerShown: false,
+          tabBarIcon: ({ color }) => (
+            <Ionicons
+              size={24}
+              name="ios-person-circle-outline"
+              color={color}
+            />
+          ),
+        }}
         component={ContactTab}
       />
     </Tab.Navigator>
