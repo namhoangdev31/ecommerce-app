@@ -8,7 +8,7 @@ interface DropdownWithHookProps {
 }
 
 const DropdownWithHook: React.FC<DropdownWithHookProps> = ({ data }) => {
-  const [selectedValue, setSelectedValue] = useState<string | null>(null)
+  const [selectedValue, setSelectedValue] = useState<string | null>(data[0]?.value || null)
   const [isFocused, setIsFocused] = useState(false)
 
   return (
@@ -18,12 +18,12 @@ const DropdownWithHook: React.FC<DropdownWithHookProps> = ({ data }) => {
         data={data}
         labelField="label"
         valueField="value"
-        placeholder={!isFocused ? 'Select an item' : '...'}
+        placeholder='Select an item'
         value={selectedValue}
         onFocus={() => setIsFocused(true)}
         onBlur={() => setIsFocused(false)}
         onChange={(item) => {
-          setSelectedValue(item.value)
+          // setSelectedValue(item.value)
           setIsFocused(false)
         }}
       />
