@@ -16,7 +16,7 @@
   },
   "scripts": {
     "native": "cd apps/expo && yarn start",
-    "web": "cd apps/next && yarn next"
+    "web": "cd apps/next && yarn dev"
   },
   "resolutions": {
     "metro": "~0.76.7",
@@ -29,6 +29,7 @@
   "packageManager": "yarn@3.4.1",
   "dependencies": {
     "@react-native-picker/picker": "^2.8.0",
+    "express": "^4.21.0",
     "react-native-dropdown-picker": "^5.4.6",
     "react-native-picker": "^4.3.7",
     "react-select": "^5.8.0"
