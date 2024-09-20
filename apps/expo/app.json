@@ -4,9 +4,18 @@
     "slug": "ecommerce-app",
     "version": "1.0.0",
     "scheme": "solito-nativewind",
-    "platforms": ["ios", "android"],
+    "platforms": [
+      "ios",
+      "android"
+    ],
     "ios": {
       "bundleIdentifier": "com.solito.ecommerce-app"
+    },
+    "plugins": [
+      "@prisma/react-native"
+    ],
+    "android": {
+      "package": "com.namhoang3108.ecommerceapp"
     }
   }
 }

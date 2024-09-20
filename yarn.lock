@@ -2834,7 +2834,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@prisma/client@npm:^5.19.1":
+"@prisma/client@npm:^5.19.1, @prisma/client@npm:latest":
   version: 5.19.1
   resolution: "@prisma/client@npm:5.19.1"
   peerDependencies:
@@ -2889,6 +2889,25 @@ __metadata:
   dependencies:
     "@prisma/debug": 5.19.1
   checksum: dcf2afecbf881dd4a280d759e39a415901b8206a6b43a774d09e9e8d511f9726d02073a9ac26125bf2bb27cb4d37e1cdd0cd9cc3143c46968bbd3d3a01deabc6
+  languageName: node
+  linkType: hard
+
+"@prisma/react-native@npm:latest":
+  version: 5.19.1
+  resolution: "@prisma/react-native@npm:5.19.1"
+  dependencies:
+    react-native-quick-base64: ^2.0.8
+    react-native-url-polyfill: ^2.0.0
+  peerDependencies:
+    "@prisma/client": "*"
+    expo: ">=49.0.0"
+    react: "*"
+    react-native: "*"
+    react-native-quick-base64: "*"
+  peerDependenciesMeta:
+    expo:
+      optional: true
+  checksum: cbb95b445015dfaabd371c1d40a655bd0f712d356198abb1d75ccccab50a0a949c4af7f093a0507b6f3f5b11421d0e548f821dfdbbe7fd84fd387cfa9570403d
   languageName: node
   linkType: hard
 
@@ -4653,7 +4672,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"buffer@npm:^5.5.0":
+"buffer@npm:^5.4.3, buffer@npm:^5.5.0":
   version: 5.7.1
   resolution: "buffer@npm:5.7.1"
   dependencies:
@@ -6388,6 +6407,8 @@ __metadata:
   resolution: "expo-app@workspace:apps/expo"
   dependencies:
     "@babel/core": ^7.20.0
+    "@prisma/client": latest
+    "@prisma/react-native": latest
     "@react-native-community/checkbox": ^0.5.17
     "@react-navigation/drawer": ^6.7.2
     "@react-navigation/stack": ^6.4.1
@@ -6407,6 +6428,7 @@ __metadata:
     react-native-element-dropdown: ^2.12.1
     react-native-gesture-handler: ~2.12.0
     react-native-paper: ^5.12.5
+    react-native-quick-base64: ^2.1.2
     react-native-reanimated: ~3.3.0
     react-native-safe-area-context: 4.6.3
     react-native-screens: ~3.22.0
@@ -11142,7 +11164,7 @@ moti@latest:
   languageName: node
   linkType: hard
 
-"punycode@npm:^2.1.0":
+"punycode@npm:^2.1.0, punycode@npm:^2.1.1":
   version: 2.3.1
   resolution: "punycode@npm:2.3.1"
   checksum: bb0a0ceedca4c3c57a9b981b90601579058903c62be23c5e8e843d2c2d4148a3ecf029d5133486fb0e1822b098ba8bba09e89d6b21742d02fa26bda6441a6fb2
@@ -11392,6 +11414,18 @@ moti@latest:
   languageName: node
   linkType: hard
 
+"react-native-quick-base64@npm:^2.0.8, react-native-quick-base64@npm:^2.1.2":
+  version: 2.1.2
+  resolution: "react-native-quick-base64@npm:2.1.2"
+  dependencies:
+    base64-js: ^1.5.1
+  peerDependencies:
+    react: "*"
+    react-native: "*"
+  checksum: 46f3b26f48b26978686b0c043336220d681e6a02af5abcf3eb4ab7b9216251d1eb2fac5c559e984d963e93f54bd9f323651daac09762196815558abbd551729b
+  languageName: node
+  linkType: hard
+
 "react-native-reanimated@npm:~3.3.0":
   version: 3.3.0
   resolution: "react-native-reanimated@npm:3.3.0"
@@ -11433,6 +11467,17 @@ moti@latest:
     react: "*"
     react-native: "*"
   checksum: 3b592ff31d9dfde5e2ce967f85f3ad17a94f4f3bee2248a3dad9ec791e7cda72a431f86b468b3b2a70ebeffb49b462f8162668a58fb9ddabb10b5a369816850d
+  languageName: node
+  linkType: hard
+
+"react-native-url-polyfill@npm:^2.0.0":
+  version: 2.0.0
+  resolution: "react-native-url-polyfill@npm:2.0.0"
+  dependencies:
+    whatwg-url-without-unicode: 8.0.0-3
+  peerDependencies:
+    react-native: "*"
+  checksum: 1a2e1030a62fd093764b5330ce0ff34d72246e581dd2892cddc347d8621931aeb2c9ea3e054960484a1259230e8461e569e1890f1ff452d3c5c0adef70190fc3
   languageName: node
   linkType: hard
 
@@ -13771,10 +13816,28 @@ moti@latest:
   languageName: node
   linkType: hard
 
+"webidl-conversions@npm:^5.0.0":
+  version: 5.0.0
+  resolution: "webidl-conversions@npm:5.0.0"
+  checksum: ccf1ec2ca7c0b5671e5440ace4a66806ae09c49016ab821481bec0c05b1b82695082dc0a27d1fe9d804d475a408ba0c691e6803fd21be608e710955d4589cd69
+  languageName: node
+  linkType: hard
+
 "whatwg-fetch@npm:^3.0.0":
   version: 3.6.20
   resolution: "whatwg-fetch@npm:3.6.20"
   checksum: c58851ea2c4efe5c2235f13450f426824cf0253c1d45da28f45900290ae602a20aff2ab43346f16ec58917d5562e159cd691efa368354b2e82918c2146a519c5
+  languageName: node
+  linkType: hard
+
+"whatwg-url-without-unicode@npm:8.0.0-3":
+  version: 8.0.0-3
+  resolution: "whatwg-url-without-unicode@npm:8.0.0-3"
+  dependencies:
+    buffer: ^5.4.3
+    punycode: ^2.1.1
+    webidl-conversions: ^5.0.0
+  checksum: 1fe266f7161e0bd961087c1254a5a59d1138c3d402064495eed65e7590d9caed5a1d9acfd6e7a1b0bf0431253b0e637ee3e4ffc08387cd60e0b2ddb9d4687a4b
   languageName: node
   linkType: hard
 
