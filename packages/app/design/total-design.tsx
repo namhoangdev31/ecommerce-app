@@ -7,10 +7,7 @@ import {
   TextInput as ReactNativeTextInput,
   Alert as ReactNativeAlert,
 } from 'react-native'
-import Select from 'react-select/base'
-import { CupertinoSectionList as ReactNativeCupertinoSectionList } from 'react-native-cupertino-list'
 import { styled } from 'nativewind'
-import * as ReactNativeCheckBox from '@react-native-community/checkbox'
 import DropDownPicker from 'react-native-dropdown-picker'
 export const Button = styled(ReactNativeBtn)
 export const Column = styled(ReactNativeView, {

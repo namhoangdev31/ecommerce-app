@@ -7,8 +7,8 @@ import React from 'react'
 
 import '../global.css'
 import { AppProps } from 'next/app'
-import Header from "../../../packages/components/header";
-import Footer from "../../../packages/components/footer";
+import Header from '../../../packages/components/header'
+import Footer from '../../../packages/components/footer'
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
@@ -22,9 +22,9 @@ function MyApp({ Component, pageProps }: AppProps) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Provider>
-          <Header />
+        <Header />
         <Component {...pageProps} />
-          <Footer />
+        <Footer />
       </Provider>
     </>
   )

@@ -37,7 +37,6 @@ function UserDetailContent1() {
         <Column className="items-center justify-center my-4">
           {[...Array(20)].map((_, index) => (
             <React.Fragment key={index}>
-              <TextLink href="/data/1">👈 Về trang chủ</TextLink>
               <Text className="mb-4 text-2xl font-bold">
                 Home ${index}
               </Text>
