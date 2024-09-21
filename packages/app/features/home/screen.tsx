@@ -25,9 +25,7 @@ const Tab = createBottomTabNavigator()
 import { MainTab } from '../../../components/home/home_tab'
 
 function AboutTab() {
-  const userLinkProps = useLink({
-    href: '/user/nate',
-  })
+
   return (
     <SafeAreaView className="flex-1">
       <ScrollView>

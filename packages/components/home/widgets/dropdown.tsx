@@ -18,7 +18,6 @@ const DropdownWithHook = () => {
     <View>
       <StyledDropDownPicker
         className="text text-2 w-[30vw] max-w-full flex-1 justify-center"
-        open={open}
         value={value}
         items={items}
         setOpen={setOpen}
@@ -30,7 +29,7 @@ const DropdownWithHook = () => {
         theme="LIGHT"
         modalAnimationType="fade"
         dropDownContainerStyle={styles.dropdownContainer}
-      />
+       open = {open}/>
     </View>
   )
 }
