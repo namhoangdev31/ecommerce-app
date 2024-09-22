@@ -1,0 +1,17 @@
+.menu :global(.ant-menu-item-selected) {
+    color: #FFF !important;
+    background: #2A3FFC !important;
+}
+
+.menuLogout :global(.ant-menu-title-content) {
+    color: #D55F5A;
+    font-family: Poppins;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 170%;
+}
+
+.menuLogout {
+    margin-top: auto;
+}
