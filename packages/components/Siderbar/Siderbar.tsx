@@ -10,7 +10,7 @@ interface Props {
   onCollapsed: () => void
 }
 
-export const Siderbar = ({ collapsed, onCollapsed }: Props) => {
+export const Sidebar = ({ collapsed, onCollapsed }: Props) => {
   return (
     <Sider
       trigger={null}

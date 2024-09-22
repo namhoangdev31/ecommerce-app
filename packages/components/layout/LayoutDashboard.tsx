@@ -1,6 +1,6 @@
 import { Layout } from 'antd'
 import React, { useState } from 'react'
-import { Siderbar } from '../Siderbar/Siderbar'
+import { Sidebar } from '../Siderbar/Siderbar'
 import { HeaderDashboard } from '../header/HeaderDashboard'
 
 const { Content } = Layout
@@ -14,7 +14,7 @@ export const LayoutDashboard = ({ children }: Props) => {
 
   return (
     <Layout>
-      <Siderbar
+      <Sidebar
         collapsed={collapsed}
         onCollapsed={() => {
           return setCollapsed(!collapsed)
