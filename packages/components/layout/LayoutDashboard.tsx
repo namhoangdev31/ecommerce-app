@@ -20,23 +20,9 @@ export const LayoutDashboard = ({ children }: Props) => {
           return setCollapsed(!collapsed)
         }}
       />
-      <Layout
-        style={{
-          height: '100vh',
-        }}
-      >
+      <Layout className="h-screen">
         <HeaderDashboard />
-        <Content
-          className="site-layout"
-          style={{
-            margin: '16px 0px',
-            padding: 24,
-            minHeight: 280,
-            background: 'none',
-            overflow: 'auto',
-            maxHeight: '100%',
-          }}
-        >
+        <Content className="site-layout my-4 p-6 min-h-[280px] bg-transparent overflow-auto max-h-full">
           {children}
         </Content>
       </Layout>

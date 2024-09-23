@@ -1,5 +1,4 @@
-  /* eslint-disable react-hooks/exhaustive-deps */
-  import { useRouter } from 'next/router'
+ import { useRouter } from 'next/router'
   import { Menu, message } from 'antd'
   import { useEffect, useState } from 'react'
   import type { MenuProps } from 'antd'
@@ -17,10 +16,10 @@
 
     const OPTION_MENU: MenuProps['items'] = [
       {
-        key: '/products',
+        key: '/',
         icon: <AgentIcon fill="#FFF" />,
-        label: 'Productos',
-        onClick: () => push('/products'),
+        label: 'DashBoard',
+        onClick: () => push('/'),
       },
     ]
 

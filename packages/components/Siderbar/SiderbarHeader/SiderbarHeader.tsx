@@ -8,7 +8,7 @@ interface Props {
   onCollapsed: () => void
 }
 
-export const SiderbarHeader = ({ collapsed, onCollapsed }: Props) => {
+export const SidebarHeader = ({ collapsed, onCollapsed }: Props) => {
   const {
     token: { colorBgContainer },
   } = theme.useToken()

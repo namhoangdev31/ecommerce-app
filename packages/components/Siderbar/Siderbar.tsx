@@ -1,6 +1,6 @@
 import { Layout } from 'antd'
 import styles from './styles.module.css'
-import { SiderbarHeader } from './SiderbarHeader/SiderbarHeader'
+import { SidebarHeader } from './SiderbarHeader/SiderbarHeader'
 import { MenuSidebar } from './menuSiderbar/MenuSiderbar'
 
 const { Sider } = Layout
@@ -19,7 +19,7 @@ export const Sidebar = ({ collapsed, onCollapsed }: Props) => {
       className={styles.siderbar}
     >
       <div className={styles.containerMenu}>
-        <SiderbarHeader collapsed={collapsed} onCollapsed={onCollapsed} />
+        <SidebarHeader collapsed={collapsed} onCollapsed={onCollapsed} />
         <MenuSidebar />
       </div>
     </Sider>

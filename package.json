@@ -6,8 +6,6 @@
     "packages/*"
   ],
   "devDependencies": {
-    "@types/react": "^18.2.21",
-    "@types/react-native": "^0.72.2",
     "eslint": "^8.21.0",
     "prettier": "^3.0.3",
     "prettier-plugin-tailwindcss": "^0.5.4",
@@ -16,7 +14,8 @@
   },
   "scripts": {
     "native": "cd apps/expo && yarn start",
-    "web": "cd apps/next && yarn next"
+    "web": "cd apps/next && yarn next",
+    "server": "cd apps/server && yarn dev"
   },
   "resolutions": {
     "metro": "~0.76.7",
