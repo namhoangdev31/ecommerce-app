@@ -16,7 +16,8 @@ export const Sidebar = ({ collapsed, onCollapsed }: Props) => {
       trigger={null}
       collapsible
       collapsed={collapsed}
-      className={styles.siderbar}
+      // className={styles.siderbar}
+      className={`${styles.siderbar} ${!collapsed ? styles.collapsed : ''}`}
     >
       <div className={styles.containerMenu}>
         <SidebarHeader collapsed={collapsed} onCollapsed={onCollapsed} />

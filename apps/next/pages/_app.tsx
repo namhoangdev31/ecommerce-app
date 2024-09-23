@@ -17,7 +17,7 @@ type ExtendedAppProps = AppProps & {
 export default function MyApp({ Component, pageProps }: ExtendedAppProps) {
   const getLayout =
     Component.getLayout ??
-    ((page) => {
+    ((page: React.ReactElement) => {
       return <LayoutDashboard>{page}</LayoutDashboard>
     })
 
