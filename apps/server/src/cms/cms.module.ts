@@ -1,9 +1,10 @@
 import { Module, Scope } from '@nestjs/common'
 import { CmsService } from './cms.service'
 import { HttpAdapterHost } from '@nestjs/core'
-import payload from 'payload'
+import payload, { Payload } from "payload";
 import { ConfigService } from '@nestjs/config'
 import config from './payload.config'
+import { InitOptions } from "payload/config";
 
 @Module({
   providers: [
@@ -13,15 +14,23 @@ import config from './payload.config'
       inject: [HttpAdapterHost, ConfigService],
       scope: Scope.DEFAULT, // Singleton
       useFactory: async (httpAdapterHost: HttpAdapterHost, configService: ConfigService) => {
-        return await payload.init({
-          secret: configService.getOrThrow('cms.secret'),
-          mongoURL: configService.getOrThrow('cms.mongoUrl'),
-          express: httpAdapterHost.httpAdapter.getInstance(),
-          config,
-          onInit: () => {
-            payload.logger.info(`Payload Admin URL: ${payload.getAdminURL()}`);
-          },
-        })
+        return await payload.init(
+          <InitOptions>{
+            config: Promise.resolve(undefined),
+            disableDBConnect: false,
+            disableOnInit: false,
+            email: undefined,
+            express: undefined,
+            local: false,
+            logger: undefined,
+            loggerDestination: undefined,
+            loggerOptions: undefined,
+            onInit(payload: Payload): Promise<void> | void {
+              return undefined;
+            },
+            secret: ""
+          }
+        )
       },
     },
   ],

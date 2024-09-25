@@ -22,6 +22,26 @@ export const MenuSidebar = () => {
       label: 'DashBoard',
       onClick: () => push('/'),
     },
+    {
+      key: '/products',
+      icon: <AgentIcon fill="#FFF" />,
+      label: 'DashBoard',
+
+      children: [
+        {
+          key: '/products',
+          icon: <HomeIcon fill="#FFF" />,
+          label: 'DashBoard',
+          onClick: () => push('/products'),
+        },
+        {
+          key: '/login',
+          icon: <HomeIcon fill="#FFF" />,
+          label: 'DashBoard',
+          onClick: () => push('/'),
+        },
+      ]
+    },
   ]
 
   const push = (path: Routes) => {
@@ -57,7 +77,7 @@ export const MenuSidebar = () => {
           {
             key: '1',
             icon: <LogoutIcon />,
-            label: 'Cerrar Session',
+            label: 'Logout',
             onClick: () => logout(),
           },
         ]}

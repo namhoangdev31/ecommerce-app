@@ -2,17 +2,18 @@ import { Roles } from './constants';
 
 export type Routes =
   | '/login'
-  | '/products' | '/'
+  | '/products' | '/' | '/dashboard'
   ;
 
 export const PERMISSION_ROUTE: Record<Routes, Array<Roles>> = {
   "/login": [],
   "/products": [Roles.Admin],
-  "/" : []
+  "/" : [],
+  "/dashboard": [],
 };
 
 export const NAME_PAGE: Partial<Record<Routes, string>> = {
-  "/products": 'Productos'
+  "/products": 'Products'
 };
 
 export const NOT_SHOW_INPUT: Partial<Record<Routes, boolean>> = {};
