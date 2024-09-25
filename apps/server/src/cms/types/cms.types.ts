@@ -10,7 +10,9 @@ export interface Config {
     pages: Page;
     users: User;
   };
-  globals: {};
+  globals: {
+
+  };
 }
 export interface Page {
   id: string;

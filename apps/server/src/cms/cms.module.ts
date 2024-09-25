@@ -18,6 +18,9 @@ import config from './payload.config'
           mongoURL: configService.getOrThrow('cms.mongoUrl'),
           express: httpAdapterHost.httpAdapter.getInstance(),
           config,
+          onInit: () => {
+            payload.logger.info(`Payload Admin URL: ${payload.getAdminURL()}`);
+          },
         })
       },
     },
