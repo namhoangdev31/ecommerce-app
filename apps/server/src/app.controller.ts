@@ -12,7 +12,7 @@ export class AppController {
   }
 
   @Get('test')
-  async getTest(): Promise<string[]> {
+  async getTest(): Promise<any[]> {
     const pages = await this.cms.find<'pages'>({ collection: 'pages', where: {}})
     return pages.docs.map((page) => {
       return page.title

@@ -5255,7 +5255,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@payloadcms/richtext-slate@npm:^1.0.0":
+"@payloadcms/richtext-slate@npm:^1.5.2":
   version: 1.5.2
   resolution: "@payloadcms/richtext-slate@npm:1.5.2"
   dependencies:
@@ -10801,7 +10801,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"dotenv@npm:8.6.0":
+"dotenv@npm:8.6.0, dotenv@npm:^8.2.0":
   version: 8.6.0
   resolution: "dotenv@npm:8.6.0"
   checksum: 38e902c80b0666ab59e9310a3d24ed237029a7ce34d976796349765ac96b8d769f6df19090f1f471b77a25ca391971efde8a1ea63bb83111bd8bec8e5cc9b2cd
@@ -18072,7 +18072,7 @@ __metadata:
     "@payloadcms/plugin-redirects": ^1.0.0
     "@payloadcms/plugin-seo": ^1.0.10
     "@payloadcms/plugin-stripe": ^0.0.19
-    "@payloadcms/richtext-slate": ^1.0.0
+    "@payloadcms/richtext-slate": ^1.5.2
     "@payloadcms/ui": ^3.0.0-beta.29
     "@stripe/react-stripe-js": ^1.16.3
     "@stripe/stripe-js": ^1.46.0
@@ -18084,6 +18084,7 @@ __metadata:
     "@typescript-eslint/eslint-plugin": ^5.0.0
     "@typescript-eslint/parser": ^5.0.0
     cross-env: ^7.0.3
+    dotenv: ^8.2.0
     eslint: ^8.0.1
     eslint-config-prettier: ^8.3.0
     eslint-plugin-prettier: ^4.0.0
