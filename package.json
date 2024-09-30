@@ -17,7 +17,7 @@
   "scripts": {
     "native": "cd apps/expo && yarn start",
     "web": "cd apps/next && yarn next",
-    "server" : "cd server && yarn start:dev"
+    "server": "cd server && yarn start:dev"
   },
   "resolutions": {
     "metro": "~0.76.7",

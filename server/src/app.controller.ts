@@ -1,21 +1,12 @@
-import { Controller, Get, Inject } from '@nestjs/common'
-import { AppService } from './app.service'
-import { Payload } from 'payload'
+import { Controller, Get } from '@nestjs/common';
+import { AppService } from './app.service';
 
 @Controller()
 export class AppController {
-  constructor(private readonly appService: AppService, @Inject('CMS') private readonly cms: Payload) {}
+  constructor(private readonly appService: AppService) {}
 
   @Get()
-  getHello(): string {
-    return this.appService.getHello()
-  }
-
-  @Get('test')
-  async getTest(): Promise<string[]> {
-    const pages = await this.cms.find<'pages'>({ collection: 'pages', where: {}})
-    return pages.docs.map((page) => {
-      return page.title as string
-    })
+  getHello(): Promise<{ status: string; time: string; version: string }> {
+    return this.appService.getHello();
   }
 }
