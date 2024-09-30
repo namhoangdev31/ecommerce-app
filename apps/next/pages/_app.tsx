@@ -1,19 +1,20 @@
+import 'raf/polyfill'
+import 'setimmediate'
+
 import { Provider } from 'app/provider'
 import Head from 'next/head'
+import React from 'react'
 
 import '../global.css'
-import type { AppProps } from 'next/app'
-import type { NextPage } from 'next'
+import { AppProps } from 'next/app'
+import { NextPage } from 'next'
 import { LayoutDashboard } from '../../../packages/components/layout/LayoutDashboard'
-import 'dayjs/locale/es-us'
-import React from 'react'
 
 type ExtendedAppProps = AppProps & {
   Component: NextPage & {
     getLayout?: (page: React.ReactElement) => React.ReactNode
   }
 }
-
 export default function MyApp({ Component, pageProps }: ExtendedAppProps) {
   const getLayout =
     Component.getLayout ??

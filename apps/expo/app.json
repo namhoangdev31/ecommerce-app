@@ -1,12 +1,12 @@
 {
   "expo": {
-    "name": "ecommerce-app",
-    "slug": "ecommerce-app",
+    "name": "solito-nativewind",
+    "slug": "solito-nativewind",
     "version": "1.0.0",
-    "scheme": "ecommerce-app",
+    "scheme": "solito-nativewind",
     "platforms": ["ios", "android"],
     "ios": {
-      "bundleIdentifier": "com.nhn.ecommerce-app"
+      "bundleIdentifier": "com.solito.nativewind"
     }
   }
 }

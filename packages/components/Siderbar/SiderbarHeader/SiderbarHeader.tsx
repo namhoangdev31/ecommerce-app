@@ -1,6 +1,5 @@
 import { Button, Divider, theme } from 'antd'
 import styles from './styles.module.css'
-import { UserIcon } from '../../../assets/icons/userIcon'
 import { LeftArrowIcon } from '../../../assets/icons/LeftArrowIcon'
 import { AppIcon } from '../../../assets/icons/AppIcon'
 
