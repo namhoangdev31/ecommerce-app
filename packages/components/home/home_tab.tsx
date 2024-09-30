@@ -9,8 +9,6 @@ import {
 } from '@react-navigation/drawer'
 import { Text } from 'app/design/typography'
 import {
-  Column,
-  Row,
   SafeAreaView,
   ScrollView,
   TextInput,
