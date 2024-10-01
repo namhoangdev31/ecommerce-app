@@ -1,5 +1,5 @@
 {
-  "name": "solito-with-tailwind",
+  "name": "ecommerce-app",
   "private": true,
   "workspaces": [
     "apps/*",
@@ -17,7 +17,7 @@
   "scripts": {
     "native": "cd apps/expo && yarn start",
     "web": "cd apps/next && yarn next",
-    "server": "cd server && yarn start:dev"
+    "server": "cd serverless && yarn start"
   },
   "resolutions": {
     "metro": "~0.76.7",

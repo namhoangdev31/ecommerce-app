@@ -1,3 +1,4 @@
+import { CmsModule } from './cms/cms.module';
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
@@ -6,7 +7,7 @@ import { typeOrmConfig } from 'src/config/typeormConfig';
 import { ProductsModule } from './products/products.module';
 
 @Module({
-  imports: [TypeOrmModule.forRoot(typeOrmConfig), ProductsModule],
+  imports: [CmsModule, TypeOrmModule.forRoot(typeOrmConfig), ProductsModule],
   controllers: [AppController],
   providers: [AppService],
 })
