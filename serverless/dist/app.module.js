@@ -40,6 +40,7 @@ const typeorm_1 = require("@nestjs/typeorm");
 const typeormConfig_1 = require("./config/typeormConfig");
 const products_module_1 = require("./products/products.module");
 const throttler_1 = require("@nestjs/throttler");
+const core_1 = require("@nestjs/core");
 const path = __importStar(require("path"));
 const serve_static_1 = require("@nestjs/serve-static");
 const path_1 = require("path");
@@ -53,6 +54,8 @@ const throttleConfig = __importStar(require("./config/throttle-config"));
 const mail_module_1 = require("./mail/mail.module");
 const email_template_module_1 = require("./email-template/email-template.module");
 const refresh_token_module_1 = require("./refresh-token/refresh-token.module");
+const i18n_exception_filter_pipe_1 = require("./common/pipes/i18n-exception-filter.pipe");
+const custom_validation_pipe_1 = require("./common/pipes/custom-validation.pipe");
 const twofa_module_1 = require("./twofa/twofa.module");
 const dashboard_module_1 = require("./dashboard/dashboard.module");
 const winston_1 = __importDefault(require("./config/winston"));
@@ -103,6 +106,14 @@ exports.AppModule = AppModule = __decorate([
         ],
         providers: [
             app_service_1.AppService,
+            {
+                provide: core_1.APP_PIPE,
+                useClass: custom_validation_pipe_1.CustomValidationPipe,
+            },
+            {
+                provide: core_1.APP_FILTER,
+                useClass: i18n_exception_filter_pipe_1.I18nExceptionFilterPipe,
+            },
         ],
         controllers: [app_controller_1.AppController],
     })

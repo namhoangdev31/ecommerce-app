@@ -43,7 +43,7 @@ import { RefreshPaginateFilterDto } from 'src/refresh-token/dto/refresh-paginate
 import { RefreshTokenSerializer } from 'src/refresh-token/serializer/refresh-token.serializer';
 
 @ApiTags('user')
-@Controller('api')
+@Controller()
 export class AuthController {
   constructor(private authService: AuthService) {}
 

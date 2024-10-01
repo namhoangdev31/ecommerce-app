@@ -76,18 +76,18 @@ import winstonConfig from 'src/config/winston';
   ],
   providers: [
     AppService,
-    // {
-    //   provide: APP_PIPE,
-    //   useClass: CustomValidationPipe,
-    // },
+    {
+      provide: APP_PIPE,
+      useClass: CustomValidationPipe,
+    },
     // {
     //   provide: APP_GUARD,
     //   useClass: CustomThrottlerGuard,
     // },
-    // {
-    //   provide: APP_FILTER,
-    //   useClass: I18nExceptionFilterPipe,
-    // },
+    {
+      provide: APP_FILTER,
+      useClass: I18nExceptionFilterPipe,
+    },
   ],
   controllers: [AppController],
 })
