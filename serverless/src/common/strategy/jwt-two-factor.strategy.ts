@@ -32,9 +32,17 @@ export class JwtTwoFactorStrategy extends PassportStrategy(
 
   async validate(payload: JwtPayloadDto): Promise<UserEntity> {
     const { isTwoFAAuthenticated, subject } = payload;
-    const user = await this.userRepository.findOne(Number(subject), {
+    const user = await this.userRepository.findOne({
+      where: { id: Number(subject) },
       relations: ['role', 'role.permission'],
     });
+    if (!user) {
+      throw new CustomHttpException(
+        'User not found',
+        HttpStatus.NOT_FOUND,
+        StatusCodesList.NotFound,
+      );
+    }
     if (!user.isTwoFAEnabled) {
       return user;
     }

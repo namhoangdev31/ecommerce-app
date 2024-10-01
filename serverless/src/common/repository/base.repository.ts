@@ -5,6 +5,7 @@ import {
   ILike,
   ObjectLiteral,
   Repository,
+  FindOptionsWhere,
 } from 'typeorm';
 import { QueryDeepPartialEntity } from 'typeorm/query-builder/QueryPartialEntity';
 
@@ -18,7 +19,7 @@ import { ModelSerializer } from 'src/common/serializer/model.serializer';
  * Base Repository for code reuse
  */
 export class BaseRepository<
-  T,
+  T extends ObjectLiteral,
   K extends ModelSerializer,
 > extends Repository<T> {
   /***
@@ -28,14 +29,12 @@ export class BaseRepository<
    * @param transformOptions
    */
   async get(
-    id: number,
+    id: any,
     relations: string[] = [],
     transformOptions = {},
   ): Promise<K | null> {
     return await this.findOne({
-      where: {
-        id,
-      },
+      where: { id: id } as FindOptionsWhere<T>,
       relations,
     })
       .then((entity) => {
@@ -51,32 +50,19 @@ export class BaseRepository<
 
   /**
    * find by condition
-   * @param fieldName
-   * @param value
+   * @param where
    * @param relations
    * @param transformOptions
    */
   async findBy(
-    fieldName: string,
-    value: any,
+    where: FindOptionsWhere<T> | FindOptionsWhere<T>[],
     relations: string[] = [],
     transformOptions: {} = {},
-  ): Promise<K | null> {
-    return await this.findOne({
-      where: {
-        [fieldName]: value,
-      },
+  ): Promise<T[]> {
+    return this.find({
+      where,
       relations,
-    })
-      .then((entity) => {
-        if (!entity) {
-          return Promise.reject(new NotFoundException());
-        }
-        return Promise.resolve(
-          entity ? this.transform(entity, transformOptions) : null,
-        );
-      })
-      .catch((error) => Promise.reject(error));
+    }) as Promise<T[]>; // Type assertion added here
   }
 
   /**
@@ -84,7 +70,7 @@ export class BaseRepository<
    * @param conditions
    */
   async countEntityByCondition(
-    conditions: ObjectLiteral = {},
+    conditions: FindOptionsWhere<T> = {},
   ): Promise<number> {
     return this.count({
       where: conditions,
@@ -105,15 +91,15 @@ export class BaseRepository<
   async findAll(
     searchFilter: DeepPartial<SearchFilterInterface>,
     relations: string[] = [],
-    searchCriteria: string[],
+    searchCriteria: (keyof T)[],
     transformOptions = {},
   ): Promise<K[]> {
-    const whereCondition = [];
+    const whereCondition: FindOptionsWhere<T>[] = [];
     if (searchFilter.hasOwnProperty('keywords') && searchFilter.keywords) {
       for (const key of searchCriteria) {
         whereCondition.push({
           [key]: ILike(`%${searchFilter.keywords}%`),
-        });
+        } as FindOptionsWhere<T>);
       }
     }
     const results = await this.find({
@@ -153,16 +139,16 @@ export class BaseRepository<
   async paginate(
     searchFilter: DeepPartial<SearchFilterInterface>,
     relations: string[] = [],
-    searchCriteria: string[] = [],
+    searchCriteria: (keyof T)[] = [],
     transformOptions = {},
   ): Promise<Pagination<K>> {
-    const whereCondition = [];
-    const findOptions: FindManyOptions = {};
+    const whereCondition: FindOptionsWhere<T>[] = [];
+    const findOptions: FindManyOptions<T> = {};
     if (searchFilter.hasOwnProperty('keywords') && searchFilter.keywords) {
       for (const key of searchCriteria) {
         whereCondition.push({
           [key]: ILike(`%${searchFilter.keywords}%`),
-        });
+        } as FindOptionsWhere<T>);
       }
     }
     const paginationInfo: PaginationInfoInterface =
@@ -173,7 +159,7 @@ export class BaseRepository<
     findOptions.where = whereCondition;
     findOptions.order = {
       createdAt: 'DESC',
-    };
+    } as any;
     const { page, skip, limit } = paginationInfo;
     const [results, total] = await this.findAndCount(findOptions);
     const serializedResult = this.transformMany(results, transformOptions);

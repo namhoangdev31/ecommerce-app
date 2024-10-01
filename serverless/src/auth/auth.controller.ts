@@ -19,6 +19,7 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { ApiTags } from '@nestjs/swagger';
 import { Request, Response } from 'express';
 import { UAParser } from 'ua-parser-js';
+import { Multer } from 'multer'; // Add this import
 
 import { GetUser } from 'src/common/decorators/get-user.decorator';
 import JwtTwoFactorGuard from 'src/common/guard/jwt-two-factor.guard';
@@ -145,8 +146,8 @@ export class AuthController {
   updateProfile(
     @GetUser()
     user: UserEntity,
-    @UploadedFile()
-    file: Express.Multer.File,
+    @UploadedFile() // This will now use the correct type
+    file: Multer.File, // Change this line
     @Body()
     updateUserDto: UpdateUserProfileDto,
   ): Promise<UserSerializer> {

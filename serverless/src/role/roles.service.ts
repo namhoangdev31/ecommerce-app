@@ -39,8 +39,8 @@ export class RolesService implements CommonServiceInterface<RoleSerializer> {
    * Find by name
    * @param name
    */
-  async findByName(name) {
-    return await this.repository.findOne({ name });
+  async findByName(name: string): Promise<RoleSerializer | undefined> {
+    return await this.repository.findOne({ where: { name } });
   }
 
   /**
@@ -95,7 +95,7 @@ export class RolesService implements CommonServiceInterface<RoleSerializer> {
     id: number,
     updateRoleDto: UpdateRoleDto,
   ): Promise<RoleSerializer> {
-    const role = await this.repository.findOne(id);
+    const role = await this.repository.findOne({ where: { id } });
     if (!role) {
       throw new NotFoundException();
     }

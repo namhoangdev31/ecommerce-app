@@ -13,11 +13,11 @@ export const SanitizeUser = (userField?: string, strong = true) => {
     descriptor: TypedPropertyDescriptor<any>,
   ): TypedPropertyDescriptor<any> => {
     const decoratedFn = descriptor.value;
-    async function newFunction(...args) {
+    async function newFunction(this: any, ...args: any[]) {
       const data: any = await decoratedFn.apply(this, args);
-      const user: UserEntity = userField ? data[userField] : data;
+      const user: UserEntity | undefined = userField ? data[userField] : data;
       if (user) {
-        user.password = null;
+        user.password = undefined;
         delete user.password;
         user.salt = null;
         delete user.salt;
@@ -46,13 +46,12 @@ export const SanitizeUsers = (userField?: string) => {
     descriptor: TypedPropertyDescriptor<any>,
   ): TypedPropertyDescriptor<any> => {
     const decoratedFn = descriptor.value;
-
-    async function newFunction(...args) {
+    async function newFunction(this: any, ...args: any[]) {
       const entities: any[] = await decoratedFn.apply(this, args);
       return entities.map((entity) => {
-        const user: UserEntity = userField ? entity[userField] : entity;
+        const user: UserEntity | undefined = userField ? entity[userField] : entity;
         if (user) {
-          user.password = null;
+          user.password = undefined;
           delete user.password;
           user.salt = null;
           delete user.salt;
