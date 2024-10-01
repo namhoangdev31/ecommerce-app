@@ -41,7 +41,7 @@ export class UserEntity extends CustomBaseEntity {
   password: string;
 
   @Index()
-  @Column()
+  @Column({ nullable: false })
   name: string;
 
   @Column()

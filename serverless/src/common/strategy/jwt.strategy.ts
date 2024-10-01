@@ -8,6 +8,7 @@ import { UserRepository } from 'src/auth/user.repository';
 import { UserEntity } from 'src/auth/entity/user.entity';
 import { JwtPayloadDto } from 'src/auth/dto/jwt-payload.dto';
 import { UnauthorizedException } from 'src/exception/unauthorized.exception';
+import { ObjectId } from 'typeorm';
 
 const cookieExtractor = (req) => {
   return req?.cookies?.Authentication;
@@ -32,12 +33,11 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt-strategy') {
   async validate(payload: JwtPayloadDto): Promise<UserEntity> {
     const { subject } = payload;
     const user = await this.userRepository.findOne({
-      where: { id: Number(subject) },
+      where: { _id: new ObjectId(subject) },
       relations: ['role', 'role.permission'],
     });
     if (!user) {
       throw new UnauthorizedException();
     }
     return user;
-  }
-}
+  }}

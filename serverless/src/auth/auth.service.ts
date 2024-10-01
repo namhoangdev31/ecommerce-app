@@ -8,7 +8,7 @@ import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
 import { existsSync, unlinkSync } from 'fs';
 import { SignOptions } from 'jsonwebtoken';
-import { DeepPartial, Not, ObjectLiteral } from 'typeorm';
+import { DeepPartial, Not, ObjectId, ObjectLiteral } from 'typeorm';
 import {
   RateLimiterRes,
   RateLimiterStoreAbstract,
@@ -103,21 +103,26 @@ export class AuthService {
   async create(
     createUserDto: DeepPartial<UserEntity>,
   ): Promise<UserSerializer> {
-    const token = await this.generateUniqueToken(12);
-    if (!createUserDto.status) {
-      createUserDto.roleId = 2;
-      const currentDateTime = new Date();
-      currentDateTime.setHours(currentDateTime.getHours() + 1);
-      createUserDto.tokenValidityDate = currentDateTime;
+    try {
+      const token = await this.generateUniqueToken(12);
+      if (!createUserDto.status) {
+        createUserDto.roleId = 2;
+        const currentDateTime = new Date();
+        currentDateTime.setHours(currentDateTime.getHours() + 1);
+        createUserDto.tokenValidityDate = currentDateTime;
+      }
+      const registerProcess = !createUserDto.status;
+      const user = await this.userRepository.store(createUserDto, token);
+      const subject = registerProcess ? 'Tài khoản đã được tạo' : 'Đặt mật khẩu';
+      const link = registerProcess ? `verify/${token}` : `reset/${token}`;
+      const slug = registerProcess ? 'activate-account' : 'new-user-set-password';
+      const linkLabel = registerProcess ? 'Kích hoạt tài khoản' : 'Đặt mật khẩu';
+      await this.sendMailToUser(user, subject, link, slug, linkLabel);
+      return user;
+    } catch (error) {
+      console.error('Lỗi khi tạo người dùng:', error);
+      throw new Error('Không thể tạo người dùng. Vui lòng thử lại sau.');
     }
-    const registerProcess = !createUserDto.status;
-    const user = await this.userRepository.store(createUserDto, token);
-    const subject = registerProcess ? 'Account created' : 'Set Password';
-    const link = registerProcess ? `verify/${token}` : `reset/${token}`;
-    const slug = registerProcess ? 'activate-account' : 'new-user-set-password';
-    const linkLabel = registerProcess ? 'Activate Account' : 'Set Password';
-    await this.sendMailToUser(user, subject, link, slug, linkLabel);
-    return user;
   }
 
   /**
@@ -194,7 +199,7 @@ export class AuthService {
   ): Promise<string> {
     const opts: SignOptions = {
       ...BASE_OPTIONS,
-      subject: String(user.id),
+      subject: String(user._id),
     };
     return this.jwt.signAsync({
       ...opts,
@@ -272,7 +277,7 @@ export class AuthService {
    * @param updateUserDto
    */
   async update(
-    id: number,
+    id: ObjectId,
     updateUserDto: DeepPartial<UserEntity>,
   ): Promise<UserSerializer> {
     const user = await this.userRepository.get(id, [], {
@@ -546,7 +551,7 @@ export class AuthService {
    * @param id
    * @param userId
    **/
-  revokeTokenById(id: number, userId: number): Promise<RefreshToken> {
+  revokeTokenById(id: number, userId: ObjectId): Promise<RefreshToken> {
     return this.refreshTokenService.revokeRefreshTokenById(id, userId);
   }
 
@@ -598,7 +603,7 @@ export class AuthService {
       };
       await this.mailService.sendMail(mailData, 'system-mail');
     }
-    return this.userRepository.update(user.id, {
+    return this.userRepository.update(user._id, {
       isTwoFAEnabled,
     });
   }

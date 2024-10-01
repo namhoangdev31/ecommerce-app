@@ -5,6 +5,7 @@ import { UserSerializer } from 'src/auth/serializer/user.serializer';
 import { BaseRepository } from 'src/common/repository/base.repository';
 import { RefreshTokenSerializer } from 'src/refresh-token/serializer/refresh-token.serializer';
 import process from 'process';
+import { UserEntity } from '../auth/entity/user.entity';
 const refreshExpires = process.env.JWT_REFRESH_EXPIRES_IN;
 @EntityRepository(RefreshToken)
 export class RefreshTokenRepository extends BaseRepository<
@@ -17,11 +18,11 @@ export class RefreshTokenRepository extends BaseRepository<
    * @param tokenPayload
    */
   public async createRefreshToken(
-    user: UserSerializer,
+    user: UserEntity,
     tokenPayload: Partial<RefreshToken>,
   ): Promise<RefreshToken> {
     const token = this.create();
-    token.userId = user.id;
+    token.userId = user._id;
     token.isRevoked = false;
     token.ip = tokenPayload.ip;
     token.userAgent = tokenPayload.userAgent;

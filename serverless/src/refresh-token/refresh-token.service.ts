@@ -1,7 +1,7 @@
 import { forwardRef, HttpStatus, Inject, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
-import { FindManyOptions, MoreThanOrEqual } from 'typeorm';
+import { FindManyOptions, MoreThanOrEqual, ObjectId } from 'typeorm';
 import { SignOptions, TokenExpiredError } from 'jsonwebtoken';
 
 import { CustomHttpException } from 'src/exception/custom-http.exception';
@@ -18,6 +18,7 @@ import { RefreshPaginateFilterDto } from 'src/refresh-token/dto/refresh-paginate
 import { PaginationInfoInterface } from 'src/paginate/pagination-info.interface';
 import { RefreshTokenSerializer } from 'src/refresh-token/serializer/refresh-token.serializer';
 import { Pagination } from 'src/paginate';
+import { UserEntity } from '../auth/entity/user.entity';
 
 const BASE_OPTIONS: SignOptions = {
   issuer: process.env.APP_URL,
@@ -40,13 +41,13 @@ export class RefreshTokenService {
    * @param refreshToken
    */
   public async generateRefreshToken(
-    user: UserSerializer,
+    user: UserEntity,
     refreshToken: Partial<RefreshToken>,
   ): Promise<string> {
     const token = await this.repository.createRefreshToken(user, refreshToken);
     const opts: SignOptions = {
       ...BASE_OPTIONS,
-      subject: String(user.id),
+      subject: String(user._id),
       jwtid: String(token.id),
     };
 
@@ -222,7 +223,7 @@ export class RefreshTokenService {
    */
   async revokeRefreshTokenById(
     id: number,
-    userId: number,
+    userId: ObjectId,
   ): Promise<RefreshToken> {
     const token = await this.repository.findTokenById(id);
     if (!token) {

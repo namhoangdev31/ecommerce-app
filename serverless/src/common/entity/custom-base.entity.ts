@@ -1,6 +1,8 @@
 import {
   BaseEntity,
   CreateDateColumn,
+  ObjectId,
+  ObjectIdColumn,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -9,8 +11,8 @@ import {
  * custom base entity
  */
 export abstract class CustomBaseEntity extends BaseEntity {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @ObjectIdColumn()
+  _id: ObjectId;
 
   @CreateDateColumn({
     type: 'timestamp',

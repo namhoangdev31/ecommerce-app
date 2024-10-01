@@ -41,6 +41,7 @@ import { UserEntity } from 'src/auth/entity/user.entity';
 import { UserSerializer } from 'src/auth/serializer/user.serializer';
 import { RefreshPaginateFilterDto } from 'src/refresh-token/dto/refresh-paginate-filter.dto';
 import { RefreshTokenSerializer } from 'src/refresh-token/serializer/refresh-token.serializer';
+import { ObjectId } from 'typeorm';
 
 @ApiTags('user')
 @Controller()
@@ -154,7 +155,7 @@ export class AuthController {
     if (file) {
       updateUserDto.avatar = file.filename;
     }
-    return this.authService.update(user.id, updateUserDto);
+    return this.authService.update(user._id, updateUserDto);
   }
 
   @UseGuards(JwtTwoFactorGuard)
@@ -190,11 +191,11 @@ export class AuthController {
   @Put('/users/:id')
   update(
     @Param('id')
-    id: string,
+    id: ObjectId,
     @Body()
     updateUserDto: UpdateUserDto,
   ): Promise<UserSerializer> {
-    return this.authService.update(+id, updateUserDto);
+    return this.authService.update(id, updateUserDto);
   }
 
   @UseGuards(JwtTwoFactorGuard, PermissionGuard)
@@ -234,7 +235,7 @@ export class AuthController {
     @GetUser()
     user: UserEntity,
   ): Promise<Pagination<RefreshTokenSerializer>> {
-    return this.authService.activeRefreshTokenList(+user.id, filter);
+    return this.authService.activeRefreshTokenList(+user._id, filter);
   }
 
   @UseGuards(JwtTwoFactorGuard)
@@ -245,6 +246,6 @@ export class AuthController {
     @GetUser()
     user: UserEntity,
   ) {
-    return this.authService.revokeTokenById(+id, user.id);
+    return this.authService.revokeTokenById(+id, user._id);
   }
 }
