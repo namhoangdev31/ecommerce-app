@@ -3,11 +3,11 @@ import {
   Column,
   Entity,
   Index,
-  PrimaryGeneratedColumn
+  PrimaryGeneratedColumn,
 } from 'typeorm';
 
 @Entity({
-  name: 'refresh_token'
+  name: 'refresh_token',
 })
 export class RefreshToken extends BaseEntity {
   @PrimaryGeneratedColumn()
@@ -24,13 +24,13 @@ export class RefreshToken extends BaseEntity {
 
   @Index()
   @Column({
-    nullable: true
+    nullable: true,
   })
   browser: string;
 
   @Index()
   @Column({
-    nullable: true
+    nullable: true,
   })
   os: string;
 

@@ -1,14 +1,8 @@
-import { ConnectionOptions } from 'typeorm';
-import * as config from 'config';
+import { DataSourceOptions } from 'typeorm';
 
-const dbConfig = config.get('db');
-const ormConfig: ConnectionOptions = {
-  type: process.env.DB_TYPE || dbConfig.type,
-  host: process.env.DB_HOST || dbConfig.host,
-  port: process.env.DB_PORT || dbConfig.port,
-  username: process.env.DB_USERNAME || dbConfig.username,
-  password: process.env.DB_PASSWORD || dbConfig.password,
-  database: process.env.DB_DATABASE_NAME || dbConfig.database,
+const ormConfig: DataSourceOptions = {
+  type: 'mongodb',
+  url: process.env.DB_URL,
   migrationsTransactionMode: 'each',
   entities: [__dirname + '/../**/*.entity.{js,ts}'],
   logging: false,

@@ -10,52 +10,49 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.UpdateProductDto = void 0;
-var class_validator_1 = require("class-validator");
-var UpdateProductDto = (function () {
-    function UpdateProductDto() {
-    }
-    __decorate([
-        (0, class_validator_1.IsNumber)(),
-        (0, class_validator_1.IsNotEmpty)(),
-        __metadata("design:type", Number)
-    ], UpdateProductDto.prototype, "id", void 0);
-    __decorate([
-        (0, class_validator_1.IsOptional)(),
-        (0, class_validator_1.IsString)(),
-        __metadata("design:type", String)
-    ], UpdateProductDto.prototype, "imageSrcPath", void 0);
-    __decorate([
-        (0, class_validator_1.IsOptional)(),
-        (0, class_validator_1.IsString)(),
-        __metadata("design:type", String)
-    ], UpdateProductDto.prototype, "deployUrl", void 0);
-    __decorate([
-        (0, class_validator_1.IsString)(),
-        (0, class_validator_1.IsNotEmpty)(),
-        __metadata("design:type", String)
-    ], UpdateProductDto.prototype, "productName", void 0);
-    __decorate([
-        (0, class_validator_1.IsString)(),
-        (0, class_validator_1.IsNotEmpty)(),
-        __metadata("design:type", String)
-    ], UpdateProductDto.prototype, "overview", void 0);
-    __decorate([
-        (0, class_validator_1.IsString)(),
-        (0, class_validator_1.IsNotEmpty)(),
-        __metadata("design:type", String)
-    ], UpdateProductDto.prototype, "mainTechnology", void 0);
-    __decorate([
-        (0, class_validator_1.IsOptional)(),
-        (0, class_validator_1.IsString)(),
-        __metadata("design:type", String)
-    ], UpdateProductDto.prototype, "subTechnology", void 0);
-    __decorate([
-        (0, class_validator_1.IsOptional)(),
-        (0, class_validator_1.IsArray)(),
-        (0, class_validator_1.IsUrl)({}, { each: true }),
-        __metadata("design:type", Array)
-    ], UpdateProductDto.prototype, "productLinks", void 0);
-    return UpdateProductDto;
-}());
+const class_validator_1 = require("class-validator");
+class UpdateProductDto {
+}
 exports.UpdateProductDto = UpdateProductDto;
+__decorate([
+    (0, class_validator_1.IsNumber)(),
+    (0, class_validator_1.IsNotEmpty)(),
+    __metadata("design:type", Number)
+], UpdateProductDto.prototype, "id", void 0);
+__decorate([
+    (0, class_validator_1.IsOptional)(),
+    (0, class_validator_1.IsString)(),
+    __metadata("design:type", String)
+], UpdateProductDto.prototype, "imageSrcPath", void 0);
+__decorate([
+    (0, class_validator_1.IsOptional)(),
+    (0, class_validator_1.IsString)(),
+    __metadata("design:type", String)
+], UpdateProductDto.prototype, "deployUrl", void 0);
+__decorate([
+    (0, class_validator_1.IsString)(),
+    (0, class_validator_1.IsNotEmpty)(),
+    __metadata("design:type", String)
+], UpdateProductDto.prototype, "productName", void 0);
+__decorate([
+    (0, class_validator_1.IsString)(),
+    (0, class_validator_1.IsNotEmpty)(),
+    __metadata("design:type", String)
+], UpdateProductDto.prototype, "overview", void 0);
+__decorate([
+    (0, class_validator_1.IsString)(),
+    (0, class_validator_1.IsNotEmpty)(),
+    __metadata("design:type", String)
+], UpdateProductDto.prototype, "mainTechnology", void 0);
+__decorate([
+    (0, class_validator_1.IsOptional)(),
+    (0, class_validator_1.IsString)(),
+    __metadata("design:type", String)
+], UpdateProductDto.prototype, "subTechnology", void 0);
+__decorate([
+    (0, class_validator_1.IsOptional)(),
+    (0, class_validator_1.IsArray)(),
+    (0, class_validator_1.IsUrl)({}, { each: true }),
+    __metadata("design:type", Array)
+], UpdateProductDto.prototype, "productLinks", void 0);
 //# sourceMappingURL=UpdateProductDto.js.map

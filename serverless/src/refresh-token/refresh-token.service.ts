@@ -3,7 +3,6 @@ import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
 import { FindManyOptions, MoreThanOrEqual } from 'typeorm';
 import { SignOptions, TokenExpiredError } from 'jsonwebtoken';
-import * as config from 'config';
 
 import { CustomHttpException } from 'src/exception/custom-http.exception';
 import { AuthService } from 'src/auth/auth.service';
@@ -20,11 +19,9 @@ import { PaginationInfoInterface } from 'src/paginate/pagination-info.interface'
 import { RefreshTokenSerializer } from 'src/refresh-token/serializer/refresh-token.serializer';
 import { Pagination } from 'src/paginate';
 
-const appConfig = config.get('app');
-const tokenConfig = config.get('jwt');
 const BASE_OPTIONS: SignOptions = {
-  issuer: appConfig.appUrl,
-  audience: appConfig.frontendUrl
+  issuer: process.env.APP_URL,
+  audience: process.env.APP_FRONTEND_URL,
 };
 
 @Injectable()
@@ -34,7 +31,7 @@ export class RefreshTokenService {
     private readonly repository: RefreshTokenRepository,
     @Inject(forwardRef(() => AuthService))
     private readonly authService: AuthService,
-    private readonly jwt: JwtService
+    private readonly jwt: JwtService,
   ) {}
 
   /**
@@ -44,20 +41,20 @@ export class RefreshTokenService {
    */
   public async generateRefreshToken(
     user: UserSerializer,
-    refreshToken: Partial<RefreshToken>
+    refreshToken: Partial<RefreshToken>,
   ): Promise<string> {
     const token = await this.repository.createRefreshToken(user, refreshToken);
     const opts: SignOptions = {
       ...BASE_OPTIONS,
       subject: String(user.id),
-      jwtid: String(token.id)
+      jwtid: String(token.id),
     };
 
     return this.jwt.signAsync(
       { ...opts },
       {
-        expiresIn: tokenConfig.refreshExpiresIn
-      }
+        expiresIn: process.env.JWT_REFRESH_EXPIRES_IN,
+      },
     );
   }
 
@@ -75,7 +72,7 @@ export class RefreshTokenService {
       throw new CustomHttpException(
         ExceptionTitleList.NotFound,
         HttpStatus.NOT_FOUND,
-        StatusCodesList.NotFound
+        StatusCodesList.NotFound,
       );
     }
 
@@ -83,7 +80,7 @@ export class RefreshTokenService {
       throw new CustomHttpException(
         ExceptionTitleList.InvalidRefreshToken,
         HttpStatus.BAD_REQUEST,
-        StatusCodesList.InvalidRefreshToken
+        StatusCodesList.InvalidRefreshToken,
       );
     }
 
@@ -93,13 +90,13 @@ export class RefreshTokenService {
       throw new CustomHttpException(
         ExceptionTitleList.InvalidRefreshToken,
         HttpStatus.BAD_REQUEST,
-        StatusCodesList.InvalidRefreshToken
+        StatusCodesList.InvalidRefreshToken,
       );
     }
 
     return {
       user,
-      token
+      token,
     };
   }
 
@@ -115,7 +112,7 @@ export class RefreshTokenService {
     const token = await this.authService.generateAccessToken(user);
     return {
       user,
-      token
+      token,
     };
   }
 
@@ -131,13 +128,13 @@ export class RefreshTokenService {
         throw new CustomHttpException(
           ExceptionTitleList.RefreshTokenExpired,
           HttpStatus.BAD_REQUEST,
-          StatusCodesList.RefreshTokenExpired
+          StatusCodesList.RefreshTokenExpired,
         );
       } else {
         throw new CustomHttpException(
           ExceptionTitleList.InvalidRefreshToken,
           HttpStatus.BAD_REQUEST,
-          StatusCodesList.InvalidRefreshToken
+          StatusCodesList.InvalidRefreshToken,
         );
       }
     }
@@ -148,7 +145,7 @@ export class RefreshTokenService {
    * @param payload
    */
   async getUserFromRefreshTokenPayload(
-    payload: RefreshTokenInterface
+    payload: RefreshTokenInterface,
   ): Promise<UserSerializer> {
     const subId = payload.subject;
 
@@ -156,7 +153,7 @@ export class RefreshTokenService {
       throw new CustomHttpException(
         ExceptionTitleList.InvalidRefreshToken,
         HttpStatus.BAD_REQUEST,
-        StatusCodesList.InvalidRefreshToken
+        StatusCodesList.InvalidRefreshToken,
       );
     }
 
@@ -168,7 +165,7 @@ export class RefreshTokenService {
    * @param payload
    */
   async getStoredTokenFromRefreshTokenPayload(
-    payload: RefreshTokenInterface
+    payload: RefreshTokenInterface,
   ): Promise<RefreshToken | null> {
     const tokenId = payload.jwtid;
 
@@ -176,7 +173,7 @@ export class RefreshTokenService {
       throw new CustomHttpException(
         ExceptionTitleList.InvalidRefreshToken,
         HttpStatus.BAD_REQUEST,
-        StatusCodesList.InvalidRefreshToken
+        StatusCodesList.InvalidRefreshToken,
       );
     }
 
@@ -189,7 +186,7 @@ export class RefreshTokenService {
    */
   async getRefreshTokenByUserId(
     userId: number,
-    filter: RefreshPaginateFilterDto
+    filter: RefreshPaginateFilterDto,
   ): Promise<Pagination<RefreshTokenSerializer>> {
     const paginationInfo: PaginationInfoInterface =
       this.repository.getPaginationInfo(filter);
@@ -197,14 +194,14 @@ export class RefreshTokenService {
       where: {
         userId,
         isRevoked: false,
-        expires: MoreThanOrEqual(new Date())
-      }
+        expires: MoreThanOrEqual(new Date()),
+      },
     };
     const { page, skip, limit } = paginationInfo;
     findOptions.take = paginationInfo.limit;
     findOptions.skip = paginationInfo.skip;
     findOptions.order = {
-      id: 'DESC'
+      id: 'DESC',
     };
     const [results, total] = await this.repository.findAndCount(findOptions);
     const serializedResult = this.repository.transformMany(results);
@@ -214,7 +211,7 @@ export class RefreshTokenService {
       pageSize: limit,
       currentPage: page,
       previous: page > 1 ? page - 1 : 0,
-      next: total > skip + limit ? page + 1 : 0
+      next: total > skip + limit ? page + 1 : 0,
     });
   }
 
@@ -225,7 +222,7 @@ export class RefreshTokenService {
    */
   async revokeRefreshTokenById(
     id: number,
-    userId: number
+    userId: number,
   ): Promise<RefreshToken> {
     const token = await this.repository.findTokenById(id);
     if (!token) {

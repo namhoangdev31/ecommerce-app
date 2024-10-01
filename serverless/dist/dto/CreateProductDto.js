@@ -10,47 +10,44 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.CreateProductDto = void 0;
-var class_validator_1 = require("class-validator");
-var CreateProductDto = (function () {
-    function CreateProductDto() {
-    }
-    __decorate([
-        (0, class_validator_1.IsOptional)(),
-        (0, class_validator_1.IsString)(),
-        __metadata("design:type", String)
-    ], CreateProductDto.prototype, "imageSrcPath", void 0);
-    __decorate([
-        (0, class_validator_1.IsOptional)(),
-        (0, class_validator_1.IsString)(),
-        __metadata("design:type", String)
-    ], CreateProductDto.prototype, "deployUrl", void 0);
-    __decorate([
-        (0, class_validator_1.IsString)(),
-        (0, class_validator_1.IsNotEmpty)(),
-        __metadata("design:type", String)
-    ], CreateProductDto.prototype, "productName", void 0);
-    __decorate([
-        (0, class_validator_1.IsString)(),
-        (0, class_validator_1.IsNotEmpty)(),
-        __metadata("design:type", String)
-    ], CreateProductDto.prototype, "overview", void 0);
-    __decorate([
-        (0, class_validator_1.IsString)(),
-        (0, class_validator_1.IsNotEmpty)(),
-        __metadata("design:type", String)
-    ], CreateProductDto.prototype, "mainTechnology", void 0);
-    __decorate([
-        (0, class_validator_1.IsOptional)(),
-        (0, class_validator_1.IsString)(),
-        __metadata("design:type", String)
-    ], CreateProductDto.prototype, "subTechnology", void 0);
-    __decorate([
-        (0, class_validator_1.IsOptional)(),
-        (0, class_validator_1.IsArray)(),
-        (0, class_validator_1.IsUrl)({}, { each: true }),
-        __metadata("design:type", Array)
-    ], CreateProductDto.prototype, "productLinks", void 0);
-    return CreateProductDto;
-}());
+const class_validator_1 = require("class-validator");
+class CreateProductDto {
+}
 exports.CreateProductDto = CreateProductDto;
+__decorate([
+    (0, class_validator_1.IsOptional)(),
+    (0, class_validator_1.IsString)(),
+    __metadata("design:type", String)
+], CreateProductDto.prototype, "imageSrcPath", void 0);
+__decorate([
+    (0, class_validator_1.IsOptional)(),
+    (0, class_validator_1.IsString)(),
+    __metadata("design:type", String)
+], CreateProductDto.prototype, "deployUrl", void 0);
+__decorate([
+    (0, class_validator_1.IsString)(),
+    (0, class_validator_1.IsNotEmpty)(),
+    __metadata("design:type", String)
+], CreateProductDto.prototype, "productName", void 0);
+__decorate([
+    (0, class_validator_1.IsString)(),
+    (0, class_validator_1.IsNotEmpty)(),
+    __metadata("design:type", String)
+], CreateProductDto.prototype, "overview", void 0);
+__decorate([
+    (0, class_validator_1.IsString)(),
+    (0, class_validator_1.IsNotEmpty)(),
+    __metadata("design:type", String)
+], CreateProductDto.prototype, "mainTechnology", void 0);
+__decorate([
+    (0, class_validator_1.IsOptional)(),
+    (0, class_validator_1.IsString)(),
+    __metadata("design:type", String)
+], CreateProductDto.prototype, "subTechnology", void 0);
+__decorate([
+    (0, class_validator_1.IsOptional)(),
+    (0, class_validator_1.IsArray)(),
+    (0, class_validator_1.IsUrl)({}, { each: true }),
+    __metadata("design:type", Array)
+], CreateProductDto.prototype, "productLinks", void 0);
 //# sourceMappingURL=CreateProductDto.js.map

@@ -24,8 +24,8 @@ var __importStar = (this && this.__importStar) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.typeOrmConfig = void 0;
-var dotenv_1 = require("dotenv");
-var process = __importStar(require("process"));
+const dotenv_1 = require("dotenv");
+const process = __importStar(require("process"));
 (0, dotenv_1.config)({ path: '.env' });
 exports.typeOrmConfig = {
     type: 'mongodb',
