@@ -11,13 +11,14 @@ import cookieParser from 'cookie-parser';
 import { WINSTON_MODULE_NEST_PROVIDER } from 'nest-winston';
 
 import { AppModule } from 'src/app.module';
+import process from 'process';
+import { NotFoundExceptionFilter } from './exception/not-found.exception';
 
 async function bootstrap() {
   const port = process.env.NEST_PORT || 3000;
   const app = await NestFactory.create(AppModule);
   app.use(helmet());
   app.useLogger(app.get(WINSTON_MODULE_NEST_PROVIDER));
-
   if (process.env.NODE_ENV === 'development') {
     app.enableCors({
       origin: true,
@@ -34,6 +35,7 @@ async function bootstrap() {
       swaggerOptions: {
         persistAuthorization: true,
       },
+      useGlobalPrefix: true,
       customSiteTitle: process.env.APP_DESCRIPTION,
     };
     const document = SwaggerModule.createDocument(app, swaggerConfig);
@@ -63,8 +65,10 @@ async function bootstrap() {
   );
 
   app.use(cookieParser());
+  app.useGlobalFilters(new NotFoundExceptionFilter());
   await app.listen(port);
-  console.log(`Application listening in port: ${port}`);
+
+  console.log(`Application listening in port:> http://localhost:${port}`);
 }
 
 bootstrap();
