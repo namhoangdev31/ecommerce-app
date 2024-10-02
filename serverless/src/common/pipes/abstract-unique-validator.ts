@@ -2,12 +2,7 @@ import {
   ValidationArguments,
   ValidatorConstraintInterface,
 } from 'class-validator';
-import {
-  Connection,
-  EntitySchema,
-  ObjectType,
-  FindOptionsWhere,
-} from 'typeorm';
+import { Connection, EntitySchema, ObjectType, FindConditions } from 'typeorm';
 
 /**
  * unique validation arguments
@@ -16,7 +11,7 @@ export interface UniqueValidationArguments<E> extends ValidationArguments {
   constraints: [
     ObjectType<E> | EntitySchema<E> | string,
     (
-      | ((validationArguments: ValidationArguments) => FindOptionsWhere<E>)
+      | ((validationArguments: ValidationArguments) => FindConditions<E>)
       | keyof E
     ),
   ];
@@ -42,11 +37,11 @@ export abstract class AbstractUniqueValidator
     const [EntityClass, findCondition = args.property] = args.constraints;
     return (
       (await this.connection.getRepository(EntityClass).count({
-        where: (typeof findCondition === 'function'
+        where: typeof findCondition === 'function'
           ? findCondition(args)
           : {
               [findCondition || args.property]: value,
-            }) as FindOptionsWhere<E>,
+            } as FindConditions<E>,
       })) <= 0
     );
   }
@@ -56,6 +51,6 @@ export abstract class AbstractUniqueValidator
    * @param args
    */
   public defaultMessage(args: ValidationArguments) {
-    return `${args.property} '${args.value}' already exists`;
+    return `${args.property} '${args.value}' đã tồn tại`;
   }
 }

@@ -14,6 +14,8 @@ import { RefreshTokenModule } from 'src/refresh-token/refresh-token.module';
 import { JwtTwoFactorStrategy } from 'src/common/strategy/jwt-two-factor.strategy';
 import { JwtStrategy } from 'src/common/strategy/jwt.strategy';
 import { UserEntity } from './entity/user.entity';
+import { config as dotenvConfig } from 'dotenv';
+dotenvConfig({ path: '../.env' });
 const redisPort = process.env.REDIS_PORT
   ? parseInt(process.env.REDIS_PORT, 10)
   : 6379;
@@ -68,7 +70,7 @@ const LoginThrottleFactory = {
     JwtStrategy,
     PassportModule,
     JwtModule,
-    TypeOrmModule,
+    // TypeOrmModule.forFeature([UserRepository]),
   ],
 })
 export class AuthModule {}

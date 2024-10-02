@@ -19,8 +19,7 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { ApiTags } from '@nestjs/swagger';
 import { Request, Response } from 'express';
 import { UAParser } from 'ua-parser-js';
-import { Multer } from 'multer'; // Add this import
-
+import { Multer } from 'multer';
 import { GetUser } from 'src/common/decorators/get-user.decorator';
 import JwtTwoFactorGuard from 'src/common/guard/jwt-two-factor.guard';
 import { PermissionGuard } from 'src/common/guard/permission.guard';

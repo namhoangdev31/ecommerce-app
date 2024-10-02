@@ -2,10 +2,10 @@ import { plainToClass } from 'class-transformer';
 import {
   DeepPartial,
   FindManyOptions,
-  ILike,
+  Like,
   ObjectLiteral,
   Repository,
-  FindOptionsWhere,
+  FindConditions,
 } from 'typeorm';
 import { QueryDeepPartialEntity } from 'typeorm/query-builder/QueryPartialEntity';
 
@@ -18,10 +18,7 @@ import { ModelSerializer } from 'src/common/serializer/model.serializer';
 /**
  * Base Repository for code reuse
  */
-export class BaseRepository<
-  T extends ObjectLiteral,
-  K extends ModelSerializer,
-> extends Repository<T> {
+export class BaseRepository<T extends ObjectLiteral, K extends ModelSerializer> extends Repository<T> {
   /***
    * get entity by id
    * @param id
@@ -33,10 +30,7 @@ export class BaseRepository<
     relations: string[] = [],
     transformOptions = {},
   ): Promise<K | null> {
-    return await this.findOne({
-      where: { id: id } as FindOptionsWhere<T>,
-      relations,
-    })
+    return await this.findOne(id, { relations })
       .then((entity) => {
         if (!entity) {
           return Promise.reject(new NotFoundException());
@@ -55,14 +49,11 @@ export class BaseRepository<
    * @param transformOptions
    */
   async findBy(
-    where: FindOptionsWhere<T> | FindOptionsWhere<T>[],
+    where: FindConditions<T>,
     relations: string[] = [],
     transformOptions: {} = {},
   ): Promise<T[]> {
-    return this.find({
-      where,
-      relations,
-    }) as Promise<T[]>; // Type assertion added here
+    return this.find({ where, relations });
   }
 
   /**
@@ -70,11 +61,9 @@ export class BaseRepository<
    * @param conditions
    */
   async countEntityByCondition(
-    conditions: FindOptionsWhere<T> = {},
+    conditions: FindConditions<T> = {},
   ): Promise<number> {
-    return this.count({
-      where: conditions,
-    })
+    return this.count(conditions)
       .then((count) => {
         return Promise.resolve(count);
       })
@@ -94,16 +83,16 @@ export class BaseRepository<
     searchCriteria: (keyof T)[],
     transformOptions = {},
   ): Promise<K[]> {
-    const whereCondition: FindOptionsWhere<T>[] = [];
+    const whereConditions: FindConditions<T>[] = [];
     if (searchFilter.hasOwnProperty('keywords') && searchFilter.keywords) {
       for (const key of searchCriteria) {
-        whereCondition.push({
-          [key]: ILike(`%${searchFilter.keywords}%`),
-        } as FindOptionsWhere<T>);
+        whereConditions.push({
+          [key]: Like(`%${searchFilter.keywords}%`),
+        } as FindConditions<T>);
       }
     }
     const results = await this.find({
-      where: whereCondition,
+      where: whereConditions,
       relations,
     });
     return this.transformMany(results, transformOptions);
@@ -142,13 +131,13 @@ export class BaseRepository<
     searchCriteria: (keyof T)[] = [],
     transformOptions = {},
   ): Promise<Pagination<K>> {
-    const whereCondition: FindOptionsWhere<T>[] = [];
+    const whereConditions: FindConditions<T>[] = [];
     const findOptions: FindManyOptions<T> = {};
     if (searchFilter.hasOwnProperty('keywords') && searchFilter.keywords) {
       for (const key of searchCriteria) {
-        whereCondition.push({
-          [key]: ILike(`%${searchFilter.keywords}%`),
-        } as FindOptionsWhere<T>);
+        whereConditions.push({
+          [key]: Like(`%${searchFilter.keywords}%`),
+        } as FindConditions<T>);
       }
     }
     const paginationInfo: PaginationInfoInterface =
@@ -156,7 +145,7 @@ export class BaseRepository<
     findOptions.relations = relations;
     findOptions.take = paginationInfo.limit;
     findOptions.skip = paginationInfo.skip;
-    findOptions.where = whereCondition;
+    findOptions.where = whereConditions;
     findOptions.order = {
       created_ad: 'DESC',
     } as any;
@@ -198,8 +187,8 @@ export class BaseRepository<
     inputs: QueryDeepPartialEntity<T>,
     relations: string[] = [],
   ): Promise<K> {
-    return this.update(entity.id, inputs)
-      .then(async () => await this.get(entity.id, relations))
+    return this.update((entity as any).id, inputs)
+      .then(async () => await this.get((entity as any).id, relations))
       .catch((error) => Promise.reject(error));
   }
 

@@ -9,10 +9,6 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { existsSync, unlinkSync } from 'fs';
 import { SignOptions } from 'jsonwebtoken';
 import { DeepPartial, Not, ObjectLiteral } from 'typeorm';
-import {
-  RateLimiterRes,
-  RateLimiterStoreAbstract,
-} from 'rate-limiter-flexible';
 
 import { ExceptionTitleList } from 'src/common/constants/exception-title-list.constants';
 import { StatusCodesList } from 'src/common/constants/status-codes-list.constants';
@@ -43,6 +39,8 @@ import { ValidationPayloadInterface } from 'src/common/interfaces/validation-err
 import { RefreshPaginateFilterDto } from 'src/refresh-token/dto/refresh-paginate-filter.dto';
 import { RefreshTokenSerializer } from 'src/refresh-token/serializer/refresh-token.serializer';
 import { AuthResponse } from '../common/types.type';
+import { RefreshTokenRepository } from 'src/refresh-token/refresh-token.repository';
+import { RateLimiterStoreAbstract } from 'rate-limiter-flexible';
 
 const throttleLoginLimit = parseInt(process.env.THROTTLE_LOGIN_LIMIT, 10);
 const jwtExpiresIn = parseInt(process.env.JWT_EXPIRES_IN, 10);
@@ -58,10 +56,13 @@ const BASE_OPTIONS: SignOptions = {
 @Injectable()
 export class AuthService {
   constructor(
+    @InjectRepository(UserRepository)
     private readonly userRepository: UserRepository,
     private readonly jwt: JwtService,
     private readonly mailService: MailService,
     private readonly refreshTokenService: RefreshTokenService,
+    @Inject('LOGIN_THROTTLE')
+    private readonly rateLimiter: RateLimiterStoreAbstract,
   ) {}
 
   /**

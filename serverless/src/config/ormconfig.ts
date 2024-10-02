@@ -1,6 +1,6 @@
-import { DataSourceOptions } from 'typeorm';
+import { ConnectionOptions } from 'typeorm';
 
-const ormConfig: DataSourceOptions = {
+const ormConfig: ConnectionOptions = {
   type: 'mysql',
   host: process.env.DB_HOST,
   port: parseInt(process.env.DB_PORT || '3306', 10),
@@ -10,7 +10,6 @@ const ormConfig: DataSourceOptions = {
   entities: [__dirname + '/../**/*.entity.{js,ts}'],
   migrations: [__dirname + '/../database/migrations/**/*{.ts,.js}'],
   migrationsTableName: 'migrations',
-  migrationsTransactionMode: 'each',
   logging: true,
   synchronize: process.env.NODE_ENV === 'development',
   migrationsRun: process.env.NODE_ENV === 'test',
