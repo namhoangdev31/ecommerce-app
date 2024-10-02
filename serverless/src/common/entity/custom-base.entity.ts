@@ -1,6 +1,7 @@
 import {
   BaseEntity,
   CreateDateColumn,
+  DeleteDateColumn,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -12,16 +13,12 @@ export abstract class CustomBaseEntity extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @CreateDateColumn({
-    type: 'timestamp',
-    default: () => 'CURRENT_TIMESTAMP',
-  })
-  createdAt: Date;
+  @CreateDateColumn()
+  created_at: Date; // Creation date
 
-  @UpdateDateColumn({
-    type: 'timestamp',
-    default: () => 'CURRENT_TIMESTAMP',
-    onUpdate: 'CURRENT_TIMESTAMP',
-  })
-  updatedAt: Date;
+  @UpdateDateColumn()
+  updated_at: Date; // Last updated date
+
+  @DeleteDateColumn()
+  deleted_at: Date; // Deletion date
 }

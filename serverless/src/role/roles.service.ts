@@ -1,5 +1,5 @@
 import { Injectable, UnprocessableEntityException } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
+import { InjectRepository } from '@nestjs/typeorm/dist';
 import { Not, ObjectLiteral } from 'typeorm';
 
 import { NotFoundException } from 'src/exception/not-found.exception';

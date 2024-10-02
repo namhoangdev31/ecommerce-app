@@ -1,16 +1,21 @@
 import { DataSourceOptions } from 'typeorm';
 
 const ormConfig: DataSourceOptions = {
-  type: 'mongodb',
-  url: process.env.DB_URL,
-  migrationsTransactionMode: 'each',
+  type: 'mysql',
+  host: process.env.DB_HOST,
+  port: parseInt(process.env.DB_PORT || '3306', 10),
+  username: process.env.DB_USERNAME,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_NAME,
   entities: [__dirname + '/../**/*.entity.{js,ts}'],
-  logging: false,
-  synchronize: false,
-  migrationsRun: process.env.NODE_ENV === 'test',
-  dropSchema: process.env.NODE_ENV === 'test',
-  migrationsTableName: 'migrations',
   migrations: [__dirname + '/../database/migrations/**/*{.ts,.js}'],
+  migrationsTableName: 'migrations',
+  migrationsTransactionMode: 'each',
+  logging: false,
+  synchronize: process.env.NODE_ENV === 'development',
+  migrationsRun: process.env.NODE_ENV === 'test',
+  dropSchema: process.env.NODE_ENV === 'development',
+  cache: true,
 };
 
 export = ormConfig;

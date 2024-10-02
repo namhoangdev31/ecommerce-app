@@ -26,13 +26,13 @@ export class PermissionRoleTable1614275796207 implements MigrationInterface {
       new Table({
         name: this.tableName,
         columns: [
-          // {
-          //   name: 'id',
-          //   type: 'int',
-          //   isPrimary: true,
-          //   isGenerated: true,
-          //   generationStrategy: 'increment'
-          // }
+          {
+            name: 'id',
+            type: 'int',
+            isPrimary: true,
+            isGenerated: true,
+            generationStrategy: 'increment',
+          },
         ],
       }),
       false,

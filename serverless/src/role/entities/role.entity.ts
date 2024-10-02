@@ -14,7 +14,7 @@ export class RoleEntity extends CustomBaseEntity {
   })
   name: string;
 
-  @Column('text')
+  @Column('varchar', { length: 256 })
   description: string;
 
   @ManyToMany(() => PermissionEntity, (permission) => permission.role)

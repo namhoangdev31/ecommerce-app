@@ -29,7 +29,7 @@ export class Product {
   @Column({ nullable: true })
   subTechnology: string | null;
 
-  @Column('text', { array: true, nullable: true })
+  @Column('json', { nullable: true })
   productLinks: string[] | null;
 
   @CreateDateColumn()

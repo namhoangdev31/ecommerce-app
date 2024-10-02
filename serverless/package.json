@@ -48,6 +48,7 @@
     "helmet": "^8.0.0",
     "ioredis": "^5.4.1",
     "mongodb": "^6.9.0",
+    "mysql": "^2.18.1",
     "nest-winston": "^1.9.7",
     "nestjs-i18n": "^10.4.9",
     "nestjs-throttler-storage-redis": "^0.5.1",

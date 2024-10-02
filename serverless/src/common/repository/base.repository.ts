@@ -158,7 +158,7 @@ export class BaseRepository<
     findOptions.skip = paginationInfo.skip;
     findOptions.where = whereCondition;
     findOptions.order = {
-      createdAt: 'DESC',
+      created_ad: 'DESC',
     } as any;
     const { page, skip, limit } = paginationInfo;
     const [results, total] = await this.findAndCount(findOptions);
