@@ -19,16 +19,16 @@ export default class CreateRoleSeed {
     // Assign all permission to superUser
     const role = await connection
       .getRepository(RoleEntity)
-      .createQueryBuilder('role')
-      .where('role.name = :name', {
-        name: 'superuser'
+      .createQueryBuilder('roles')
+      .where('roles.name = :name', {
+        name: 'superuser',
       })
       .getOne();
 
     if (role) {
       role.permission = await connection
         .getRepository(PermissionEntity)
-        .createQueryBuilder('permission')
+        .createQueryBuilder('permissions')
         .getMany();
       await role.save();
     }

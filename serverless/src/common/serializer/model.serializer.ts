@@ -4,7 +4,7 @@ import { ObjectId } from 'typeorm';
  * model serializer
  */
 export class ModelSerializer {
-  _id: ObjectId;
+  id: number;
   createdAt: Date;
   [key: string]: any;
 }

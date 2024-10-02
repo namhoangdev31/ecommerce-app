@@ -4,7 +4,7 @@ import { CustomBaseEntity } from 'src/common/entity/custom-base.entity';
 import { RoleEntity } from 'src/role/entities/role.entity';
 
 @Entity({
-  name: 'permission'
+  name: 'permissions',
 })
 @Unique(['description'])
 export class PermissionEntity extends CustomBaseEntity {
@@ -13,7 +13,7 @@ export class PermissionEntity extends CustomBaseEntity {
 
   @Column()
   @Index({
-    unique: true
+    unique: true,
   })
   description: string;
 
@@ -22,7 +22,7 @@ export class PermissionEntity extends CustomBaseEntity {
 
   @Column('varchar', {
     default: 'get',
-    length: 20
+    length: 20,
   })
   method: string;
 

@@ -47,7 +47,7 @@ export class RefreshTokenService {
     const token = await this.repository.createRefreshToken(user, refreshToken);
     const opts: SignOptions = {
       ...BASE_OPTIONS,
-      subject: String(user._id),
+      subject: String(user.id),
       jwtid: String(token.id),
     };
 
@@ -223,7 +223,7 @@ export class RefreshTokenService {
    */
   async revokeRefreshTokenById(
     id: number,
-    userId: ObjectId,
+    userId: number,
   ): Promise<RefreshToken> {
     const token = await this.repository.findTokenById(id);
     if (!token) {

@@ -64,7 +64,7 @@ export class UserEntity extends CustomBaseEntity {
 
   @CreateDateColumn({
     type: 'timestamp',
-    default: () => 'CURRENT_TIMESTAMP',
+    default: 'CURRENT_TIMESTAMP',
   })
   tokenValidityDate: Date;
 
@@ -87,7 +87,7 @@ export class UserEntity extends CustomBaseEntity {
   })
   @CreateDateColumn({
     type: 'timestamp',
-    default: () => 'CURRENT_TIMESTAMP',
+    default: 'CURRENT_TIMESTAMP',
   })
   twoFAThrottleTime?: Date;
 

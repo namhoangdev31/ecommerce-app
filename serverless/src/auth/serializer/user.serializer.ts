@@ -25,7 +25,7 @@ export class UserSerializer extends ModelSerializer {
     ],
   })
   @ApiProperty()
-  _id: ObjectId;
+  id: number;
 
   @ApiProperty()
   username: string;

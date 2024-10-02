@@ -155,7 +155,7 @@ export class AuthController {
     if (file) {
       updateUserDto.avatar = file.filename;
     }
-    return this.authService.update(user._id, updateUserDto);
+    return this.authService.update(user.id, updateUserDto);
   }
 
   @UseGuards(JwtTwoFactorGuard)
@@ -195,7 +195,7 @@ export class AuthController {
     @Body()
     updateUserDto: UpdateUserDto,
   ): Promise<UserSerializer> {
-    return this.authService.update(id, updateUserDto);
+    return this.authService.update(+id, updateUserDto);
   }
 
   @UseGuards(JwtTwoFactorGuard, PermissionGuard)
@@ -235,7 +235,7 @@ export class AuthController {
     @GetUser()
     user: UserEntity,
   ): Promise<Pagination<RefreshTokenSerializer>> {
-    return this.authService.activeRefreshTokenList(+user._id, filter);
+    return this.authService.activeRefreshTokenList(+user.id, filter);
   }
 
   @UseGuards(JwtTwoFactorGuard)
@@ -246,6 +246,6 @@ export class AuthController {
     @GetUser()
     user: UserEntity,
   ) {
-    return this.authService.revokeTokenById(+id, user._id);
+    return this.authService.revokeTokenById(+id, user.id);
   }
 }

@@ -1,7 +1,7 @@
 import { MigrationInterface, QueryRunner, Table, TableIndex } from 'typeorm';
 
 export class RoleTable1614275766942 implements MigrationInterface {
-  tableName = 'role';
+  tableName = 'roles';
 
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
@@ -13,41 +13,42 @@ export class RoleTable1614275766942 implements MigrationInterface {
             type: 'int',
             isPrimary: true,
             isGenerated: true,
-            generationStrategy: 'increment'
+            generationStrategy: 'increment',
           },
           {
             name: 'name',
             type: 'varchar',
             isNullable: false,
             isUnique: true,
-            length: '100'
+            length: '100',
           },
           {
             name: 'description',
             type: 'text',
-            isNullable: true
+            isNullable: true,
           },
           {
             name: 'createdAt',
             type: 'timestamp',
-            default: 'now()'
+            default: 'CURRENT_TIMESTAMP',
           },
           {
             name: 'updatedAt',
             type: 'timestamp',
-            default: 'now()'
-          }
-        ]
+            default: 'CURRENT_TIMESTAMP',
+            onUpdate: 'CURRENT_TIMESTAMP',
+          },
+        ],
       }),
-      false
+      false,
     );
 
     await queryRunner.createIndex(
       this.tableName,
       new TableIndex({
         name: `IDX_ROLE_NAME`,
-        columnNames: ['name']
-      })
+        columnNames: ['name'],
+      }),
     );
   }
 

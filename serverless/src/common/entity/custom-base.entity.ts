@@ -11,8 +11,8 @@ import {
  * custom base entity
  */
 export abstract class CustomBaseEntity extends BaseEntity {
-  @ObjectIdColumn()
-  _id: ObjectId;
+  @PrimaryGeneratedColumn()
+  id: number;
 
   @CreateDateColumn({
     type: 'timestamp',

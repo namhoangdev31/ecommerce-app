@@ -9,43 +9,45 @@ import {
 export class PermissionRoleTable1614275796207 implements MigrationInterface {
   foreignKeysArray = [
     {
-      table: 'role',
+      table: 'roles',
       field: 'roleId',
       reference: 'id',
     },
     {
-      table: 'permission',
+      table: 'permissions',
       field: 'permissionId',
       reference: 'id',
     },
   ];
-  tableName = 'role_permission';
+  tableName = 'role_permissions';
 
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
       new Table({
         name: this.tableName,
         columns: [
-          // {
-          //   name: 'id',
-          //   type: 'int',
-          //   isPrimary: true,
-          //   isGenerated: true,
-          //   generationStrategy: 'increment'
-          // }
+          {
+            name: 'id',
+            type: 'int',
+            isPrimary: true,
+            isGenerated: true,
+            generationStrategy: 'increment'
+          },
+          {
+            name: 'roleId',
+            type: 'int',
+          },
+          {
+            name: 'permissionId',
+            type: 'int',
+          }
         ],
       }),
       false,
     );
-    for (const foreignKey of this.foreignKeysArray) {
-      await queryRunner.addColumn(
-        this.tableName,
-        new TableColumn({
-          name: foreignKey.field,
-          type: 'int',
-        }),
-      );
 
+    // Create foreign keys after ensuring columns exist
+    for (const foreignKey of this.foreignKeysArray) {
       await queryRunner.createForeignKey(
         this.tableName,
         new TableForeignKey({

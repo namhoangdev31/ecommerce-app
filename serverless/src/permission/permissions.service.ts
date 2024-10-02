@@ -126,7 +126,7 @@ export class PermissionsService
    */
   async remove(id: number): Promise<void> {
     await this.findOne(id);
-    await this.repository.delete({ _id });
+    await this.repository.delete({ id });
   }
 
   /**

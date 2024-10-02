@@ -22,7 +22,7 @@ export class RefreshTokenRepository extends BaseRepository<
     tokenPayload: Partial<RefreshToken>,
   ): Promise<RefreshToken> {
     const token = this.create();
-    token.userId = user._id;
+    token.userId = user.id;
     token.isRevoked = false;
     token.ip = tokenPayload.ip;
     token.userAgent = tokenPayload.userAgent;

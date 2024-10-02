@@ -3,12 +3,12 @@ import { MigrationInterface, QueryRunner, TableColumn } from 'typeorm';
 export class AddTwoSecretGenerateThrottleTime1627736950484
   implements MigrationInterface
 {
-  tableName = 'user';
+  tableName = 'users';
   columns = [
     new TableColumn({
       name: 'twoFAThrottleTime',
       type: 'timestamp',
-      default: 'now()'
+      default: 'CURRENT_TIMESTAMP',
     })
   ];
   public async up(queryRunner: QueryRunner): Promise<void> {

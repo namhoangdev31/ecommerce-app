@@ -3,11 +3,9 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { typeOrmConfig } from 'src/config/typeormConfig';
-import { ProductsModule } from './products/products.module';
 import { ThrottlerModule } from '@nestjs/throttler';
 import { APP_FILTER, APP_GUARD, APP_PIPE } from '@nestjs/core';
 import * as path from 'path';
-import * as config from 'config';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 import {
@@ -32,6 +30,8 @@ import { TwofaModule } from 'src/twofa/twofa.module';
 import { CustomThrottlerGuard } from 'src/common/guard/custom-throttle.guard';
 import { DashboardModule } from 'src/dashboard/dashboard.module';
 import winstonConfig from 'src/config/winston';
+import * as process from 'process';
+import { Schema } from 'mongoose';
 
 @Module({
   imports: [
@@ -71,8 +71,7 @@ import winstonConfig from 'src/config/winston';
     RefreshTokenModule,
     TwofaModule,
     DashboardModule,
-    TypeOrmModule.forRoot(typeOrmConfig),
-    ProductsModule,
+    // TypeOrmModule.forRoot(typeOrmConfig),
   ],
   providers: [
     AppService,

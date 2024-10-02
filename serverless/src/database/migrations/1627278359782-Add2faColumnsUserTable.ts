@@ -1,7 +1,7 @@
 import { MigrationInterface, QueryRunner, TableColumn } from 'typeorm';
 
 export class Add2faColumnsUserTable1627278359782 implements MigrationInterface {
-  tableName = 'user';
+  tableName = 'users';
   columns = [
     new TableColumn({
       name: 'twoFASecret',

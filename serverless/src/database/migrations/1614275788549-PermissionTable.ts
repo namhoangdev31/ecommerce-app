@@ -1,7 +1,7 @@
 import { MigrationInterface, QueryRunner, Table, TableIndex } from 'typeorm';
 
 export class PermissionTable1614275788549 implements MigrationInterface {
-  tableName = 'permission';
+  tableName = 'permissions';
   indexFields = ['resource', 'description'];
 
   public async up(queryRunner: QueryRunner): Promise<void> {
@@ -14,48 +14,49 @@ export class PermissionTable1614275788549 implements MigrationInterface {
             type: 'int',
             isPrimary: true,
             isGenerated: true,
-            generationStrategy: 'increment'
+            generationStrategy: 'increment',
           },
           {
             name: 'resource',
             type: 'varchar',
-            length: '100'
+            length: '100',
           },
           {
             name: 'path',
             type: 'varchar',
-            isNullable: false
+            isNullable: false,
           },
           {
             name: 'description',
-            type: 'text',
+            type: 'varchar', // Change from 'nvarchar' to 'varchar'
             isNullable: true,
-            isUnique: true
+            isUnique: true,
           },
           {
             name: 'method',
             type: 'varchar',
             default: `'get'`,
-            length: '20'
+            length: '20',
           },
           {
             name: 'isDefault',
             type: 'boolean',
-            default: false
+            default: false,
           },
           {
             name: 'createdAt',
             type: 'timestamp',
-            default: 'now()'
+            default: () => 'CURRENT_TIMESTAMP',
           },
           {
             name: 'updatedAt',
             type: 'timestamp',
-            default: 'now()'
-          }
-        ]
+            default: () => 'CURRENT_TIMESTAMP',
+            onUpdate: 'CURRENT_TIMESTAMP',
+          },
+        ],
       }),
-      false
+      false,
     );
 
     for (const field of this.indexFields) {
@@ -63,8 +64,8 @@ export class PermissionTable1614275788549 implements MigrationInterface {
         this.tableName,
         new TableIndex({
           name: `IDX_PERMISSION_${field.toUpperCase()}`,
-          columnNames: [field]
-        })
+          columnNames: [field],
+        }),
       );
     }
   }
@@ -74,7 +75,7 @@ export class PermissionTable1614275788549 implements MigrationInterface {
     for (const field of this.indexFields) {
       const index = `IDX_PERMISSION_${field.toUpperCase()}`;
       const keyIndex = table.indices.find(
-        (fk) => fk.name.indexOf(index) !== -1
+        (fk) => fk.name.indexOf(index) !== -1,
       );
       if (keyIndex) {
         await queryRunner.dropIndex(this.tableName, keyIndex);

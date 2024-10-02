@@ -9,7 +9,7 @@ import {
 
 export class UserTable1614275816426 implements MigrationInterface {
   indexFields = ['name', 'email', 'username'];
-  tableName = 'user';
+  tableName = 'users';
 
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
@@ -75,12 +75,13 @@ export class UserTable1614275816426 implements MigrationInterface {
           {
             name: 'createdAt',
             type: 'timestamp',
-            default: 'now()',
+            default: 'CURRENT_TIMESTAMP',
           },
           {
             name: 'updatedAt',
             type: 'timestamp',
-            default: 'now()',
+            default: 'CURRENT_TIMESTAMP',
+            onUpdate: 'CURRENT_TIMESTAMP',
           },
         ],
       }),
@@ -110,7 +111,7 @@ export class UserTable1614275816426 implements MigrationInterface {
       new TableForeignKey({
         columnNames: ['roleId'],
         referencedColumnNames: ['id'],
-        referencedTableName: 'role',
+        referencedTableName: 'roles',
         onDelete: 'CASCADE',
       }),
     );

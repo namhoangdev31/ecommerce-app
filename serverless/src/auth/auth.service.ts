@@ -199,7 +199,7 @@ export class AuthService {
   ): Promise<string> {
     const opts: SignOptions = {
       ...BASE_OPTIONS,
-      subject: String(user._id),
+      subject: String(user.id),
     };
     return this.jwt.signAsync({
       ...opts,
@@ -277,7 +277,7 @@ export class AuthService {
    * @param updateUserDto
    */
   async update(
-    id: ObjectId,
+    id: number,
     updateUserDto: DeepPartial<UserEntity>,
   ): Promise<UserSerializer> {
     const user = await this.userRepository.get(id, [], {
@@ -551,7 +551,7 @@ export class AuthService {
    * @param id
    * @param userId
    **/
-  revokeTokenById(id: number, userId: ObjectId): Promise<RefreshToken> {
+  revokeTokenById(id: number, userId: number): Promise<RefreshToken> {
     return this.refreshTokenService.revokeRefreshTokenById(id, userId);
   }
 
@@ -603,7 +603,7 @@ export class AuthService {
       };
       await this.mailService.sendMail(mailData, 'system-mail');
     }
-    return this.userRepository.update(user._id, {
+    return this.userRepository.update(user.id, {
       isTwoFAEnabled,
     });
   }

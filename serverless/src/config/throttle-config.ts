@@ -4,8 +4,8 @@ import { ThrottlerModuleOptions } from '@nestjs/throttler';
 const throttleConfig: ThrottlerModuleOptions = {
   throttlers: [
     {
-      ttl: parseInt(process.env.THROTTLE_TTL),
-      limit: parseInt(process.env.THROTTLE_LIMIT),
+      ttl: parseInt(process.env.THROTTLE_GLOBAL_TTL),
+      limit: parseInt(process.env.THROTTLE_GLOBAL_LIMIT),
     },
   ],
   storage: new ThrottlerStorageRedisService({

@@ -15,7 +15,7 @@ import process from 'process';
 import { NotFoundExceptionFilter } from './exception/not-found.exception';
 
 async function bootstrap() {
-  const port = process.env.NEST_PORT || 3000;
+  const port = process.env.NEST_PORT || 3030;
   const app = await NestFactory.create(AppModule);
   app.use(helmet());
   app.useLogger(app.get(WINSTON_MODULE_NEST_PROVIDER));

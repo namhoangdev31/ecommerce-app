@@ -11,7 +11,7 @@ export class CreateRefreshTokenTable1623601947397
 {
   foreignKeysArray = [
     {
-      table: 'user',
+      table: 'users',
       field: 'userId',
       reference: 'id'
     }

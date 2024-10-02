@@ -9,9 +9,9 @@ export default class CreateUserSeed {
   public async run(factory: Factory, connection: Connection): Promise<any> {
     const role = await connection
       .getRepository(RoleEntity)
-      .createQueryBuilder('role')
-      .where('role.name = :name', {
-        name: 'superuser'
+      .createQueryBuilder('roles')
+      .where('roles.name = :name', {
+        name: 'superuser',
       })
       .getOne();
 
@@ -31,8 +31,8 @@ export default class CreateUserSeed {
           salt: '$2b$10$O9BWip02GuE14bDPfBomQe',
           name: 'truthy',
           status: UserStatusEnum.ACTIVE,
-          roleId: role.id
-        }
+          roleId: role.id,
+        },
       ])
       .orIgnore()
       .execute();
