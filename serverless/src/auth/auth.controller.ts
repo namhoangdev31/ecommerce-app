@@ -27,7 +27,7 @@ import { PermissionGuard } from 'src/common/guard/permission.guard';
 import { multerOptionsHelper } from 'src/common/helper/multer-options.helper';
 import { Pagination } from 'src/paginate';
 import { RefreshToken } from 'src/refresh-token/entities/refresh-token.entity';
-import { AuthService } from 'src/auth/auth.service';
+import { AuthResponse, AuthService } from 'src/auth/auth.service';
 import { ChangePasswordDto } from 'src/auth/dto/change-password.dto';
 import { CreateUserDto } from 'src/auth/dto/create-user.dto';
 import { ForgetPasswordDto } from 'src/auth/dto/forget-password.dto';
@@ -41,6 +41,7 @@ import { UserEntity } from 'src/auth/entity/user.entity';
 import { UserSerializer } from 'src/auth/serializer/user.serializer';
 import { RefreshPaginateFilterDto } from 'src/refresh-token/dto/refresh-paginate-filter.dto';
 import { RefreshTokenSerializer } from 'src/refresh-token/serializer/refresh-token.serializer';
+import { StatusCodesList } from 'src/common/constants/status-codes-list.constants';
 
 @ApiTags('user')
 @Controller()
@@ -54,16 +55,12 @@ export class AuthController {
   ): Promise<UserSerializer> {
     return this.authService.create(registerUserDto);
   }
-
   @Post('/auth/login')
+  @HttpCode(HttpStatus.OK)
   async login(
-    @Req()
-    req: Request,
-    @Res()
-    response: Response,
-    @Body()
-    userLoginDto: UserLoginDto,
-  ) {
+    @Req() req: Request,
+    @Body() userLoginDto: UserLoginDto,
+  ): Promise<AuthResponse | { error: string }> {
     const ua = UAParser(req.headers['user-agent']);
     const refreshTokenPayload: Partial<RefreshToken> = {
       ip: req.ip,
@@ -71,14 +68,23 @@ export class AuthController {
       browser: ua.browser.name,
       os: ua.os.name,
     };
-    const cookiePayload = await this.authService.login(
+
+    const result = await this.authService.loginUser(
       userLoginDto,
       refreshTokenPayload,
     );
-    response.setHeader('Set-Cookie', cookiePayload);
-    return response.status(HttpStatus.NO_CONTENT).json({});
-  }
 
+    if ('error' in result) {
+      return result;
+    }
+
+    return {
+      access_token: result.access_token,
+      refresh_token: result.refresh_token,
+      statusCode: HttpStatus.OK,
+      code: StatusCodesList.Success.toString(),
+    };
+  }
   @Post('/refresh')
   async refresh(
     @Req()

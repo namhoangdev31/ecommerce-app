@@ -1240,15 +1240,15 @@ __metadata:
   linkType: hard
 
 "@emotion/css@npm:^11.10.5":
-  version: 11.13.0
-  resolution: "@emotion/css@npm:11.13.0"
+  version: 11.13.4
+  resolution: "@emotion/css@npm:11.13.4"
   dependencies:
     "@emotion/babel-plugin": ^11.12.0
     "@emotion/cache": ^11.13.0
     "@emotion/serialize": ^1.3.0
     "@emotion/sheet": ^1.4.0
     "@emotion/utils": ^1.4.0
-  checksum: e0c3a9999068a78a7697c8bf7fa181380a81547d35a17b5d2728fb1b463643eb0c7fac22cec2aa49ac668ecd3c4c55449eb4c708abd566f4fb0d89731b9c3daa
+  checksum: 75562604404ca0c1df2634ff8d5b91c90eca1bcd0c2ceb87fce95935a9f354f76fab6a668b9cabba82d0c2fd0d9bc3920435440c17b8c0e9782a304ee95017af
   languageName: node
   linkType: hard
 
@@ -1379,9 +1379,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@faceless-ui/modal@npm:2.0.1":
-  version: 2.0.1
-  resolution: "@faceless-ui/modal@npm:2.0.1"
+"@faceless-ui/modal@npm:2.0.2":
+  version: 2.0.2
+  resolution: "@faceless-ui/modal@npm:2.0.2"
   dependencies:
     body-scroll-lock: ^3.1.5
     focus-trap: ^6.9.2
@@ -1390,7 +1390,7 @@ __metadata:
   peerDependencies:
     react: ^16.8.0 || ^17.0.0 || ^18.0.0
     react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0
-  checksum: 99a0307f224cc550a283686c6fb02a3c4d0e5f80a6be3355a44e2710c8d0a0ecf39a2f2e529bf35fa986bbd298a5de6c74b25177443a48f40c29f2eb9a173906
+  checksum: 608a9eddf0c1cd0c2cd8fa53066431d2fe81bb35aac9ecd0ea5a8337aa4088b24d3e3b7b0ffe6ec617ccdc3a4b3c7a9471b3441e945d24209b994388ef6464b6
   languageName: node
   linkType: hard
 
@@ -1404,13 +1404,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@faceless-ui/window-info@npm:2.1.1":
-  version: 2.1.1
-  resolution: "@faceless-ui/window-info@npm:2.1.1"
+"@faceless-ui/window-info@npm:2.1.2":
+  version: 2.1.2
+  resolution: "@faceless-ui/window-info@npm:2.1.2"
   peerDependencies:
     react: ^16.8.0 || ^17.0.0 || ^18.0.0
     react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0
-  checksum: b0641e91c21ad0f672863b224797f7f72e2e71c51031d5b3b6c50c6249a0212047c367aa0a6522cdfd8bd14bd2a6af9f61d34bee37eab15ef3fedfcfdc9e9d46
+  checksum: 652578302cd03c4c8daade0bdefae90f412ddbc87762c6981ee0697f361563c5bfea273252af4f8175471e725241fecbb4cf5da0e08083e12f9f2d144368ae94
   languageName: node
   linkType: hard
 
@@ -1804,7 +1804,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@jridgewell/trace-mapping@npm:^0.3.12, @jridgewell/trace-mapping@npm:^0.3.17, @jridgewell/trace-mapping@npm:^0.3.18, @jridgewell/trace-mapping@npm:^0.3.20, @jridgewell/trace-mapping@npm:^0.3.24, @jridgewell/trace-mapping@npm:^0.3.25":
+"@jridgewell/trace-mapping@npm:^0.3.12, @jridgewell/trace-mapping@npm:^0.3.18, @jridgewell/trace-mapping@npm:^0.3.20, @jridgewell/trace-mapping@npm:^0.3.24, @jridgewell/trace-mapping@npm:^0.3.25":
   version: 0.3.25
   resolution: "@jridgewell/trace-mapping@npm:0.3.25"
   dependencies:
@@ -3154,11 +3154,11 @@ __metadata:
   linkType: hard
 
 "@swc/types@npm:^0.1.8":
-  version: 0.1.12
-  resolution: "@swc/types@npm:0.1.12"
+  version: 0.1.13
+  resolution: "@swc/types@npm:0.1.13"
   dependencies:
     "@swc/counter": ^0.1.3
-  checksum: cf7f89e46f859864075d7965582baea9c5f98830f45b1046251568c9bdf1ca484b1bf37f6d3c32b7c82ecf8cd5df89d22f05268c391819c44e49911bb1a8e71a
+  checksum: 4d9ef0fba20e410bee38b20b60eeb284a1284c1cf6b5f84754b6f5e467e5e0621e2db67dc31e22c524a8d63f36d0a1d530126cd97752a85f140d91bf53553e01
   languageName: node
   linkType: hard
 
@@ -4547,26 +4547,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"body-parser@npm:1.20.2":
-  version: 1.20.2
-  resolution: "body-parser@npm:1.20.2"
-  dependencies:
-    bytes: 3.1.2
-    content-type: ~1.0.5
-    debug: 2.6.9
-    depd: 2.0.0
-    destroy: 1.2.0
-    http-errors: 2.0.0
-    iconv-lite: 0.4.24
-    on-finished: 2.4.1
-    qs: 6.11.0
-    raw-body: 2.5.2
-    type-is: ~1.6.18
-    unpipe: 1.0.0
-  checksum: 14d37ec638ab5c93f6099ecaed7f28f890d222c650c69306872e00b9efa081ff6c596cd9afb9930656aae4d6c4e1c17537bea12bb73c87a217cb3cfea8896737
-  languageName: node
-  linkType: hard
-
 "body-parser@npm:1.20.3":
   version: 1.20.3
   resolution: "body-parser@npm:1.20.3"
@@ -5811,14 +5791,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"deep-equal@npm:2.2.2":
-  version: 2.2.2
-  resolution: "deep-equal@npm:2.2.2"
+"deep-equal@npm:2.2.3":
+  version: 2.2.3
+  resolution: "deep-equal@npm:2.2.3"
   dependencies:
     array-buffer-byte-length: ^1.0.0
-    call-bind: ^1.0.2
+    call-bind: ^1.0.5
     es-get-iterator: ^1.1.3
-    get-intrinsic: ^1.2.1
+    get-intrinsic: ^1.2.2
     is-arguments: ^1.1.1
     is-array-buffer: ^3.0.2
     is-date-object: ^1.0.5
@@ -5828,12 +5808,12 @@ __metadata:
     object-is: ^1.1.5
     object-keys: ^1.1.1
     object.assign: ^4.1.4
-    regexp.prototype.flags: ^1.5.0
+    regexp.prototype.flags: ^1.5.1
     side-channel: ^1.0.4
     which-boxed-primitive: ^1.0.2
     which-collection: ^1.0.1
-    which-typed-array: ^1.1.9
-  checksum: eb61c35157b6ecb96a5359b507b083fbff8ddb4c86a78a781ee38485f77a667465e45d63ee2ebd8a00e86d94c80e499906900cd82c2debb400237e1662cd5397
+    which-typed-array: ^1.1.13
+  checksum: ee8852f23e4d20a5626c13b02f415ba443a1b30b4b3d39eaf366d59c4a85e6545d7ec917db44d476a85ae5a86064f7e5f7af7479f38f113995ba869f3a1ddc53
   languageName: node
   linkType: hard
 
@@ -7324,7 +7304,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"get-intrinsic@npm:^1.1.3, get-intrinsic@npm:^1.2.1, get-intrinsic@npm:^1.2.4":
+"get-intrinsic@npm:^1.1.3, get-intrinsic@npm:^1.2.1, get-intrinsic@npm:^1.2.2, get-intrinsic@npm:^1.2.4":
   version: 1.2.4
   resolution: "get-intrinsic@npm:1.2.4"
   dependencies:
@@ -9278,18 +9258,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"jsonwebtoken@npm:9.0.1":
-  version: 9.0.1
-  resolution: "jsonwebtoken@npm:9.0.1"
-  dependencies:
-    jws: ^3.2.2
-    lodash: ^4.17.21
-    ms: ^2.1.1
-    semver: ^7.3.8
-  checksum: 0eafe268896f4e8f9ab1f0f20e8c645721b7a9cddc41c0aba1e58da5c34564e8c9990817c1a5b646d795bcbb1339350826fe57c4569b5379ba9eea4a9aa5bbd0
-  languageName: node
-  linkType: hard
-
 "jsonwebtoken@npm:9.0.2, jsonwebtoken@npm:^9.0.0":
   version: 9.0.2
   resolution: "jsonwebtoken@npm:9.0.2"
@@ -11013,14 +10981,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"nodemailer@npm:6.9.8":
-  version: 6.9.8
-  resolution: "nodemailer@npm:6.9.8"
-  checksum: 6499b93b7070a1b789ec00681ccbbf34180f127f1ce455b28201584b0974086a86be858062d41044df72ed7aba5649a40321a8e926367d2a1dfc0e65b7bf8838
-  languageName: node
-  linkType: hard
-
-"nodemailer@npm:^6.9.13":
+"nodemailer@npm:6.9.15, nodemailer@npm:^6.9.13":
   version: 6.9.15
   resolution: "nodemailer@npm:6.9.15"
   checksum: 2d975f5c60f84acde52d79d43287c70197fe94bde4a731682f306e9636a148c49de29a5dd92ce7dc5aac068a148cd91da3401ede80f8f52b9f2bc00439f36ced
@@ -11634,19 +11595,19 @@ __metadata:
   linkType: hard
 
 "payload@npm:^2.30.0":
-  version: 2.30.0
-  resolution: "payload@npm:2.30.0"
+  version: 2.30.1
+  resolution: "payload@npm:2.30.1"
   dependencies:
     "@date-io/date-fns": 2.16.0
     "@dnd-kit/core": 6.0.8
     "@dnd-kit/sortable": 7.0.2
-    "@faceless-ui/modal": 2.0.1
+    "@faceless-ui/modal": 2.0.2
     "@faceless-ui/scroll-info": 1.3.0
-    "@faceless-ui/window-info": 2.1.1
+    "@faceless-ui/window-info": 2.1.2
     "@monaco-editor/react": 4.5.1
     "@swc/core": 1.6.1
     "@swc/register": 0.1.10
-    body-parser: 1.20.2
+    body-parser: 1.20.3
     body-scroll-lock: 4.0.0-beta.0
     bson-objectid: 2.0.4
     compression: 1.7.4
@@ -11655,7 +11616,7 @@ __metadata:
     console-table-printer: 2.11.2
     dataloader: 2.2.2
     date-fns: 2.30.0
-    deep-equal: 2.2.2
+    deep-equal: 2.2.3
     deepmerge: 4.3.1
     dotenv: 8.6.0
     express: 4.21.0
@@ -11682,14 +11643,14 @@ __metadata:
     isomorphic-fetch: 3.0.0
     joi: 17.9.2
     json-schema-to-typescript: 14.0.5
-    jsonwebtoken: 9.0.1
+    jsonwebtoken: 9.0.2
     jwt-decode: 3.1.2
     md5: 2.3.0
     method-override: 3.0.0
     minimist: 1.2.8
     mkdirp: 1.0.4
     monaco-editor: 0.38.0
-    nodemailer: 6.9.8
+    nodemailer: 6.9.15
     object-to-formdata: 4.5.1
     passport: 0.6.0
     passport-anonymous: 1.0.1
@@ -11717,17 +11678,17 @@ __metadata:
     react-toastify: 10.0.5
     sanitize-filename: 1.6.3
     sass: 1.69.4
-    scheduler: 0.23.0
+    scheduler: 0.23.2
     scmp: 2.1.0
     sharp: 0.32.6
-    swc-loader: 0.2.3
-    terser-webpack-plugin: 5.3.9
+    swc-loader: 0.2.6
+    terser-webpack-plugin: 5.3.10
     ts-essentials: 7.0.3
     use-context-selector: 1.4.1
     uuid: 9.0.1
   bin:
     payload: bin.js
-  checksum: 90a5782127c8f12d79385e74553d37e42b328984599e294ea1ffe09153603e36e5ca8c18d4604d90db30b0317e03c873b0dcb6521be7b1fe5aea757b64032de2
+  checksum: 0c1e04c01fe20f5c091cc9efd360ae9491518485cd82a2d6d9cecf5cd760e47f8ced10d568a11d86fb02cf0b8c0607a3c84747222661ae35d629a8030e8e4105
   languageName: node
   linkType: hard
 
@@ -12358,15 +12319,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"qs@npm:6.11.0":
-  version: 6.11.0
-  resolution: "qs@npm:6.11.0"
-  dependencies:
-    side-channel: ^1.0.4
-  checksum: 6e1f29dd5385f7488ec74ac7b6c92f4d09a90408882d0c208414a34dd33badc1a621019d4c799a3df15ab9b1d0292f97c1dd71dc7c045e69f81a8064e5af7297
-  languageName: node
-  linkType: hard
-
 "qs@npm:6.11.2":
   version: 6.11.2
   resolution: "qs@npm:6.11.2"
@@ -12833,7 +12785,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"regexp.prototype.flags@npm:^1.5.0":
+"regexp.prototype.flags@npm:^1.5.1":
   version: 1.5.2
   resolution: "regexp.prototype.flags@npm:1.5.2"
   dependencies:
@@ -13096,16 +13048,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"scheduler@npm:0.23.0":
-  version: 0.23.0
-  resolution: "scheduler@npm:0.23.0"
-  dependencies:
-    loose-envify: ^1.1.0
-  checksum: d79192eeaa12abef860c195ea45d37cbf2bbf5f66e3c4dcd16f54a7da53b17788a70d109ee3d3dde1a0fd50e6a8fc171f4300356c5aee4fc0171de526bf35f8a
-  languageName: node
-  linkType: hard
-
-"scheduler@npm:^0.23.2":
+"scheduler@npm:0.23.2, scheduler@npm:^0.23.2":
   version: 0.23.2
   resolution: "scheduler@npm:0.23.2"
   dependencies:
@@ -13166,7 +13109,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"semver@npm:^7.3.4, semver@npm:^7.3.5, semver@npm:^7.3.8, semver@npm:^7.5.2, semver@npm:^7.5.3, semver@npm:^7.5.4, semver@npm:^7.6.0, semver@npm:^7.6.3":
+"semver@npm:^7.3.4, semver@npm:^7.3.5, semver@npm:^7.5.2, semver@npm:^7.5.3, semver@npm:^7.5.4, semver@npm:^7.6.0, semver@npm:^7.6.3":
   version: 7.6.3
   resolution: "semver@npm:7.6.3"
   bin:
@@ -13889,13 +13832,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"swc-loader@npm:0.2.3":
-  version: 0.2.3
-  resolution: "swc-loader@npm:0.2.3"
+"swc-loader@npm:0.2.6":
+  version: 0.2.6
+  resolution: "swc-loader@npm:0.2.6"
+  dependencies:
+    "@swc/counter": ^0.1.3
   peerDependencies:
     "@swc/core": ^1.2.147
     webpack: ">=2"
-  checksum: 010d84d399525c0185d36d62c86c55ae017e7a90046bc8a39be4b7e07526924037868049f6037bc966da98151cb2600934b96a66279b742d3c413a718b427251
+  checksum: fe90948c02a51bb8ffcff1ce3590e01dc12860b0bb7c9e22052b14fa846ed437781ae265614a5e14344bea22001108780f00a6e350e28c0b3499bc4cd11335fb
   languageName: node
   linkType: hard
 
@@ -13997,29 +13942,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"terser-webpack-plugin@npm:5.3.9":
-  version: 5.3.9
-  resolution: "terser-webpack-plugin@npm:5.3.9"
-  dependencies:
-    "@jridgewell/trace-mapping": ^0.3.17
-    jest-worker: ^27.4.5
-    schema-utils: ^3.1.1
-    serialize-javascript: ^6.0.1
-    terser: ^5.16.8
-  peerDependencies:
-    webpack: ^5.1.0
-  peerDependenciesMeta:
-    "@swc/core":
-      optional: true
-    esbuild:
-      optional: true
-    uglify-js:
-      optional: true
-  checksum: 41705713d6f9cb83287936b21e27c658891c78c4392159f5148b5623f0e8c48559869779619b058382a4c9758e7820ea034695e57dc7c474b4962b79f553bc5f
-  languageName: node
-  linkType: hard
-
-"terser-webpack-plugin@npm:^5.3.10":
+"terser-webpack-plugin@npm:5.3.10, terser-webpack-plugin@npm:^5.3.10":
   version: 5.3.10
   resolution: "terser-webpack-plugin@npm:5.3.10"
   dependencies:
@@ -14041,7 +13964,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"terser@npm:^5.10.0, terser@npm:^5.16.8, terser@npm:^5.26.0":
+"terser@npm:^5.10.0, terser@npm:^5.26.0":
   version: 5.34.1
   resolution: "terser@npm:5.34.1"
   dependencies:
@@ -15027,7 +14950,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"which-typed-array@npm:^1.1.9":
+"which-typed-array@npm:^1.1.13":
   version: 1.1.15
   resolution: "which-typed-array@npm:1.1.15"
   dependencies:

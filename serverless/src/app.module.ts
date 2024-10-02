@@ -3,7 +3,6 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { typeOrmConfig } from 'src/config/typeormConfig';
-import { ProductsModule } from './products/products.module';
 import { ThrottlerModule } from '@nestjs/throttler';
 import { APP_FILTER, APP_GUARD, APP_PIPE } from '@nestjs/core';
 import * as path from 'path';
@@ -72,7 +71,6 @@ import winstonConfig from 'src/config/winston';
     TwofaModule,
     DashboardModule,
     TypeOrmModule.forRoot(typeOrmConfig),
-    ProductsModule,
   ],
   providers: [
     AppService,

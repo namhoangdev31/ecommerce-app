@@ -22,15 +22,9 @@ import { RoleEntity } from 'src/role/entities/role.entity';
   name: 'user',
 })
 export class UserEntity extends CustomBaseEntity {
-  @Index({
-    unique: true,
-  })
   @Column()
   username: string;
 
-  @Index({
-    unique: true,
-  })
   @Column()
   email: string;
 
@@ -40,7 +34,6 @@ export class UserEntity extends CustomBaseEntity {
   })
   password: string;
 
-  @Index()
   @Column()
   name: string;
 

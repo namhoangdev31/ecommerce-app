@@ -1,5 +1,5 @@
 import { Injectable, UnprocessableEntityException } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm/dist';
+import { InjectRepository } from '@nestjs/typeorm';
 import { Not, ObjectLiteral } from 'typeorm';
 
 import { CreateEmailTemplateDto } from 'src/email-template/dto/create-email-template.dto';

@@ -17,13 +17,6 @@ export class addTokenValidityDateInUserEntity1617559216655
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropColumn(
-      this.tableName,
-      new TableColumn({
-        name: 'tokenValidityDate',
-        type: 'timestamp',
-        default: 'now()',
-      }),
-    );
+    await queryRunner.dropColumn(this.tableName, 'tokenValidityDate');
   }
 }

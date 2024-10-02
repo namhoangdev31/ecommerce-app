@@ -1,4 +1,4 @@
-import { DeepPartial, EntityRepository } from 'typeorm';
+import { DeepPartial, EntityRepository, Repository } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 import { classToPlain, plainToClass } from 'class-transformer';
 
@@ -10,17 +10,19 @@ import { ResetPasswordDto } from 'src/auth/dto/reset-password.dto';
 import { UserStatusEnum } from 'src/auth/user-status.enum';
 import { ExceptionTitleList } from 'src/common/constants/exception-title-list.constants';
 import { StatusCodesList } from 'src/common/constants/status-codes-list.constants';
+import { AuthResponse } from './auth.service';
+import { InjectRepository } from '@nestjs/typeorm';
 
 @EntityRepository(UserEntity)
 export class UserRepository extends BaseRepository<UserEntity, UserSerializer> {
   /**
-   * store new user
+   * Lưu trữ người dùng mới
    * @param createUserDto
    * @param token
    */
   async store(
     createUserDto: DeepPartial<UserEntity>,
-    token: string
+    token: string,
   ): Promise<UserSerializer> {
     if (!createUserDto.status) {
       createUserDto.status = UserStatusEnum.INACTIVE;
@@ -33,58 +35,63 @@ export class UserRepository extends BaseRepository<UserEntity, UserSerializer> {
   }
 
   /**
-   * login user
+   * Đăng nhập người dùng
    * @param userLoginDto
    */
-  async login(
-    userLoginDto: UserLoginDto
-  ): Promise<[user: UserEntity, error: string, code: number]> {
-    const { username, password } = userLoginDto;
-    const user = await this.findOne({
-      where: [
-        {
-          username: username
-        },
-        {
-          email: username
-        }
-      ]
-    });
-    if (user && (await user.validatePassword(password))) {
-      if (user.status !== UserStatusEnum.ACTIVE) {
-        return [
-          null,
-          ExceptionTitleList.UserInactive,
-          StatusCodesList.UserInactive
-        ];
-      }
-      return [user, null, null];
-    }
-    return [
-      null,
-      ExceptionTitleList.InvalidCredentials,
-      StatusCodesList.InvalidCredentials
-    ];
-  }
+  async loginUser(userLoginDto: UserLoginDto): Promise<AuthResponse> {
+    try {
+      const { username, password } = userLoginDto;
+      const user = await this.findOne({
+        where: [{ username: username }, { email: username }],
+      });
 
+      if (!user) {
+        return {
+          error: ExceptionTitleList.InvalidCredentials,
+          code: StatusCodesList.InvalidCredentials.toString(),
+        };
+      }
+
+      if (!(await user.validatePassword(password))) {
+        return {
+          error: ExceptionTitleList.InvalidCredentials,
+          code: StatusCodesList.InvalidCredentials.toString(),
+        };
+      }
+
+      if (user.status !== UserStatusEnum.ACTIVE) {
+        return {
+          error: ExceptionTitleList.UserInactive,
+          code: StatusCodesList.UserInactive.toString(),
+        };
+      }
+
+      return { user: this.transform(user) };
+    } catch (error) {
+      return {
+        error: `Lỗi hệ thống ${error}`,
+        code: StatusCodesList.InternalServerError.toString(),
+      };
+    }
+  }
   /**
-   * Get user entity for reset password
+   * Lấy thực thể người dùng để đặt lại mật khẩu
    * @param resetPasswordDto
    */
   async getUserForResetPassword(
-    resetPasswordDto: ResetPasswordDto
+    resetPasswordDto: ResetPasswordDto,
   ): Promise<UserEntity> {
     const { token } = resetPasswordDto;
     const query = this.createQueryBuilder('user');
     query.where('user.token = :token', { token });
     query.andWhere('user.tokenValidityDate > :date', {
-      date: new Date()
+      date: new Date(),
     });
     return query.getOne();
   }
 
   /**
-   * transform user
+   * Chuyển đổi người dùng
    * @param model
    * @param transformOption
    */
@@ -92,12 +99,12 @@ export class UserRepository extends BaseRepository<UserEntity, UserSerializer> {
     return plainToClass(
       UserSerializer,
       classToPlain(model, transformOption),
-      transformOption
+      transformOption,
     );
   }
 
   /**
-   * transform users collection
+   * Chuyển đổi bộ sưu tập người dùng
    * @param models
    * @param transformOption
    */

@@ -22,13 +22,11 @@ export class RefreshToken extends BaseEntity {
   @Column()
   userAgent: string;
 
-  @Index()
   @Column({
     nullable: true,
   })
   browser: string;
 
-  @Index()
   @Column({
     nullable: true,
   })

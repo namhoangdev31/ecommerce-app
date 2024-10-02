@@ -11,7 +11,7 @@ const ormConfig: DataSourceOptions = {
   migrations: [__dirname + '/../database/migrations/**/*{.ts,.js}'],
   migrationsTableName: 'migrations',
   migrationsTransactionMode: 'each',
-  logging: false,
+  logging: true,
   synchronize: process.env.NODE_ENV === 'development',
   migrationsRun: process.env.NODE_ENV === 'test',
   dropSchema: process.env.NODE_ENV === 'development',

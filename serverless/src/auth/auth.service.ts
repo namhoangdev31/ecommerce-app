@@ -42,6 +42,7 @@ import { UserRepository } from 'src/auth/user.repository';
 import { ValidationPayloadInterface } from 'src/common/interfaces/validation-error.interface';
 import { RefreshPaginateFilterDto } from 'src/refresh-token/dto/refresh-paginate-filter.dto';
 import { RefreshTokenSerializer } from 'src/refresh-token/serializer/refresh-token.serializer';
+import { AuthResponse } from '../common/types.type';
 
 const throttleLoginLimit = parseInt(process.env.THROTTLE_LOGIN_LIMIT, 10);
 const jwtExpiresIn = parseInt(process.env.JWT_EXPIRES_IN, 10);
@@ -49,7 +50,6 @@ const jwtCookieExpiresIn = parseInt(process.env.JWT_COOKIE_EXPIRES_IN, 10);
 const appUrl = process.env.APP_URL;
 const frontendUrl = process.env.FRONTEND_URL;
 const isSameSite = process.env.IS_SAME_SITE === 'true';
-
 const BASE_OPTIONS: SignOptions = {
   issuer: appUrl,
   audience: frontendUrl,
@@ -58,13 +58,10 @@ const BASE_OPTIONS: SignOptions = {
 @Injectable()
 export class AuthService {
   constructor(
-    @InjectRepository(UserRepository)
     private readonly userRepository: UserRepository,
     private readonly jwt: JwtService,
     private readonly mailService: MailService,
     private readonly refreshTokenService: RefreshTokenService,
-    @Inject('LOGIN_THROTTLE')
-    private readonly rateLimiter: RateLimiterStoreAbstract,
   ) {}
 
   /**
@@ -134,53 +131,41 @@ export class AuthService {
    * @param userLoginDto
    * @param refreshTokenPayload
    */
-  async login(
+  async loginUser(
     userLoginDto: UserLoginDto,
     refreshTokenPayload: Partial<RefreshToken>,
-  ): Promise<string[]> {
-    const usernameIPkey = `${userLoginDto.username}_${refreshTokenPayload.ip}`;
-    const resUsernameAndIP = await this.rateLimiter.get(usernameIPkey);
-    let retrySecs = 0;
-    // Check if user is already blocked
-    if (
-      resUsernameAndIP !== null &&
-      resUsernameAndIP.consumedPoints > throttleLoginLimit
-    ) {
-      retrySecs = Math.round(resUsernameAndIP.msBeforeNext / 1000) || 1;
-    }
-    if (retrySecs > 0) {
-      throw new CustomHttpException(
-        `tooManyRequest-{"second":"${String(retrySecs)}"}`,
-        HttpStatus.TOO_MANY_REQUESTS,
-        StatusCodesList.TooManyTries,
-      );
-    }
-
-    const [user, error, code] = await this.userRepository.login(userLoginDto);
-    if (!user) {
-      const [result, throttleError] =
-        await this.limitConsumerPromiseHandler(usernameIPkey);
-      if (!result) {
-        throw new CustomHttpException(
-          `tooManyRequest-{"second":${String(
-            Math.round(throttleError.msBeforeNext / 1000) || 1,
-          )}}`,
-          HttpStatus.TOO_MANY_REQUESTS,
-          StatusCodesList.TooManyTries,
+  ): Promise<AuthResponse> {
+    try {
+      const loginResult = await this.userRepository.loginUser(userLoginDto);
+      console.log(loginResult);
+      if (!loginResult.user) {
+        return {
+          error: 'Thông tin đăng nhập không hợp lệ',
+          statusCode: HttpStatus.UNAUTHORIZED,
+          code: StatusCodesList.InvalidCredentials.toString(),
+        };
+      }
+      const accessToken = await this.generateAccessToken(loginResult.user);
+      let refreshToken = null;
+      if (userLoginDto.remember) {
+        refreshToken = await this.refreshTokenService.generateRefreshToken(
+          loginResult.user,
+          refreshTokenPayload,
         );
       }
-      throw new UnauthorizedException(error, code);
+      return {
+        access_token: accessToken,
+        refresh_token: refreshToken,
+        code: StatusCodesList.Success.toString(),
+        statusCode: HttpStatus.OK,
+      };
+    } catch (error) {
+      return {
+        error: `Đã xảy ra lỗi trong quá trình đăng nhập:> ${error.toString()}`,
+        statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
+        code: StatusCodesList.InternalServerError.toString(),
+      };
     }
-    const accessToken = await this.generateAccessToken(user);
-    let refreshToken = null;
-    if (userLoginDto.remember) {
-      refreshToken = await this.refreshTokenService.generateRefreshToken(
-        user,
-        refreshTokenPayload,
-      );
-    }
-    await this.rateLimiter.delete(usernameIPkey);
-    return this.buildResponsePayload(accessToken, refreshToken);
   }
 
   /**
@@ -207,20 +192,20 @@ export class AuthService {
    * throttle by user
    * @param usernameIPkey
    */
-  async limitConsumerPromiseHandler(
-    usernameIPkey: string,
-  ): Promise<[RateLimiterRes, RateLimiterRes]> {
-    return new Promise((resolve) => {
-      this.rateLimiter
-        .consume(usernameIPkey)
-        .then((rateLimiterRes) => {
-          resolve([rateLimiterRes, null]);
-        })
-        .catch((rateLimiterError) => {
-          resolve([null, rateLimiterError]);
-        });
-    });
-  }
+  // async limitConsumerPromiseHandler(
+  //   usernameIPkey: string,
+  // ): Promise<[RateLimiterRes, RateLimiterRes]> {
+  //   return new Promise((resolve) => {
+  //     this.rateLimiter
+  //       .consume(usernameIPkey)
+  //       .then((rateLimiterRes) => {
+  //         resolve([rateLimiterRes, null]);
+  //       })
+  //       .catch((rateLimiterError) => {
+  //         resolve([null, rateLimiterError]);
+  //       });
+  //   });
+  // }
 
   /**
    * get user profile
@@ -615,3 +600,4 @@ export class AuthService {
     return this.refreshTokenService.getRefreshTokenGroupedData(field);
   }
 }
+export { AuthResponse };

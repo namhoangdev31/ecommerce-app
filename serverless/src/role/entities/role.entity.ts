@@ -9,9 +9,6 @@ import { PermissionEntity } from 'src/permission/entities/permission.entity';
 @Unique(['name'])
 export class RoleEntity extends CustomBaseEntity {
   @Column('varchar', { length: 100 })
-  @Index({
-    unique: true,
-  })
   name: string;
 
   @Column('varchar', { length: 256 })

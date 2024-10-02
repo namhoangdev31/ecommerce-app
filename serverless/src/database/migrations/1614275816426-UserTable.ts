@@ -4,11 +4,9 @@ import {
   Table,
   TableColumn,
   TableForeignKey,
-  TableIndex,
 } from 'typeorm';
 
 export class UserTable1614275816426 implements MigrationInterface {
-  indexFields = ['name', 'email', 'username'];
   tableName = 'user';
 
   public async up(queryRunner: QueryRunner): Promise<void> {
@@ -87,16 +85,6 @@ export class UserTable1614275816426 implements MigrationInterface {
       false,
     );
 
-    for (const field of this.indexFields) {
-      await queryRunner.createIndex(
-        this.tableName,
-        new TableIndex({
-          name: `IDX_USER_${field.toUpperCase()}`,
-          columnNames: [field],
-        }),
-      );
-    }
-
     await queryRunner.addColumn(
       this.tableName,
       new TableColumn({
@@ -125,13 +113,6 @@ export class UserTable1614275816426 implements MigrationInterface {
     await queryRunner.dropForeignKey(this.tableName, foreignKey);
     await queryRunner.dropColumn(this.tableName, 'roleId');
 
-    for (const field of this.indexFields) {
-      const index = `IDX_USER_${field.toUpperCase()}`;
-      const keyIndex = await table.indices.find(
-        (fk) => fk.name.indexOf(index) !== -1,
-      );
-      await queryRunner.dropIndex(this.tableName, keyIndex);
-    }
     await queryRunner.dropTable(this.tableName);
   }
 }

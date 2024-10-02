@@ -13,7 +13,10 @@ import { RateLimiterRedis } from 'rate-limiter-flexible';
 import { RefreshTokenModule } from 'src/refresh-token/refresh-token.module';
 import { JwtTwoFactorStrategy } from 'src/common/strategy/jwt-two-factor.strategy';
 import { JwtStrategy } from 'src/common/strategy/jwt.strategy';
-const redisPort = process.env.REDIS_PORT ? parseInt(process.env.REDIS_PORT, 10) : 6379;
+import { UserEntity } from './entity/user.entity';
+const redisPort = process.env.REDIS_PORT
+  ? parseInt(process.env.REDIS_PORT, 10)
+  : 6379;
 const LoginThrottleFactory = {
   provide: 'LOGIN_THROTTLE',
   useFactory: () => {
@@ -65,6 +68,7 @@ const LoginThrottleFactory = {
     JwtStrategy,
     PassportModule,
     JwtModule,
+    TypeOrmModule,
   ],
 })
 export class AuthModule {}
