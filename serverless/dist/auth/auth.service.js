@@ -15,9 +15,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.AuthService = void 0;
 const common_1 = require("@nestjs/common");
 const jwt_1 = require("@nestjs/jwt");
-const typeorm_1 = require("@nestjs/typeorm");
 const fs_1 = require("fs");
-const typeorm_2 = require("typeorm");
+const typeorm_1 = require("typeorm");
 const rate_limiter_flexible_1 = require("rate-limiter-flexible");
 const exception_title_list_constants_1 = require("../common/constants/exception-title-list.constants");
 const status_codes_list_constants_1 = require("../common/constants/status-codes-list.constants");
@@ -170,7 +169,7 @@ let AuthService = class AuthService {
             const condition = {
                 [field]: updateUserDto[field],
             };
-            condition.id = (0, typeorm_2.Not)(id);
+            condition.id = (0, typeorm_1.Not)(id);
             const checkUnique = await this.userRepository.countEntityByCondition(condition);
             if (checkUnique > 0) {
                 errorPayload.push({
@@ -364,7 +363,6 @@ let AuthService = class AuthService {
 exports.AuthService = AuthService;
 exports.AuthService = AuthService = __decorate([
     (0, common_1.Injectable)(),
-    __param(0, (0, typeorm_1.InjectRepository)(user_repository_1.UserRepository)),
     __param(4, (0, common_1.Inject)('LOGIN_THROTTLE')),
     __metadata("design:paramtypes", [user_repository_1.UserRepository,
         jwt_1.JwtService,

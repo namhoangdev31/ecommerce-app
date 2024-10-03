@@ -31,7 +31,8 @@ import { TwofaModule } from 'src/twofa/twofa.module';
 import { CustomThrottlerGuard } from 'src/common/guard/custom-throttle.guard';
 import { DashboardModule } from 'src/dashboard/dashboard.module';
 import winstonConfig from 'src/config/winston';
-
+import { config as dotenvConfig } from 'dotenv';
+dotenvConfig({ path: '../.env' });
 @Module({
   imports: [
     WinstonModule.forRoot(winstonConfig),

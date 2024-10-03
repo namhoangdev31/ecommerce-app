@@ -68,7 +68,7 @@ const BASE_OPTIONS: SignOptions = {
 @Injectable()
 export class AuthService {
   constructor(
-    @InjectRepository(UserRepository)
+    // @InjectRepository(UserRepository)
     private readonly userRepository: UserRepository,
     private readonly jwt: JwtService,
     private readonly mailService: MailService,

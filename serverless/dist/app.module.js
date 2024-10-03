@@ -58,6 +58,8 @@ const custom_validation_pipe_1 = require("./common/pipes/custom-validation.pipe"
 const twofa_module_1 = require("./twofa/twofa.module");
 const dashboard_module_1 = require("./dashboard/dashboard.module");
 const winston_1 = __importDefault(require("./config/winston"));
+const dotenv_1 = require("dotenv");
+(0, dotenv_1.config)({ path: '../.env' });
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
