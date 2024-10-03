@@ -13,20 +13,20 @@ export class DashboardService {
   async getUserStat(): Promise<UsersStatsInterface> {
     const totalUserPromise = this.authService.countByCondition({});
     const totalActiveUserPromise = this.authService.countByCondition({
-      status: UserStatusEnum.ACTIVE,
+      status: UserStatusEnum.ACTIVE
     });
     const totalInActiveUserPromise = this.authService.countByCondition({
-      status: UserStatusEnum.INACTIVE,
+      status: UserStatusEnum.INACTIVE
     });
     const [total, active, inactive] = await Promise.all([
       totalUserPromise,
       totalActiveUserPromise,
-      totalInActiveUserPromise,
+      totalInActiveUserPromise
     ]);
     return {
       total,
       active,
-      inactive,
+      inactive
     };
   }
 

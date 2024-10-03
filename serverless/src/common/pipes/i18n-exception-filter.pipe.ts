@@ -4,7 +4,7 @@ import {
   ExceptionFilter,
   HttpException,
   HttpStatus,
-  Inject,
+  Inject
 } from '@nestjs/common';
 import { I18nService } from 'nestjs-i18n';
 
@@ -17,7 +17,7 @@ import { WINSTON_MODULE_PROVIDER } from 'nest-winston';
 export class I18nExceptionFilterPipe implements ExceptionFilter {
   constructor(
     @Inject(WINSTON_MODULE_PROVIDER) private readonly logger: Logger,
-    private readonly i18n: I18nService,
+    private readonly i18n: I18nService
   ) {}
 
   async catch(exception: HttpException, host: ArgumentsHost) {
@@ -28,22 +28,19 @@ export class I18nExceptionFilterPipe implements ExceptionFilter {
       .json(
         await this.getMessage(
           exception,
-          ctx.getRequest().i18nLang ||
-            ctx.getRequest().headers['x-custom-lang'],
-        ),
+          ctx.getRequest().i18nLang || ctx.getRequest().headers['x-custom-lang']
+        )
       );
   }
 
   async getMessage(exception: HttpException, lang: string) {
     try {
       const exceptionResponse = exception.getResponse() as any;
-      if (!exceptionResponse.message) {
-        if (typeof exceptionResponse === 'string') {
-          return await this.i18n.translate(`exception.${exceptionResponse}`, {
-            lang,
-            args: {},
-          });
-        }
+      if (!exceptionResponse.message && typeof exceptionResponse === 'string') {
+        return await this.i18n.translate(`exception.${exceptionResponse}`, {
+          lang,
+          args: {}
+        });
       }
       if (exceptionResponse.statusCode === HttpStatus.UNPROCESSABLE_ENTITY) {
         if (
@@ -53,7 +50,7 @@ export class I18nExceptionFilterPipe implements ExceptionFilter {
           exceptionResponse.code = StatusCodesList.ValidationError;
           exceptionResponse.message = await this.translateArray(
             exceptionResponse.message,
-            lang,
+            lang
           );
         }
         return exceptionResponse;
@@ -71,20 +68,21 @@ export class I18nExceptionFilterPipe implements ExceptionFilter {
       }
 
       const { title, argument } = this.checkIfConstraintAvailable(errorMessage);
-      [exceptionResponse.message] = await Promise.all([
-        this.i18n.translate(`exception.${title}`, {
+      exceptionResponse.message = await this.i18n.translate(
+        `exception.${title}`,
+        {
           lang,
           args: {
-            ...argument,
-          },
-        }),
-      ]);
+            ...argument
+          }
+        }
+      );
       return exceptionResponse;
     } catch (error) {
       this.logger.error('Error in I18nExceptionFilterPipe: ', {
         meta: {
-          error,
-        },
+          error
+        }
       });
     }
   }
@@ -98,17 +96,17 @@ export class I18nExceptionFilterPipe implements ExceptionFilter {
       if (!splitObject[1]) {
         return {
           title: splitObject[0],
-          argument: {},
+          argument: {}
         };
       }
       return {
         title: splitObject[0],
-        argument: JSON.parse(splitObject[1]),
+        argument: JSON.parse(splitObject[1])
       };
     } catch (e) {
       return {
         title: message,
-        argument: {},
+        argument: {}
       };
     }
   }
@@ -123,7 +121,7 @@ export class I18nExceptionFilterPipe implements ExceptionFilter {
         'matches',
         'maxLength',
         'minLength',
-        'isLength',
+        'isLength'
       ];
       const item = errors[i];
       let message = [];
@@ -134,7 +132,7 @@ export class I18nExceptionFilterPipe implements ExceptionFilter {
               validationArgument: Record<string, any> = {};
             if (constraintsValidator.includes(key)) {
               const { title, argument } = this.checkIfConstraintAvailable(
-                item.constraints[key],
+                item.constraints[key]
               );
               validationKey = title;
               validationArgument = argument;
@@ -142,8 +140,8 @@ export class I18nExceptionFilterPipe implements ExceptionFilter {
             const args: Record<string, any> = {
               lang,
               args: {
-                property: item.property,
-              },
+                property: item.property
+              }
             };
             if (
               validationArgument &&
@@ -151,17 +149,17 @@ export class I18nExceptionFilterPipe implements ExceptionFilter {
             ) {
               args.args = {
                 ...validationArgument,
-                property: item.property,
+                property: item.property
               };
             }
             return this.i18n.translate(`validation.${validationKey}`, args);
-          }),
+          })
         );
       }
 
       validationData.push({
         name: item.property,
-        errors: message,
+        errors: message
       });
     }
     return validationData;

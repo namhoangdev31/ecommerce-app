@@ -7,11 +7,11 @@ import { RefreshTokenRepository } from 'src/refresh-token/refresh-token.reposito
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([RefreshTokenRepository]),
     forwardRef(() => AuthModule),
+    TypeOrmModule.forFeature([RefreshTokenRepository])
   ],
   providers: [RefreshTokenService],
   exports: [RefreshTokenService],
-  controllers: [],
+  controllers: []
 })
 export class RefreshTokenModule {}

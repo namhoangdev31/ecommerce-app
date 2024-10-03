@@ -12,10 +12,10 @@ import { PermissionsModule } from 'src/permission/permissions.module';
   imports: [
     TypeOrmModule.forFeature([RoleRepository]),
     AuthModule,
-    PermissionsModule,
+    PermissionsModule
   ],
   exports: [],
   controllers: [RolesController],
-  providers: [RolesService, UniqueValidatorPipe],
+  providers: [RolesService, UniqueValidatorPipe]
 })
 export class RolesModule {}

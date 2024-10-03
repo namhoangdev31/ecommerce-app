@@ -14,35 +14,27 @@ import { UserRepository } from 'src/auth/user.repository';
 @Injectable()
 export class JwtTwoFactorStrategy extends PassportStrategy(
   Strategy,
-  'jwt-two-factor',
+  'jwt-two-factor'
 ) {
   constructor(
     @InjectRepository(UserRepository)
-    private userRepository: UserRepository,
+    private userRepository: UserRepository
   ) {
     super({
       jwtFromRequest: ExtractJwt.fromExtractors([
         (request: Request) => {
           return request?.cookies?.Authentication;
-        },
+        }
       ]),
-      secretOrKey: process.env.JWT_SECRET || config.get('jwt.secret'),
+      secretOrKey: process.env.JWT_SECRET || config.get('jwt.secret')
     });
   }
 
   async validate(payload: JwtPayloadDto): Promise<UserEntity> {
     const { isTwoFAAuthenticated, subject } = payload;
-    const user = await this.userRepository.findOne({
-      where: { id: Number(subject) },
-      relations: ['role', 'role.permission'],
+    const user = await this.userRepository.findOne(Number(subject), {
+      relations: ['role', 'role.permission']
     });
-    if (!user) {
-      throw new CustomHttpException(
-        'User not found',
-        HttpStatus.NOT_FOUND,
-        StatusCodesList.NotFound,
-      );
-    }
     if (!user.isTwoFAEnabled) {
       return user;
     }
@@ -52,7 +44,7 @@ export class JwtTwoFactorStrategy extends PassportStrategy(
     throw new CustomHttpException(
       'otpRequired',
       HttpStatus.FORBIDDEN,
-      StatusCodesList.OtpRequired,
+      StatusCodesList.OtpRequired
     );
   }
 }

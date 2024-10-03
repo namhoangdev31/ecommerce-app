@@ -1,6 +1,6 @@
 import { Injectable, UnprocessableEntityException } from '@nestjs/common';
 import { Not, ObjectLiteral } from 'typeorm';
-import { InjectRepository } from '@nestjs/typeorm/dist';
+import { InjectRepository } from '@nestjs/typeorm';
 
 import { CreatePermissionDto } from 'src/permission/dto/create-permission.dto';
 import { UpdatePermissionDto } from 'src/permission/dto/update-permission.dto';
@@ -13,7 +13,7 @@ import { basicFieldGroupsForSerializing } from 'src/role/serializer/role.seriali
 import { Pagination } from 'src/paginate';
 import {
   PermissionConfiguration,
-  RoutePayloadInterface,
+  RoutePayloadInterface
 } from 'src/config/permission-config';
 import { LoadPermissionMisc } from 'src/permission/misc/load-permission.misc';
 
@@ -24,7 +24,7 @@ export class PermissionsService
 {
   constructor(
     @InjectRepository(PermissionRepository)
-    private repository: PermissionRepository,
+    private repository: PermissionRepository
   ) {
     super();
   }
@@ -49,7 +49,7 @@ export class PermissionsService
       permissionsList = this.assignResourceAndConcatPermission(
         moduleData,
         permissionsList,
-        resource,
+        resource
       );
 
       if (moduleData.hasSubmodules) {
@@ -58,7 +58,7 @@ export class PermissionsService
           permissionsList = this.assignResourceAndConcatPermission(
             submodule,
             permissionsList,
-            resource,
+            resource
           );
         }
       }
@@ -71,15 +71,15 @@ export class PermissionsService
    * @param permissionFilterDto
    */
   async findAll(
-    permissionFilterDto: PermissionFilterDto,
+    permissionFilterDto: PermissionFilterDto
   ): Promise<Pagination<Permission>> {
     return this.repository.paginate(
       permissionFilterDto,
       [],
       ['resource', 'description', 'path', 'method'],
       {
-        groups: [...basicFieldGroupsForSerializing],
-      },
+        groups: [...basicFieldGroupsForSerializing]
+      }
     );
   }
 
@@ -89,7 +89,7 @@ export class PermissionsService
    */
   async findOne(id: number): Promise<Permission> {
     return this.repository.get(id, [], {
-      groups: [...basicFieldGroupsForSerializing],
+      groups: [...basicFieldGroupsForSerializing]
     });
   }
 
@@ -100,21 +100,22 @@ export class PermissionsService
    */
   async update(
     id: number,
-    updatePermissionDto: UpdatePermissionDto,
+    updatePermissionDto: UpdatePermissionDto
   ): Promise<Permission> {
     const permission = await this.repository.get(id);
     const condition: ObjectLiteral = {
-      description: updatePermissionDto.description,
+      description: updatePermissionDto.description
     };
     condition.id = Not(id);
-    const countSameDescription =
-      await this.repository.countEntityByCondition(condition);
+    const countSameDescription = await this.repository.countEntityByCondition(
+      condition
+    );
     if (countSameDescription > 0) {
       throw new UnprocessableEntityException({
         property: 'name',
         constraints: {
-          unique: 'already taken',
-        },
+          unique: 'already taken'
+        }
       });
     }
     return this.repository.updateEntity(permission, updatePermissionDto);

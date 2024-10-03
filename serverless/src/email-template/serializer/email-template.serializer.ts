@@ -24,8 +24,8 @@ export class EmailTemplate extends ModelSerializer {
   isDefault: boolean;
 
   @ApiPropertyOptional()
-  created_at: Date;
+  createdAt: Date;
 
   @ApiPropertyOptional()
-  updated_at: Date;
+  updatedAt: Date;
 }

@@ -2,10 +2,9 @@ import { plainToClass } from 'class-transformer';
 import {
   DeepPartial,
   FindManyOptions,
-  Like,
+  ILike,
   ObjectLiteral,
-  Repository,
-  FindConditions,
+  Repository
 } from 'typeorm';
 import { QueryDeepPartialEntity } from 'typeorm/query-builder/QueryPartialEntity';
 
@@ -18,7 +17,10 @@ import { ModelSerializer } from 'src/common/serializer/model.serializer';
 /**
  * Base Repository for code reuse
  */
-export class BaseRepository<T extends ObjectLiteral, K extends ModelSerializer> extends Repository<T> {
+export class BaseRepository<
+  T,
+  K extends ModelSerializer
+> extends Repository<T> {
   /***
    * get entity by id
    * @param id
@@ -26,17 +28,22 @@ export class BaseRepository<T extends ObjectLiteral, K extends ModelSerializer> 
    * @param transformOptions
    */
   async get(
-    id: any,
+    id: number,
     relations: string[] = [],
-    transformOptions = {},
+    transformOptions = {}
   ): Promise<K | null> {
-    return await this.findOne(id, { relations })
+    return await this.findOne({
+      where: {
+        id
+      },
+      relations
+    })
       .then((entity) => {
         if (!entity) {
           return Promise.reject(new NotFoundException());
         }
         return Promise.resolve(
-          entity ? this.transform(entity, transformOptions) : null,
+          entity ? this.transform(entity, transformOptions) : null
         );
       })
       .catch((error) => Promise.reject(error));
@@ -44,16 +51,32 @@ export class BaseRepository<T extends ObjectLiteral, K extends ModelSerializer> 
 
   /**
    * find by condition
-   * @param where
+   * @param fieldName
+   * @param value
    * @param relations
    * @param transformOptions
    */
   async findBy(
-    where: FindConditions<T>,
+    fieldName: string,
+    value: any,
     relations: string[] = [],
-    transformOptions: {} = {},
-  ): Promise<T[]> {
-    return this.find({ where, relations });
+    transformOptions = {}
+  ): Promise<K | null> {
+    return await this.findOne({
+      where: {
+        [fieldName]: value
+      },
+      relations
+    })
+      .then((entity) => {
+        if (!entity) {
+          return Promise.reject(new NotFoundException());
+        }
+        return Promise.resolve(
+          entity ? this.transform(entity, transformOptions) : null
+        );
+      })
+      .catch((error) => Promise.reject(error));
   }
 
   /**
@@ -61,9 +84,11 @@ export class BaseRepository<T extends ObjectLiteral, K extends ModelSerializer> 
    * @param conditions
    */
   async countEntityByCondition(
-    conditions: FindConditions<T> = {},
+    conditions: ObjectLiteral = {}
   ): Promise<number> {
-    return this.count(conditions)
+    return this.count({
+      where: conditions
+    })
       .then((count) => {
         return Promise.resolve(count);
       })
@@ -80,20 +105,20 @@ export class BaseRepository<T extends ObjectLiteral, K extends ModelSerializer> 
   async findAll(
     searchFilter: DeepPartial<SearchFilterInterface>,
     relations: string[] = [],
-    searchCriteria: (keyof T)[],
-    transformOptions = {},
+    searchCriteria: string[],
+    transformOptions = {}
   ): Promise<K[]> {
-    const whereConditions: FindConditions<T>[] = [];
+    const whereCondition = [];
     if (searchFilter.hasOwnProperty('keywords') && searchFilter.keywords) {
       for (const key of searchCriteria) {
-        whereConditions.push({
-          [key]: Like(`%${searchFilter.keywords}%`),
-        } as FindConditions<T>);
+        whereCondition.push({
+          [key]: ILike(`%${searchFilter.keywords}%`)
+        });
       }
     }
     const results = await this.find({
-      where: whereConditions,
-      relations,
+      where: whereCondition,
+      relations
     });
     return this.transformMany(results, transformOptions);
   }
@@ -114,7 +139,7 @@ export class BaseRepository<T extends ObjectLiteral, K extends ModelSerializer> 
     return {
       skip: (page - 1) * limit,
       limit,
-      page,
+      page
     };
   }
 
@@ -128,16 +153,16 @@ export class BaseRepository<T extends ObjectLiteral, K extends ModelSerializer> 
   async paginate(
     searchFilter: DeepPartial<SearchFilterInterface>,
     relations: string[] = [],
-    searchCriteria: (keyof T)[] = [],
-    transformOptions = {},
+    searchCriteria: string[] = [],
+    transformOptions = {}
   ): Promise<Pagination<K>> {
-    const whereConditions: FindConditions<T>[] = [];
-    const findOptions: FindManyOptions<T> = {};
+    const whereCondition = [];
+    const findOptions: FindManyOptions = {};
     if (searchFilter.hasOwnProperty('keywords') && searchFilter.keywords) {
       for (const key of searchCriteria) {
-        whereConditions.push({
-          [key]: Like(`%${searchFilter.keywords}%`),
-        } as FindConditions<T>);
+        whereCondition.push({
+          [key]: ILike(`%${searchFilter.keywords}%`)
+        });
       }
     }
     const paginationInfo: PaginationInfoInterface =
@@ -145,10 +170,10 @@ export class BaseRepository<T extends ObjectLiteral, K extends ModelSerializer> 
     findOptions.relations = relations;
     findOptions.take = paginationInfo.limit;
     findOptions.skip = paginationInfo.skip;
-    findOptions.where = whereConditions;
+    findOptions.where = whereCondition;
     findOptions.order = {
-      created_ad: 'DESC',
-    } as any;
+      createdAt: 'DESC'
+    };
     const { page, skip, limit } = paginationInfo;
     const [results, total] = await this.findAndCount(findOptions);
     const serializedResult = this.transformMany(results, transformOptions);
@@ -158,7 +183,7 @@ export class BaseRepository<T extends ObjectLiteral, K extends ModelSerializer> 
       pageSize: limit,
       currentPage: page,
       previous: page > 1 ? page - 1 : 0,
-      next: total > skip + limit ? page + 1 : 0,
+      next: total > skip + limit ? page + 1 : 0
     });
   }
 
@@ -169,7 +194,7 @@ export class BaseRepository<T extends ObjectLiteral, K extends ModelSerializer> 
    */
   async createEntity(
     inputs: DeepPartial<T>,
-    relations: string[] = [],
+    relations: string[] = []
   ): Promise<K> {
     return this.save(inputs)
       .then(async (entity) => await this.get((entity as any).id, relations))
@@ -185,10 +210,10 @@ export class BaseRepository<T extends ObjectLiteral, K extends ModelSerializer> 
   async updateEntity(
     entity: K,
     inputs: QueryDeepPartialEntity<T>,
-    relations: string[] = [],
+    relations: string[] = []
   ): Promise<K> {
-    return this.update((entity as any).id, inputs)
-      .then(async () => await this.get((entity as any).id, relations))
+    return this.update(entity.id, inputs)
+      .then(async () => await this.get(entity.id, relations))
       .catch((error) => Promise.reject(error));
   }
 

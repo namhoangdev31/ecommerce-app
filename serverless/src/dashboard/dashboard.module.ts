@@ -6,6 +6,6 @@ import { AuthModule } from 'src/auth/auth.module';
 @Module({
   controllers: [DashboardController],
   imports: [AuthModule],
-  providers: [DashboardService],
+  providers: [DashboardService]
 })
 export class DashboardModule {}

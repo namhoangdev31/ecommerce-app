@@ -19,14 +19,14 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { ApiTags } from '@nestjs/swagger';
 import { Request, Response } from 'express';
 import { UAParser } from 'ua-parser-js';
-import { Multer } from 'multer';
+
 import { GetUser } from 'src/common/decorators/get-user.decorator';
 import JwtTwoFactorGuard from 'src/common/guard/jwt-two-factor.guard';
 import { PermissionGuard } from 'src/common/guard/permission.guard';
 import { multerOptionsHelper } from 'src/common/helper/multer-options.helper';
 import { Pagination } from 'src/paginate';
 import { RefreshToken } from 'src/refresh-token/entities/refresh-token.entity';
-import { AuthResponse, AuthService } from 'src/auth/auth.service';
+import { AuthService } from 'src/auth/auth.service';
 import { ChangePasswordDto } from 'src/auth/dto/change-password.dto';
 import { CreateUserDto } from 'src/auth/dto/create-user.dto';
 import { ForgetPasswordDto } from 'src/auth/dto/forget-password.dto';
@@ -40,7 +40,6 @@ import { UserEntity } from 'src/auth/entity/user.entity';
 import { UserSerializer } from 'src/auth/serializer/user.serializer';
 import { RefreshPaginateFilterDto } from 'src/refresh-token/dto/refresh-paginate-filter.dto';
 import { RefreshTokenSerializer } from 'src/refresh-token/serializer/refresh-token.serializer';
-import { StatusCodesList } from 'src/common/constants/status-codes-list.constants';
 
 @ApiTags('user')
 @Controller()
@@ -54,12 +53,16 @@ export class AuthController {
   ): Promise<UserSerializer> {
     return this.authService.create(registerUserDto);
   }
+
   @Post('/auth/login')
-  @HttpCode(HttpStatus.OK)
   async login(
-    @Req() req: Request,
-    @Body() userLoginDto: UserLoginDto,
-  ): Promise<AuthResponse | { error: string }> {
+    @Req()
+    req: Request,
+    @Res()
+    response: Response,
+    @Body()
+    userLoginDto: UserLoginDto,
+  ) {
     const ua = UAParser(req.headers['user-agent']);
     const refreshTokenPayload: Partial<RefreshToken> = {
       ip: req.ip,
@@ -67,23 +70,14 @@ export class AuthController {
       browser: ua.browser.name,
       os: ua.os.name,
     };
-
-    const result = await this.authService.loginUser(
+    const cookiePayload = await this.authService.login(
       userLoginDto,
       refreshTokenPayload,
     );
-
-    if ('error' in result) {
-      return result;
-    }
-
-    return {
-      access_token: result.access_token,
-      refresh_token: result.refresh_token,
-      statusCode: HttpStatus.OK,
-      code: StatusCodesList.Success.toString(),
-    };
+    response.setHeader('Set-Cookie', cookiePayload);
+    return response.status(HttpStatus.NO_CONTENT).json({});
   }
+
   @Post('/refresh')
   async refresh(
     @Req()
@@ -151,8 +145,8 @@ export class AuthController {
   updateProfile(
     @GetUser()
     user: UserEntity,
-    @UploadedFile() // This will now use the correct type
-    file: Multer.File, // Change this line
+    @UploadedFile()
+    file: Express.Multer.File,
     @Body()
     updateUserDto: UpdateUserProfileDto,
   ): Promise<UserSerializer> {

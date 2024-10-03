@@ -1,20 +1,25 @@
 import { ConnectionOptions } from 'typeorm';
+import * as config from 'config';
 
+const dbConfig = config.get('db');
 const ormConfig: ConnectionOptions = {
-  type: 'mysql',
-  host: process.env.DB_HOST,
-  port: parseInt(process.env.DB_PORT || '3306', 10),
-  username: process.env.DB_USERNAME,
-  password: process.env.DB_PASSWORD,
-  database: process.env.DB_NAME,
+  type: process.env.DB_TYPE || dbConfig.type,
+  host: process.env.DB_HOST || dbConfig.host,
+  port: process.env.DB_PORT || dbConfig.port,
+  username: process.env.DB_USERNAME || dbConfig.username,
+  password: process.env.DB_PASSWORD || dbConfig.password,
+  database: process.env.DB_DATABASE_NAME || dbConfig.database,
+  migrationsTransactionMode: 'each',
   entities: [__dirname + '/../**/*.entity.{js,ts}'],
-  migrations: [__dirname + '/../database/migrations/**/*{.ts,.js}'],
-  migrationsTableName: 'migrations',
-  logging: true,
-  synchronize: process.env.NODE_ENV === 'development',
+  logging: false,
+  synchronize: false,
   migrationsRun: process.env.NODE_ENV === 'test',
-  dropSchema: process.env.NODE_ENV === 'development',
-  cache: true,
+  dropSchema: process.env.NODE_ENV === 'test',
+  migrationsTableName: 'migrations',
+  migrations: [__dirname + '/../database/migrations/**/*{.ts,.js}'],
+  cli: {
+    migrationsDir: 'src/database/migrations'
+  }
 };
 
 export = ormConfig;

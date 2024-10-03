@@ -1,8 +1,8 @@
 import {
   ValidationArguments,
-  ValidatorConstraintInterface,
+  ValidatorConstraintInterface
 } from 'class-validator';
-import { Connection, EntitySchema, ObjectType, FindConditions } from 'typeorm';
+import { Connection, EntitySchema, FindConditions, ObjectType } from 'typeorm';
 
 /**
  * unique validation arguments
@@ -10,10 +10,7 @@ import { Connection, EntitySchema, ObjectType, FindConditions } from 'typeorm';
 export interface UniqueValidationArguments<E> extends ValidationArguments {
   constraints: [
     ObjectType<E> | EntitySchema<E> | string,
-    (
-      | ((validationArguments: ValidationArguments) => FindConditions<E>)
-      | keyof E
-    ),
+    ((validationArguments: ValidationArguments) => FindConditions<E>) | keyof E
   ];
 }
 
@@ -30,18 +27,16 @@ export abstract class AbstractUniqueValidator
    * @param value
    * @param args
    */
-  public async validate<E>(
-    value: string,
-    args: UniqueValidationArguments<E>,
-  ): Promise<boolean> {
+  public async validate<E>(value: string, args: UniqueValidationArguments<E>) {
     const [EntityClass, findCondition = args.property] = args.constraints;
     return (
       (await this.connection.getRepository(EntityClass).count({
-        where: typeof findCondition === 'function'
-          ? findCondition(args)
-          : {
-              [findCondition || args.property]: value,
-            } as FindConditions<E>,
+        where:
+          typeof findCondition === 'function'
+            ? findCondition(args)
+            : {
+                [findCondition || args.property]: value
+              }
       })) <= 0
     );
   }
@@ -51,6 +46,6 @@ export abstract class AbstractUniqueValidator
    * @param args
    */
   public defaultMessage(args: ValidationArguments) {
-    return `${args.property} '${args.value}' đã tồn tại`;
+    return `${args.property} '${args.value}' already exists`;
   }
 }

@@ -9,38 +9,40 @@ import { AuthService } from 'src/auth/auth.service';
 import { UserEntity } from 'src/auth/entity/user.entity';
 import { CustomHttpException } from 'src/exception/custom-http.exception';
 
+const TwofaConfig = config.get('twofa');
+
 @Injectable()
 export class TwofaService {
-  constructor(private readonly usersService: AuthService) { }
+  constructor(private readonly usersService: AuthService) {}
 
   async generateTwoFASecret(user: UserEntity) {
     if (user.twoFAThrottleTime > new Date()) {
       throw new CustomHttpException(
         `tooManyRequest-{"second":"${this.differentBetweenDatesInSec(
           user.twoFAThrottleTime,
-          new Date(),
+          new Date()
         )}"}`,
         HttpStatus.TOO_MANY_REQUESTS,
-        StatusCodesList.TooManyTries,
+        StatusCodesList.TooManyTries
       );
     }
     const secret = authenticator.generateSecret();
     const otpauthUrl = authenticator.keyuri(
       user.email,
-      process.env.TWOFA_AUTHENTICATION_APP_NAME,
-      secret,
+      TwofaConfig.authenticationAppNAme,
+      secret
     );
     await this.usersService.setTwoFactorAuthenticationSecret(secret, user.id);
     return {
       secret,
-      otpauthUrl,
+      otpauthUrl
     };
   }
 
   isTwoFACodeValid(twoFASecret: string, user: UserEntity) {
     return authenticator.verify({
       token: twoFASecret,
-      secret: user.twoFASecret,
+      secret: user.twoFASecret
     });
   }
 

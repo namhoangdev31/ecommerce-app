@@ -2,13 +2,17 @@ import {
   HttpStatus,
   Inject,
   Injectable,
-  UnprocessableEntityException,
+  UnprocessableEntityException
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
 import { existsSync, unlinkSync } from 'fs';
 import { SignOptions } from 'jsonwebtoken';
 import { DeepPartial, Not, ObjectLiteral } from 'typeorm';
+import {
+  RateLimiterRes,
+  RateLimiterStoreAbstract
+} from 'rate-limiter-flexible';
 
 import { ExceptionTitleList } from 'src/common/constants/exception-title-list.constants';
 import { StatusCodesList } from 'src/common/constants/status-codes-list.constants';
@@ -31,26 +35,34 @@ import {
   adminUserGroupsForSerializing,
   defaultUserGroupsForSerializing,
   ownerUserGroupsForSerializing,
-  UserSerializer,
+  UserSerializer
 } from 'src/auth/serializer/user.serializer';
 import { UserStatusEnum } from 'src/auth/user-status.enum';
 import { UserRepository } from 'src/auth/user.repository';
 import { ValidationPayloadInterface } from 'src/common/interfaces/validation-error.interface';
 import { RefreshPaginateFilterDto } from 'src/refresh-token/dto/refresh-paginate-filter.dto';
 import { RefreshTokenSerializer } from 'src/refresh-token/serializer/refresh-token.serializer';
-import { AuthResponse } from '../common/types.type';
-import { RefreshTokenRepository } from 'src/refresh-token/refresh-token.repository';
-import { RateLimiterStoreAbstract } from 'rate-limiter-flexible';
 
-const throttleLoginLimit = parseInt(process.env.THROTTLE_LOGIN_LIMIT, 10);
-const jwtExpiresIn = parseInt(process.env.JWT_EXPIRES_IN, 10);
-const jwtCookieExpiresIn = parseInt(process.env.JWT_COOKIE_EXPIRES_IN, 10);
-const appUrl = process.env.APP_URL;
-const frontendUrl = process.env.FRONTEND_URL;
-const isSameSite = process.env.IS_SAME_SITE === 'true';
+const throttleConfig = {
+  login: {
+    limit: process.env.THROTTLE_LOGIN_LIMIT || 5,
+    ttl: process.env.THROTTLE_LOGIN_TTL || 60000
+  }
+};
+const jwtConfig = {
+  secret: process.env.JWT_SECRET,
+  expiresIn: process.env.JWT_EXPIRES_IN || '1h',
+  cookieExpiresIn: process.env.JWT_COOKIE_EXPIRES_IN || 3600
+};
+const appConfig = {
+  appUrl: process.env.APP_URL || 'http://localhost:3000',
+  frontendUrl: process.env.FRONTEND_URL || 'http://localhost:4200',
+  sameSite: process.env.IS_SAME_SITE === 'true'
+};
+const isSameSite = appConfig.sameSite;
 const BASE_OPTIONS: SignOptions = {
-  issuer: appUrl,
-  audience: frontendUrl,
+  issuer: appConfig.appUrl,
+  audience: appConfig.frontendUrl
 };
 
 @Injectable()
@@ -62,7 +74,7 @@ export class AuthService {
     private readonly mailService: MailService,
     private readonly refreshTokenService: RefreshTokenService,
     @Inject('LOGIN_THROTTLE')
-    private readonly rateLimiter: RateLimiterStoreAbstract,
+    private readonly rateLimiter: RateLimiterStoreAbstract
   ) {}
 
   /**
@@ -78,7 +90,7 @@ export class AuthService {
     subject: string,
     url: string,
     slug: string,
-    linkLabel: string,
+    linkLabel: string
   ) {
     const mailData: MailJobInterface = {
       to: user.email,
@@ -86,10 +98,10 @@ export class AuthService {
       slug,
       context: {
         email: user.email,
-        link: `<a href="${frontendUrl}/${url}">${linkLabel} →</a>`,
+        link: `<a href="${appConfig.frontendUrl}/${url}">${linkLabel} →</a>`,
         username: user.username,
-        subject,
-      },
+        subject
+      }
     };
     await this.mailService.sendMail(mailData, 'system-mail');
   }
@@ -99,7 +111,7 @@ export class AuthService {
    * @param createUserDto
    */
   async create(
-    createUserDto: DeepPartial<UserEntity>,
+    createUserDto: DeepPartial<UserEntity>
   ): Promise<UserSerializer> {
     const token = await this.generateUniqueToken(12);
     if (!createUserDto.status) {
@@ -123,8 +135,8 @@ export class AuthService {
    * @param field
    * @param value
    */
-  async findBy(field: keyof UserEntity, value: string): Promise<UserEntity[]> {
-    return this.userRepository.findBy({ [field]: value });
+  async findBy(field: string, value: string): Promise<UserSerializer> {
+    return this.userRepository.findBy(field, value);
   }
 
   /**
@@ -132,41 +144,54 @@ export class AuthService {
    * @param userLoginDto
    * @param refreshTokenPayload
    */
-  async loginUser(
+  async login(
     userLoginDto: UserLoginDto,
-    refreshTokenPayload: Partial<RefreshToken>,
-  ): Promise<AuthResponse> {
-    try {
-      const loginResult = await this.userRepository.loginUser(userLoginDto);
-      console.log(loginResult);
-      if (!loginResult.user) {
-        return {
-          error: 'Thông tin đăng nhập không hợp lệ',
-          statusCode: HttpStatus.UNAUTHORIZED,
-          code: StatusCodesList.InvalidCredentials.toString(),
-        };
-      }
-      const accessToken = await this.generateAccessToken(loginResult.user);
-      let refreshToken = null;
-      if (userLoginDto.remember) {
-        refreshToken = await this.refreshTokenService.generateRefreshToken(
-          loginResult.user,
-          refreshTokenPayload,
+    refreshTokenPayload: Partial<RefreshToken>
+  ): Promise<string[]> {
+    const usernameIPkey = `${userLoginDto.username}_${refreshTokenPayload.ip}`;
+    const resUsernameAndIP = await this.rateLimiter.get(usernameIPkey);
+    let retrySecs = 0;
+    // Check if user is already blocked
+    if (
+      resUsernameAndIP !== null &&
+      resUsernameAndIP.consumedPoints > throttleConfig.login.limit
+    ) {
+      retrySecs = Math.round(resUsernameAndIP.msBeforeNext / 1000) || 1;
+    }
+    if (retrySecs > 0) {
+      throw new CustomHttpException(
+        `tooManyRequest-{"second":"${String(retrySecs)}"}`,
+        HttpStatus.TOO_MANY_REQUESTS,
+        StatusCodesList.TooManyTries
+      );
+    }
+
+    const [user, error, code] = await this.userRepository.login(userLoginDto);
+    if (!user) {
+      const [result, throttleError] = await this.limitConsumerPromiseHandler(
+        usernameIPkey
+      );
+      if (!result) {
+        throw new CustomHttpException(
+          `tooManyRequest-{"second":${String(
+            Math.round(throttleError.msBeforeNext / 1000) || 1
+          )}}`,
+          HttpStatus.TOO_MANY_REQUESTS,
+          StatusCodesList.TooManyTries
         );
       }
-      return {
-        access_token: accessToken,
-        refresh_token: refreshToken,
-        code: StatusCodesList.Success.toString(),
-        statusCode: HttpStatus.OK,
-      };
-    } catch (error) {
-      return {
-        error: `Đã xảy ra lỗi trong quá trình đăng nhập:> ${error.toString()}`,
-        statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
-        code: StatusCodesList.InternalServerError.toString(),
-      };
+      throw new UnauthorizedException(error, code);
     }
+    const accessToken = await this.generateAccessToken(user);
+    let refreshToken = null;
+    if (userLoginDto.remember) {
+      refreshToken = await this.refreshTokenService.generateRefreshToken(
+        user,
+        refreshTokenPayload
+      );
+    }
+    await this.rateLimiter.delete(usernameIPkey);
+    return this.buildResponsePayload(accessToken, refreshToken);
   }
 
   /**
@@ -176,15 +201,15 @@ export class AuthService {
    */
   public async generateAccessToken(
     user: UserSerializer,
-    isTwoFAAuthenticated = false,
+    isTwoFAAuthenticated = false
   ): Promise<string> {
     const opts: SignOptions = {
       ...BASE_OPTIONS,
-      subject: String(user.id),
+      subject: String(user.id)
     };
     return this.jwt.signAsync({
       ...opts,
-      isTwoFAAuthenticated,
+      isTwoFAAuthenticated
     });
   }
 
@@ -193,20 +218,20 @@ export class AuthService {
    * throttle by user
    * @param usernameIPkey
    */
-  // async limitConsumerPromiseHandler(
-  //   usernameIPkey: string,
-  // ): Promise<[RateLimiterRes, RateLimiterRes]> {
-  //   return new Promise((resolve) => {
-  //     this.rateLimiter
-  //       .consume(usernameIPkey)
-  //       .then((rateLimiterRes) => {
-  //         resolve([rateLimiterRes, null]);
-  //       })
-  //       .catch((rateLimiterError) => {
-  //         resolve([null, rateLimiterError]);
-  //       });
-  //   });
-  // }
+  async limitConsumerPromiseHandler(
+    usernameIPkey: string
+  ): Promise<[RateLimiterRes, RateLimiterRes]> {
+    return new Promise((resolve) => {
+      this.rateLimiter
+        .consume(usernameIPkey)
+        .then((rateLimiterRes) => {
+          resolve([rateLimiterRes, null]);
+        })
+        .catch((rateLimiterError) => {
+          resolve([null, rateLimiterError]);
+        });
+    });
+  }
 
   /**
    * get user profile
@@ -214,7 +239,7 @@ export class AuthService {
    */
   async get(user: UserEntity): Promise<UserSerializer> {
     return this.userRepository.transform(user, {
-      groups: ownerUserGroupsForSerializing,
+      groups: ownerUserGroupsForSerializing
     });
   }
 
@@ -226,8 +251,8 @@ export class AuthService {
     return this.userRepository.get(id, ['role'], {
       groups: [
         ...adminUserGroupsForSerializing,
-        ...ownerUserGroupsForSerializing,
-      ],
+        ...ownerUserGroupsForSerializing
+      ]
     });
   }
 
@@ -236,7 +261,7 @@ export class AuthService {
    * @param userSearchFilterDto
    */
   async findAll(
-    userSearchFilterDto: UserSearchFilterDto,
+    userSearchFilterDto: UserSearchFilterDto
   ): Promise<Pagination<UserSerializer>> {
     return this.userRepository.paginate(
       userSearchFilterDto,
@@ -246,9 +271,9 @@ export class AuthService {
         groups: [
           ...adminUserGroupsForSerializing,
           ...ownerUserGroupsForSerializing,
-          ...defaultUserGroupsForSerializing,
-        ],
-      },
+          ...defaultUserGroupsForSerializing
+        ]
+      }
     );
   }
 
@@ -259,29 +284,30 @@ export class AuthService {
    */
   async update(
     id: number,
-    updateUserDto: DeepPartial<UserEntity>,
+    updateUserDto: DeepPartial<UserEntity>
   ): Promise<UserSerializer> {
     const user = await this.userRepository.get(id, [], {
       groups: [
         ...ownerUserGroupsForSerializing,
-        ...adminUserGroupsForSerializing,
-      ],
+        ...adminUserGroupsForSerializing
+      ]
     });
     const checkUniqueFieldArray = ['username', 'email'];
     const errorPayload: ValidationPayloadInterface[] = [];
     for (const field of checkUniqueFieldArray) {
       const condition: ObjectLiteral = {
-        [field]: updateUserDto[field],
+        [field]: updateUserDto[field]
       };
       condition.id = Not(id);
-      const checkUnique =
-        await this.userRepository.countEntityByCondition(condition);
+      const checkUnique = await this.userRepository.countEntityByCondition(
+        condition
+      );
       if (checkUnique > 0) {
         errorPayload.push({
           property: field,
           constraints: {
-            unique: 'already taken',
-          },
+            unique: 'already taken'
+          }
         });
       }
     }
@@ -302,14 +328,14 @@ export class AuthService {
    * @param token
    */
   async activateAccount(token: string): Promise<void> {
-    const user = await this.userRepository.findOne({ where: { token } });
+    const user = await this.userRepository.findOne({ token });
     if (!user) {
       throw new NotFoundException();
     }
     if (user.status !== UserStatusEnum.INACTIVE) {
       throw new ForbiddenException(
         ExceptionTitleList.UserInactive,
-        StatusCodesList.UserInactive,
+        StatusCodesList.UserInactive
       );
     }
     user.status = UserStatusEnum.ACTIVE;
@@ -326,8 +352,8 @@ export class AuthService {
     const { email } = forgetPasswordDto;
     const user = await this.userRepository.findOne({
       where: {
-        email,
-      },
+        email
+      }
     });
     if (!user) {
       return;
@@ -345,7 +371,7 @@ export class AuthService {
       subject,
       `reset/${token}`,
       'reset-password',
-      subject,
+      subject
     );
   }
 
@@ -355,8 +381,9 @@ export class AuthService {
    */
   async resetPassword(resetPasswordDto: ResetPasswordDto): Promise<void> {
     const { password } = resetPasswordDto;
-    const user =
-      await this.userRepository.getUserForResetPassword(resetPasswordDto);
+    const user = await this.userRepository.getUserForResetPassword(
+      resetPasswordDto
+    );
     if (!user) {
       throw new NotFoundException();
     }
@@ -372,7 +399,7 @@ export class AuthService {
    */
   async changePassword(
     user: UserEntity,
-    changePasswordDto: ChangePasswordDto,
+    changePasswordDto: ChangePasswordDto
   ): Promise<void> {
     const { oldPassword, password } = changePasswordDto;
     const checkOldPwdMatches = await user.validatePassword(oldPassword);
@@ -380,7 +407,7 @@ export class AuthService {
       throw new CustomHttpException(
         ExceptionTitleList.IncorrectOldPassword,
         HttpStatus.PRECONDITION_FAILED,
-        StatusCodesList.IncorrectOldPassword,
+        StatusCodesList.IncorrectOldPassword
       );
     }
     user.password = password;
@@ -398,7 +425,7 @@ export class AuthService {
     length: number,
     uppercase = true,
     lowercase = true,
-    numerical = true,
+    numerical = true
   ): string {
     let result = '';
     const lowerCaseAlphabets = 'abcdefghijklmnopqrstuvwxyz';
@@ -428,10 +455,11 @@ export class AuthService {
   async generateUniqueToken(length: number): Promise<string> {
     const token = this.generateRandomCode(length);
     const condition: ObjectLiteral = {
-      token,
+      token
     };
-    const tokenCount =
-      await this.userRepository.countEntityByCondition(condition);
+    const tokenCount = await this.userRepository.countEntityByCondition(
+      condition
+    );
     if (tokenCount > 0) {
       await this.generateUniqueToken(length);
     }
@@ -451,7 +479,7 @@ export class AuthService {
       }`,
       `ExpiresIn=; Path=/; Max-Age=0; ${
         !isSameSite ? 'SameSite=None; Secure;' : ''
-      }`,
+      }`
     ];
   }
 
@@ -464,18 +492,18 @@ export class AuthService {
     let tokenCookies = [
       `Authentication=${accessToken}; HttpOnly; Path=/; ${
         !isSameSite ? 'SameSite=None; Secure;' : ''
-      } Max-Age=${jwtCookieExpiresIn}`,
+      } Max-Age=${jwtConfig.cookieExpiresIn}`
     ];
     if (refreshToken) {
       const expiration = new Date();
-      expiration.setSeconds(expiration.getSeconds() + jwtExpiresIn);
+      expiration.setSeconds(expiration.getSeconds() + parseInt(jwtConfig.expiresIn));
       tokenCookies = tokenCookies.concat([
         `Refresh=${refreshToken}; HttpOnly; Path=/; ${
           !isSameSite ? 'SameSite=None; Secure;' : ''
-        } Max-Age=${jwtCookieExpiresIn}`,
+        } Max-Age=${jwtConfig.cookieExpiresIn}`,
         `ExpiresIn=${expiration}; Path=/; ${
           !isSameSite ? 'SameSite=None; Secure;' : ''
-        } Max-Age=${jwtCookieExpiresIn}`,
+        } Max-Age=${jwtConfig.cookieExpiresIn}`
       ]);
     }
     return tokenCookies;
@@ -488,7 +516,7 @@ export class AuthService {
   async createAccessTokenFromRefreshToken(refreshToken: string) {
     const { token } =
       await this.refreshTokenService.createAccessTokenFromRefreshToken(
-        refreshToken,
+        refreshToken
       );
     return this.buildResponsePayload(token);
   }
@@ -500,8 +528,9 @@ export class AuthService {
   async revokeRefreshToken(encoded: string): Promise<void> {
     // ignore exception because anyway we are going invalidate cookies
     try {
-      const { token } =
-        await this.refreshTokenService.resolveRefreshToken(encoded);
+      const { token } = await this.refreshTokenService.resolveRefreshToken(
+        encoded
+      );
       if (token) {
         token.isRevoked = true;
         await token.save();
@@ -510,7 +539,7 @@ export class AuthService {
       throw new CustomHttpException(
         ExceptionTitleList.InvalidRefreshToken,
         HttpStatus.PRECONDITION_FAILED,
-        StatusCodesList.InvalidRefreshToken,
+        StatusCodesList.InvalidRefreshToken
       );
     }
   }
@@ -522,7 +551,7 @@ export class AuthService {
    **/
   activeRefreshTokenList(
     userId: number,
-    filter: RefreshPaginateFilterDto,
+    filter: RefreshPaginateFilterDto
   ): Promise<Pagination<RefreshTokenSerializer>> {
     return this.refreshTokenService.getRefreshTokenByUserId(userId, filter);
   }
@@ -547,7 +576,7 @@ export class AuthService {
     twoFAThrottleTime.setSeconds(twoFAThrottleTime.getSeconds() + 60);
     return this.userRepository.update(userId, {
       twoFASecret: secret,
-      twoFAThrottleTime,
+      twoFAThrottleTime
     });
   }
 
@@ -560,7 +589,7 @@ export class AuthService {
   async turnOnTwoFactorAuthentication(
     user: UserEntity,
     isTwoFAEnabled = true,
-    qrDataUri: string,
+    qrDataUri: string
   ) {
     if (isTwoFAEnabled) {
       const subject = 'Activate Two Factor Authentication';
@@ -572,20 +601,20 @@ export class AuthService {
           email: user.email,
           qrcode: 'cid:2fa-qrcode',
           username: user.username,
-          subject,
+          subject
         },
         attachments: [
           {
             filename: '2fa-qrcode.png',
             path: qrDataUri,
-            cid: '2fa-qrcode',
-          },
-        ],
+            cid: '2fa-qrcode'
+          }
+        ]
       };
       await this.mailService.sendMail(mailData, 'system-mail');
     }
     return this.userRepository.update(user.id, {
-      isTwoFAEnabled,
+      isTwoFAEnabled
     });
   }
 
@@ -601,4 +630,3 @@ export class AuthService {
     return this.refreshTokenService.getRefreshTokenGroupedData(field);
   }
 }
-export { AuthResponse };

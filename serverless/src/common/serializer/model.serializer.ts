@@ -3,6 +3,6 @@
  */
 export class ModelSerializer {
   id: number;
-  created_at: Date;
+  createdAt: Date;
   [key: string]: any;
 }

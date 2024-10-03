@@ -4,8 +4,7 @@ import { RefreshToken } from 'src/refresh-token/entities/refresh-token.entity';
 import { UserSerializer } from 'src/auth/serializer/user.serializer';
 import { BaseRepository } from 'src/common/repository/base.repository';
 import { RefreshTokenSerializer } from 'src/refresh-token/serializer/refresh-token.serializer';
-import process from 'process';
-const refreshExpires = process.env.JWT_REFRESH_EXPIRES_IN;
+
 @EntityRepository(RefreshToken)
 export class RefreshTokenRepository extends BaseRepository<
   RefreshToken,
@@ -18,7 +17,7 @@ export class RefreshTokenRepository extends BaseRepository<
    */
   public async createRefreshToken(
     user: UserSerializer,
-    tokenPayload: Partial<RefreshToken>,
+    tokenPayload: Partial<RefreshToken>
   ): Promise<RefreshToken> {
     const token = this.create();
     token.userId = user.id;
@@ -28,7 +27,9 @@ export class RefreshTokenRepository extends BaseRepository<
     token.browser = tokenPayload.browser;
     token.os = tokenPayload.os;
     const expiration = new Date();
-    expiration.setSeconds(expiration.getSeconds() + Number(refreshExpires));
+    expiration.setSeconds(
+      expiration.getSeconds() + parseInt(process.env.JWT_REFRESH_EXPIRES_IN, 10)
+    );
     token.expires = expiration;
     return token.save();
   }
@@ -40,8 +41,8 @@ export class RefreshTokenRepository extends BaseRepository<
   public async findTokenById(id: number): Promise<RefreshToken | null> {
     return this.findOne({
       where: {
-        id,
-      },
+        id
+      }
     });
   }
 }

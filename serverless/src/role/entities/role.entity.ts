@@ -4,14 +4,17 @@ import { CustomBaseEntity } from 'src/common/entity/custom-base.entity';
 import { PermissionEntity } from 'src/permission/entities/permission.entity';
 
 @Entity({
-  name: 'role',
+  name: 'role'
 })
 @Unique(['name'])
 export class RoleEntity extends CustomBaseEntity {
   @Column('varchar', { length: 100 })
+  @Index({
+    unique: true
+  })
   name: string;
 
-  @Column('varchar', { length: 256 })
+  @Column('text')
   description: string;
 
   @ManyToMany(() => PermissionEntity, (permission) => permission.role)
@@ -19,12 +22,12 @@ export class RoleEntity extends CustomBaseEntity {
     name: 'role_permission',
     joinColumn: {
       name: 'roleId',
-      referencedColumnName: 'id',
+      referencedColumnName: 'id'
     },
     inverseJoinColumn: {
       name: 'permissionId',
-      referencedColumnName: 'id',
-    },
+      referencedColumnName: 'id'
+    }
   })
   permission: PermissionEntity[];
 

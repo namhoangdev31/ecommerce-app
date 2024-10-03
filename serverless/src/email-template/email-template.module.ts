@@ -10,10 +10,10 @@ import { EmailTemplateRepository } from 'src/email-template/email-template.repos
 @Module({
   imports: [
     TypeOrmModule.forFeature([EmailTemplateRepository]),
-    forwardRef(() => AuthModule),
+    forwardRef(() => AuthModule)
   ],
   exports: [EmailTemplateService],
   controllers: [EmailTemplateController],
-  providers: [EmailTemplateService, UniqueValidatorPipe],
+  providers: [EmailTemplateService, UniqueValidatorPipe]
 })
 export class EmailTemplateModule {}

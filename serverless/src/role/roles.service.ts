@@ -1,5 +1,5 @@
 import { Injectable, UnprocessableEntityException } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm/dist';
+import { InjectRepository } from '@nestjs/typeorm';
 import { Not, ObjectLiteral } from 'typeorm';
 
 import { NotFoundException } from 'src/exception/not-found.exception';
@@ -10,7 +10,7 @@ import { RoleFilterDto } from 'src/role/dto/role-filter.dto';
 import {
   adminUserGroupsForSerializing,
   basicFieldGroupsForSerializing,
-  RoleSerializer,
+  RoleSerializer
 } from 'src/role/serializer/role.serializer';
 import { CommonServiceInterface } from 'src/common/interfaces/common-service.interface';
 import { PermissionsService } from 'src/permission/permissions.service';
@@ -21,7 +21,7 @@ export class RolesService implements CommonServiceInterface<RoleSerializer> {
   constructor(
     @InjectRepository(RoleRepository)
     private repository: RoleRepository,
-    private readonly permissionsService: PermissionsService,
+    private readonly permissionsService: PermissionsService
   ) {}
 
   /**
@@ -39,8 +39,8 @@ export class RolesService implements CommonServiceInterface<RoleSerializer> {
    * Find by name
    * @param name
    */
-  async findByName(name: string): Promise<RoleSerializer | undefined> {
-    return await this.repository.findOne({ where: { name } });
+  async findByName(name) {
+    return await this.repository.findOne({ name });
   }
 
   /**
@@ -58,7 +58,7 @@ export class RolesService implements CommonServiceInterface<RoleSerializer> {
    * @param roleFilterDto
    */
   async findAll(
-    roleFilterDto: RoleFilterDto,
+    roleFilterDto: RoleFilterDto
   ): Promise<Pagination<RoleSerializer>> {
     return this.repository.paginate(
       roleFilterDto,
@@ -67,9 +67,9 @@ export class RolesService implements CommonServiceInterface<RoleSerializer> {
       {
         groups: [
           ...adminUserGroupsForSerializing,
-          ...basicFieldGroupsForSerializing,
-        ],
-      },
+          ...basicFieldGroupsForSerializing
+        ]
+      }
     );
   }
 
@@ -81,8 +81,8 @@ export class RolesService implements CommonServiceInterface<RoleSerializer> {
     return this.repository.get(id, ['permission'], {
       groups: [
         ...adminUserGroupsForSerializing,
-        ...basicFieldGroupsForSerializing,
-      ],
+        ...basicFieldGroupsForSerializing
+      ]
     });
   }
 
@@ -93,24 +93,25 @@ export class RolesService implements CommonServiceInterface<RoleSerializer> {
    */
   async update(
     id: number,
-    updateRoleDto: UpdateRoleDto,
+    updateRoleDto: UpdateRoleDto
   ): Promise<RoleSerializer> {
-    const role = await this.repository.findOne({ where: { id } });
+    const role = await this.repository.findOne(id);
     if (!role) {
       throw new NotFoundException();
     }
     const condition: ObjectLiteral = {
-      name: updateRoleDto.name,
+      name: updateRoleDto.name
     };
     condition.id = Not(id);
-    const checkUniqueTitle =
-      await this.repository.countEntityByCondition(condition);
+    const checkUniqueTitle = await this.repository.countEntityByCondition(
+      condition
+    );
     if (checkUniqueTitle > 0) {
       throw new UnprocessableEntityException({
         property: 'name',
         constraints: {
-          unique: 'already taken',
-        },
+          unique: 'already taken'
+        }
       });
     }
     const { permissions } = updateRoleDto;
