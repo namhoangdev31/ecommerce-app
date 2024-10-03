@@ -32,9 +32,6 @@ __decorate([
 ], PermissionEntity.prototype, "resource", void 0);
 __decorate([
     (0, typeorm_1.Column)(),
-    (0, typeorm_1.Index)({
-        unique: true
-    }),
     __metadata("design:type", String)
 ], PermissionEntity.prototype, "description", void 0);
 __decorate([
@@ -44,7 +41,7 @@ __decorate([
 __decorate([
     (0, typeorm_1.Column)('varchar', {
         default: 'get',
-        length: 20
+        length: 20,
     }),
     __metadata("design:type", String)
 ], PermissionEntity.prototype, "method", void 0);
@@ -58,7 +55,7 @@ __decorate([
 ], PermissionEntity.prototype, "role", void 0);
 exports.PermissionEntity = PermissionEntity = __decorate([
     (0, typeorm_1.Entity)({
-        name: 'permission'
+        name: 'permission',
     }),
     (0, typeorm_1.Unique)(['description']),
     __metadata("design:paramtypes", [Object])

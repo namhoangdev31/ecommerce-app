@@ -12,18 +12,18 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.EmailTemplateEntity = void 0;
 const openapi = require("@nestjs/swagger");
 const typeorm_1 = require("typeorm");
-const custom_base_entity_1 = require("../../common/entity/custom-base.entity");
-let EmailTemplateEntity = class EmailTemplateEntity extends custom_base_entity_1.CustomBaseEntity {
+let EmailTemplateEntity = class EmailTemplateEntity extends typeorm_1.BaseEntity {
     static _OPENAPI_METADATA_FACTORY() {
-        return { title: { required: true, type: () => String }, slug: { required: true, type: () => String }, sender: { required: true, type: () => String }, subject: { required: true, type: () => String }, body: { required: true, type: () => String }, isDefault: { required: true, type: () => Boolean } };
+        return { id: { required: true, type: () => Number }, title: { required: true, type: () => String }, slug: { required: true, type: () => String }, sender: { required: true, type: () => String }, subject: { required: true, type: () => String }, body: { required: true, type: () => String }, isDefault: { required: true, type: () => Boolean } };
     }
 };
 exports.EmailTemplateEntity = EmailTemplateEntity;
 __decorate([
+    (0, typeorm_1.PrimaryGeneratedColumn)(),
+    __metadata("design:type", Number)
+], EmailTemplateEntity.prototype, "id", void 0);
+__decorate([
     (0, typeorm_1.Column)(),
-    (0, typeorm_1.Index)({
-        unique: true
-    }),
     __metadata("design:type", String)
 ], EmailTemplateEntity.prototype, "title", void 0);
 __decorate([
@@ -39,7 +39,7 @@ __decorate([
     __metadata("design:type", String)
 ], EmailTemplateEntity.prototype, "subject", void 0);
 __decorate([
-    (0, typeorm_1.Column)(),
+    (0, typeorm_1.Column)('varchar'),
     __metadata("design:type", String)
 ], EmailTemplateEntity.prototype, "body", void 0);
 __decorate([
@@ -48,7 +48,7 @@ __decorate([
 ], EmailTemplateEntity.prototype, "isDefault", void 0);
 exports.EmailTemplateEntity = EmailTemplateEntity = __decorate([
     (0, typeorm_1.Entity)({
-        name: 'email_templates'
+        name: 'email_templates',
     })
 ], EmailTemplateEntity);
 //# sourceMappingURL=email-template.entity.js.map

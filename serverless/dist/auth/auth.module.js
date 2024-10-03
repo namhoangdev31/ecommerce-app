@@ -1,32 +1,12 @@
 "use strict";
-var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    var desc = Object.getOwnPropertyDescriptor(m, k);
-    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
-      desc = { enumerable: true, get: function() { return m[k]; } };
-    }
-    Object.defineProperty(o, k2, desc);
-}) : (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-}));
-var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
-    Object.defineProperty(o, "default", { enumerable: true, value: v });
-}) : function(o, v) {
-    o["default"] = v;
-});
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
-    __setModuleDefault(result, mod);
-    return result;
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AuthModule = void 0;
@@ -34,8 +14,7 @@ const common_1 = require("@nestjs/common");
 const passport_1 = require("@nestjs/passport");
 const typeorm_1 = require("@nestjs/typeorm");
 const jwt_1 = require("@nestjs/jwt");
-const Redis = __importStar(require("ioredis"));
-const config = __importStar(require("config"));
+const ioredis_1 = __importDefault(require("ioredis"));
 const auth_controller_1 = require("./auth.controller");
 const auth_service_1 = require("./auth.service");
 const user_repository_1 = require("./user.repository");
@@ -45,26 +24,23 @@ const rate_limiter_flexible_1 = require("rate-limiter-flexible");
 const refresh_token_module_1 = require("../refresh-token/refresh-token.module");
 const jwt_two_factor_strategy_1 = require("../common/strategy/jwt-two-factor.strategy");
 const jwt_strategy_1 = require("../common/strategy/jwt.strategy");
-const throttleConfig = config.get('throttle.login');
-const redisConfig = config.get('queue');
-const jwtConfig = config.get('jwt');
 const LoginThrottleFactory = {
     provide: 'LOGIN_THROTTLE',
     useFactory: () => {
-        const redisClient = new Redis({
+        const redisClient = new ioredis_1.default({
             enableOfflineQueue: false,
-            host: process.env.REDIS_HOST || redisConfig.host,
-            port: process.env.REDIS_PORT || redisConfig.port,
-            password: process.env.REDIS_PASSWORD || redisConfig.password
+            host: process.env.QUEUE_HOST,
+            port: parseInt(process.env.QUEUE_PORT, 10),
+            password: process.env.QUEUE_PASSWORD,
         });
         return new rate_limiter_flexible_1.RateLimiterRedis({
             storeClient: redisClient,
-            keyPrefix: throttleConfig.prefix,
-            points: throttleConfig.limit,
-            duration: 60 * 60 * 24 * 30,
-            blockDuration: throttleConfig.blockDuration
+            keyPrefix: process.env.THROTTLE_LOGIN_PREFIX,
+            points: parseInt(process.env.THROTTLE_LOGIN_LIMIT, 10),
+            duration: parseInt(process.env.THROTTLE_LOGIN_DURATION, 10),
+            blockDuration: parseInt(process.env.THROTTLE_LOGIN_BLOCK_DURATION, 10),
         });
-    }
+    },
 };
 let AuthModule = class AuthModule {
 };
@@ -74,18 +50,18 @@ exports.AuthModule = AuthModule = __decorate([
         imports: [
             jwt_1.JwtModule.registerAsync({
                 useFactory: () => ({
-                    secret: process.env.JWT_SECRET || jwtConfig.secret,
+                    secret: process.env.JWT_SECRET,
                     signOptions: {
-                        expiresIn: process.env.JWT_EXPIRES_IN || jwtConfig.expiresIn
-                    }
-                })
+                        expiresIn: process.env.JWT_EXPIRES_IN,
+                    },
+                }),
             }),
             passport_1.PassportModule.register({
-                defaultStrategy: 'jwt'
+                defaultStrategy: 'jwt',
             }),
             typeorm_1.TypeOrmModule.forFeature([user_repository_1.UserRepository]),
             mail_module_1.MailModule,
-            refresh_token_module_1.RefreshTokenModule
+            refresh_token_module_1.RefreshTokenModule,
         ],
         controllers: [auth_controller_1.AuthController],
         providers: [
@@ -93,15 +69,15 @@ exports.AuthModule = AuthModule = __decorate([
             jwt_two_factor_strategy_1.JwtTwoFactorStrategy,
             jwt_strategy_1.JwtStrategy,
             unique_validator_pipe_1.UniqueValidatorPipe,
-            LoginThrottleFactory
+            LoginThrottleFactory,
         ],
         exports: [
             auth_service_1.AuthService,
             jwt_two_factor_strategy_1.JwtTwoFactorStrategy,
             jwt_strategy_1.JwtStrategy,
             passport_1.PassportModule,
-            jwt_1.JwtModule
-        ]
+            jwt_1.JwtModule,
+        ],
     })
 ], AuthModule);
 //# sourceMappingURL=auth.module.js.map

@@ -11,7 +11,7 @@ export class addTokenValidityDateInUserEntity1617559216655
       new TableColumn({
         name: 'tokenValidityDate',
         type: 'timestamp',
-        default: 'now()',
+        default: 'CURRENT_TIMESTAMP',
       }),
     );
   }

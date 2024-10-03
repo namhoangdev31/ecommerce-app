@@ -48,12 +48,12 @@ class PermissionTable1614275788549 {
                 {
                     name: 'created_at',
                     type: 'timestamp',
-                    default: 'now()',
+                    default: 'CURRENT_TIMESTAMP',
                 },
                 {
                     name: 'updated_at',
                     type: 'timestamp',
-                    default: 'now()',
+                    default: 'CURRENT_TIMESTAMP',
                 },
             ],
         }), false);

@@ -1856,6 +1856,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@microsoft/tsdoc@npm:^0.15.0":
+  version: 0.15.0
+  resolution: "@microsoft/tsdoc@npm:0.15.0"
+  checksum: 3f693cff07b220b68563e3f86e9f94a9c8d0791a7446f76149c7d62ae5ed5cb4578bb48b9b5f9baa3dd9a9f77be81903c74654a41e0ca4ecf78936654952a8d4
+  languageName: node
+  linkType: hard
+
 "@monaco-editor/loader@npm:^1.3.3":
   version: 1.4.0
   resolution: "@monaco-editor/loader@npm:1.4.0"
@@ -2120,20 +2127,20 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nestjs/mapped-types@npm:1.0.1":
-  version: 1.0.1
-  resolution: "@nestjs/mapped-types@npm:1.0.1"
+"@nestjs/mapped-types@npm:2.0.5":
+  version: 2.0.5
+  resolution: "@nestjs/mapped-types@npm:2.0.5"
   peerDependencies:
-    "@nestjs/common": ^7.0.8 || ^8.0.0
-    class-transformer: ^0.2.0 || ^0.3.0 || ^0.4.0 || ^0.5.0
-    class-validator: ^0.11.1 || ^0.12.0 || ^0.13.0
-    reflect-metadata: ^0.1.12
+    "@nestjs/common": ^8.0.0 || ^9.0.0 || ^10.0.0
+    class-transformer: ^0.4.0 || ^0.5.0
+    class-validator: ^0.13.0 || ^0.14.0
+    reflect-metadata: ^0.1.12 || ^0.2.0
   peerDependenciesMeta:
     class-transformer:
       optional: true
     class-validator:
       optional: true
-  checksum: ca8dae254f98e8550c92f264d90dee767f30598a5bbe40e80ea93cf622da5c67bd2bc8ef83828198919cc39c543421d4eb977d032ecbbb545863eaea9deb797c
+  checksum: 575e68e833c6d5aacbfcca9b7cf6b2c858f5edcf70888bbb987e57365cfe1a225b175c358f39fd3904c136967e7ca8b1605d9a956c69e6252a8882f766169c96
   languageName: node
   linkType: hard
 
@@ -2200,25 +2207,31 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nestjs/swagger@npm:^5.2.0":
-  version: 5.2.1
-  resolution: "@nestjs/swagger@npm:5.2.1"
+"@nestjs/swagger@npm:^7.4.2":
+  version: 7.4.2
+  resolution: "@nestjs/swagger@npm:7.4.2"
   dependencies:
-    "@nestjs/mapped-types": 1.0.1
+    "@microsoft/tsdoc": ^0.15.0
+    "@nestjs/mapped-types": 2.0.5
+    js-yaml: 4.1.0
     lodash: 4.17.21
-    path-to-regexp: 3.2.0
+    path-to-regexp: 3.3.0
+    swagger-ui-dist: 5.17.14
   peerDependencies:
-    "@nestjs/common": ^8.0.0
-    "@nestjs/core": ^8.0.0
-    fastify-swagger: "*"
-    reflect-metadata: ^0.1.12
-    swagger-ui-express: "*"
+    "@fastify/static": ^6.0.0 || ^7.0.0
+    "@nestjs/common": ^9.0.0 || ^10.0.0
+    "@nestjs/core": ^9.0.0 || ^10.0.0
+    class-transformer: "*"
+    class-validator: "*"
+    reflect-metadata: ^0.1.12 || ^0.2.0
   peerDependenciesMeta:
-    fastify-swagger:
+    "@fastify/static":
       optional: true
-    swagger-ui-express:
+    class-transformer:
       optional: true
-  checksum: 70e204c6068a0aebcd5c3486599e83cfc34e6d1823a580e1d1ed60f80f01c50ed2be9765b76d171b28eaf3b1f7f237f388c1daf86041634a3289e84c7219af5d
+    class-validator:
+      optional: true
+  checksum: 89427d882d2671217a39e4925da6cd244263f15d5b48be89e70bb9171c1480912dce9decf94bff638b4331b9a922bd5ab52e5c74228be8d45d5168d963139d98
   languageName: node
   linkType: hard
 
@@ -3485,13 +3498,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/passport-jwt@npm:^4.0.1":
-  version: 4.0.1
-  resolution: "@types/passport-jwt@npm:4.0.1"
+"@types/passport-jwt@npm:^3.0.6":
+  version: 3.0.13
+  resolution: "@types/passport-jwt@npm:3.0.13"
   dependencies:
+    "@types/express": "*"
     "@types/jsonwebtoken": "*"
     "@types/passport-strategy": "*"
-  checksum: 778f88eaefe39d845ba4824760f9b149c1e408249357514ea9b3d302c180af1faadc164af3fbf41596a23ad01f0a1c95501e193693f4db804f34713853fdc727
+  checksum: 89e206659f38fd520c0d72561606ef1860dc23e59d401bcb429052001ef069a713b1a745ec1208273454e52336a175fb6692dcd3422ecebb552a21cf4b03dc56
   languageName: node
   linkType: hard
 
@@ -3598,7 +3612,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/superagent@npm:^8.1.0":
+"@types/superagent@npm:*":
   version: 8.1.9
   resolution: "@types/superagent@npm:8.1.9"
   dependencies:
@@ -3610,13 +3624,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/supertest@npm:^6.0.0":
-  version: 6.0.2
-  resolution: "@types/supertest@npm:6.0.2"
+"@types/supertest@npm:^2.0.10":
+  version: 2.0.16
+  resolution: "@types/supertest@npm:2.0.16"
   dependencies:
-    "@types/methods": ^1.1.4
-    "@types/superagent": ^8.1.0
-  checksum: 1eafa472665757a6fd984439d11f388ae0480c6d243a6884066c474c4e0357de5373316488da503b1690c3163e075ca8c64c0c4853b3bb7deb09e05d1b64e556
+    "@types/superagent": "*"
+  checksum: 2fc998ea698e0467cdbe3bea0ebce2027ea3a45a13e51a6cecb0435f44b486faecf99c34d8702d2d7fe033e6e09fdd2b374af52ecc8d0c69a1deec66b8c0dd52
   languageName: node
   linkType: hard
 
@@ -9410,6 +9423,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"js-yaml@npm:4.1.0, js-yaml@npm:^4.0.0, js-yaml@npm:^4.1.0":
+  version: 4.1.0
+  resolution: "js-yaml@npm:4.1.0"
+  dependencies:
+    argparse: ^2.0.1
+  bin:
+    js-yaml: bin/js-yaml.js
+  checksum: c7830dfd456c3ef2c6e355cc5a92e6700ceafa1d14bba54497b34a99f0376cecbb3e9ac14d3e5849b426d5a5140709a66237a8c991c675431271c4ce5504151a
+  languageName: node
+  linkType: hard
+
 "js-yaml@npm:^3.13.1":
   version: 3.14.1
   resolution: "js-yaml@npm:3.14.1"
@@ -9419,17 +9443,6 @@ __metadata:
   bin:
     js-yaml: bin/js-yaml.js
   checksum: bef146085f472d44dee30ec34e5cf36bf89164f5d585435a3d3da89e52622dff0b188a580e4ad091c3341889e14cb88cac6e4deb16dc5b1e9623bb0601fc255c
-  languageName: node
-  linkType: hard
-
-"js-yaml@npm:^4.0.0, js-yaml@npm:^4.1.0":
-  version: 4.1.0
-  resolution: "js-yaml@npm:4.1.0"
-  dependencies:
-    argparse: ^2.0.1
-  bin:
-    js-yaml: bin/js-yaml.js
-  checksum: c7830dfd456c3ef2c6e355cc5a92e6700ceafa1d14bba54497b34a99f0376cecbb3e9ac14d3e5849b426d5a5140709a66237a8c991c675431271c4ce5504151a
   languageName: node
   linkType: hard
 
@@ -11125,16 +11138,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"nestjs-throttler-storage-redis@npm:^0.5.1":
-  version: 0.5.1
-  resolution: "nestjs-throttler-storage-redis@npm:0.5.1"
+"nestjs-throttler-storage-redis@npm:^0.1.18":
+  version: 0.1.20
+  resolution: "nestjs-throttler-storage-redis@npm:0.1.20"
   peerDependencies:
-    "@nestjs/common": ^7.0.0 || ^8.0.0 || ^9.0.0 || ^10.0.0
-    "@nestjs/core": ^7.0.0 || ^8.0.0 || ^9.0.0 || ^10.0.0
-    "@nestjs/throttler": ">=6.0.0"
-    ioredis: ">=5.0.0"
-    reflect-metadata: ^0.2.1
-  checksum: ad8cdba55634ffbf88e5ca0cea19639008c883e3d2c8383b0e75fb1d3e843b84b988242af5da5f2667fd2547c48bb25d2c18da32acf35fe3c99541a3316efba5
+    "@nestjs/common": ">=7.0.0"
+    "@nestjs/core": ">=7.0.0"
+    "@nestjs/throttler": ">=2.0.0"
+    ioredis: ^5.0.4
+    reflect-metadata: ^0.1.13
+  checksum: ce9e19b931d6688b2e7a31cc8a41a241e26f899547ad60d0c1a017e94ee9ab0ab15711fb2a3b46ae704bc5078de8eb64ee71738e7c65539933345813ff73a399
   languageName: node
   linkType: hard
 
@@ -11836,7 +11849,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"passport-jwt@npm:4.0.1, passport-jwt@npm:^4.0.1":
+"passport-jwt@npm:4.0.1, passport-jwt@npm:^4.0.0":
   version: 4.0.1
   resolution: "passport-jwt@npm:4.0.1"
   dependencies:
@@ -11862,7 +11875,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"passport@npm:0.6.0":
+"passport@npm:0.6.0, passport@npm:^0.6.0":
   version: 0.6.0
   resolution: "passport@npm:0.6.0"
   dependencies:
@@ -11943,13 +11956,6 @@ __metadata:
   version: 0.2.5
   resolution: "path-to-regexp@npm:0.2.5"
   checksum: 44adcbd847d170786490de80d2abc4762d5e65cd8857f230b87bdff6ab1bd17a91baa201fea549954b4cbfd208ae021a3a4ebac19a69ebdf3fdc628c8344ad39
-  languageName: node
-  linkType: hard
-
-"path-to-regexp@npm:3.2.0":
-  version: 3.2.0
-  resolution: "path-to-regexp@npm:3.2.0"
-  checksum: c3d35cda3b26d9e604d789b9a1764bb9845f53ca8009d5809356b4677a3c064b0f01117a05a5b4b77bafd5ae002a82592e3f3495e885c22961f8b1dab8bd6ae7
   languageName: node
   linkType: hard
 
@@ -13696,7 +13702,7 @@ __metadata:
     "@nestjs/platform-express": ^9.0.5
     "@nestjs/schematics": ^10.0.0
     "@nestjs/serve-static": ^4.0.2
-    "@nestjs/swagger": ^5.2.0
+    "@nestjs/swagger": ^7.4.2
     "@nestjs/testing": ^10.0.0
     "@nestjs/throttler": ^2.0.1
     "@nestjs/typeorm": ^8.0.3
@@ -13705,9 +13711,9 @@ __metadata:
     "@types/jest": ^29.5.2
     "@types/multer": ^1.4.7
     "@types/node": ^20.3.1
-    "@types/passport-jwt": ^4.0.1
+    "@types/passport-jwt": ^3.0.6
     "@types/qrcode": ^1.5.5
-    "@types/supertest": ^6.0.0
+    "@types/supertest": ^2.0.10
     "@types/ua-parser-js": ^0.7.39
     "@typescript-eslint/eslint-plugin": ^7.0.0
     "@typescript-eslint/parser": ^7.0.0
@@ -13730,9 +13736,10 @@ __metadata:
     mysql: ^2.18.1
     nest-winston: ^1.9.7
     nestjs-i18n: ^10.4.9
-    nestjs-throttler-storage-redis: ^0.5.1
+    nestjs-throttler-storage-redis: ^0.1.18
     otplib: ^12.0.1
-    passport-jwt: ^4.0.1
+    passport: ^0.6.0
+    passport-jwt: ^4.0.0
     payload: ^2.30.0
     pg: ^8.12.0
     prettier: ^3.0.0
@@ -14363,6 +14370,13 @@ __metadata:
   version: 1.0.0
   resolution: "supports-preserve-symlinks-flag@npm:1.0.0"
   checksum: 53b1e247e68e05db7b3808b99b892bd36fb096e6fba213a06da7fab22045e97597db425c724f2bbd6c99a3c295e1e73f3e4de78592289f38431049e1277ca0ae
+  languageName: node
+  linkType: hard
+
+"swagger-ui-dist@npm:5.17.14":
+  version: 5.17.14
+  resolution: "swagger-ui-dist@npm:5.17.14"
+  checksum: e10f8068e370fb17cf6882c8d8b925044862ea74b67296c6d97eef42a904eed3e9ed21867cc0458cbf0de7bd2a49e79282a1a3b7e6a1ccdbba1b650d86b528bb
   languageName: node
   linkType: hard
 

@@ -1,15 +1,21 @@
-import { Column, Entity, Index } from 'typeorm';
+import {
+  BaseEntity,
+  Column,
+  Entity,
+  Index,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
 import { CustomBaseEntity } from 'src/common/entity/custom-base.entity';
 
 @Entity({
-  name: 'email_templates'
+  name: 'email_templates',
 })
-export class EmailTemplateEntity extends CustomBaseEntity {
+export class EmailTemplateEntity extends BaseEntity {
+  @PrimaryGeneratedColumn()
+  id: number;
+
   @Column()
-  @Index({
-    unique: true
-  })
   title: string;
 
   @Column()
@@ -21,7 +27,7 @@ export class EmailTemplateEntity extends CustomBaseEntity {
   @Column()
   subject: string;
 
-  @Column()
+  @Column('varchar')
   body: string;
 
   @Column()

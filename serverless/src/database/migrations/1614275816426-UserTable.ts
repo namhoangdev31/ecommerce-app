@@ -73,12 +73,12 @@ export class UserTable1614275816426 implements MigrationInterface {
           {
             name: 'created_at',
             type: 'timestamp',
-            default: 'now()',
+            default: 'CURRENT_TIMESTAMP',
           },
           {
             name: 'updated_at',
             type: 'timestamp',
-            default: 'now()',
+            default: 'CURRENT_TIMESTAMP',
           },
         ],
       }),

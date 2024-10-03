@@ -19,7 +19,7 @@ class Permission extends model_serializer_1.ModelSerializer {
 exports.Permission = Permission;
 __decorate([
     (0, class_transformer_1.Expose)({
-        groups: exports.basicFieldGroupsForSerializing
+        groups: exports.basicFieldGroupsForSerializing,
     }),
     __metadata("design:type", Number)
 ], Permission.prototype, "id", void 0);
@@ -30,7 +30,7 @@ __decorate([
 __decorate([
     (0, swagger_1.ApiProperty)(),
     (0, class_transformer_1.Expose)({
-        groups: exports.basicFieldGroupsForSerializing
+        groups: exports.basicFieldGroupsForSerializing,
     }),
     __metadata("design:type", String)
 ], Permission.prototype, "description", void 0);
@@ -45,22 +45,22 @@ __decorate([
 __decorate([
     (0, swagger_1.ApiProperty)(),
     (0, class_transformer_1.Expose)({
-        groups: exports.basicFieldGroupsForSerializing
+        groups: exports.basicFieldGroupsForSerializing,
     }),
     __metadata("design:type", Boolean)
 ], Permission.prototype, "isDefault", void 0);
 __decorate([
     (0, swagger_1.ApiPropertyOptional)(),
     (0, class_transformer_1.Expose)({
-        groups: exports.basicFieldGroupsForSerializing
+        groups: exports.basicFieldGroupsForSerializing,
     }),
     __metadata("design:type", Date)
-], Permission.prototype, "createdAt", void 0);
+], Permission.prototype, "created_at", void 0);
 __decorate([
     (0, swagger_1.ApiPropertyOptional)(),
     (0, class_transformer_1.Expose)({
-        groups: exports.basicFieldGroupsForSerializing
+        groups: exports.basicFieldGroupsForSerializing,
     }),
     __metadata("design:type", Date)
-], Permission.prototype, "updatedAt", void 0);
+], Permission.prototype, "updated_at", void 0);
 //# sourceMappingURL=permission.serializer.js.map

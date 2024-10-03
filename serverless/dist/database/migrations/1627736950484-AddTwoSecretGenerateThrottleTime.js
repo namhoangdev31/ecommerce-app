@@ -9,8 +9,8 @@ class AddTwoSecretGenerateThrottleTime1627736950484 {
             new typeorm_1.TableColumn({
                 name: 'twoFAThrottleTime',
                 type: 'timestamp',
-                default: 'now()'
-            })
+                default: 'CURRENT_TIMESTAMP',
+            }),
         ];
     }
     async up(queryRunner) {

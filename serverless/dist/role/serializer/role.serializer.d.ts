@@ -7,6 +7,6 @@ export declare class RoleSerializer extends ModelSerializer {
     name: string;
     description: string;
     permission: Permission[];
-    createdAt: Date;
-    updatedAt: Date;
+    created_at: Date;
+    updated_at: Date;
 }

@@ -10,9 +10,9 @@ class BaseRepository extends typeorm_1.Repository {
     async get(id, relations = [], transformOptions = {}) {
         return await this.findOne({
             where: {
-                id
+                id,
             },
-            relations
+            relations,
         })
             .then((entity) => {
             if (!entity) {
@@ -25,9 +25,9 @@ class BaseRepository extends typeorm_1.Repository {
     async findBy(fieldName, value, relations = [], transformOptions = {}) {
         return await this.findOne({
             where: {
-                [fieldName]: value
+                [fieldName]: value,
             },
-            relations
+            relations,
         })
             .then((entity) => {
             if (!entity) {
@@ -39,7 +39,7 @@ class BaseRepository extends typeorm_1.Repository {
     }
     async countEntityByCondition(conditions = {}) {
         return this.count({
-            where: conditions
+            where: conditions,
         })
             .then((count) => {
             return Promise.resolve(count);
@@ -51,13 +51,13 @@ class BaseRepository extends typeorm_1.Repository {
         if (searchFilter.hasOwnProperty('keywords') && searchFilter.keywords) {
             for (const key of searchCriteria) {
                 whereCondition.push({
-                    [key]: (0, typeorm_1.ILike)(`%${searchFilter.keywords}%`)
+                    [key]: (0, typeorm_1.ILike)(`%${searchFilter.keywords}%`),
                 });
             }
         }
         const results = await this.find({
             where: whereCondition,
-            relations
+            relations,
         });
         return this.transformMany(results, transformOptions);
     }
@@ -71,7 +71,7 @@ class BaseRepository extends typeorm_1.Repository {
         return {
             skip: (page - 1) * limit,
             limit,
-            page
+            page,
         };
     }
     async paginate(searchFilter, relations = [], searchCriteria = [], transformOptions = {}) {
@@ -80,7 +80,7 @@ class BaseRepository extends typeorm_1.Repository {
         if (searchFilter.hasOwnProperty('keywords') && searchFilter.keywords) {
             for (const key of searchCriteria) {
                 whereCondition.push({
-                    [key]: (0, typeorm_1.ILike)(`%${searchFilter.keywords}%`)
+                    [key]: (0, typeorm_1.ILike)(`%${searchFilter.keywords}%`),
                 });
             }
         }
@@ -90,7 +90,7 @@ class BaseRepository extends typeorm_1.Repository {
         findOptions.skip = paginationInfo.skip;
         findOptions.where = whereCondition;
         findOptions.order = {
-            createdAt: 'DESC'
+            created_at: 'DESC',
         };
         const { page, skip, limit } = paginationInfo;
         const [results, total] = await this.findAndCount(findOptions);
@@ -101,7 +101,7 @@ class BaseRepository extends typeorm_1.Repository {
             pageSize: limit,
             currentPage: page,
             previous: page > 1 ? page - 1 : 0,
-            next: total > skip + limit ? page + 1 : 0
+            next: total > skip + limit ? page + 1 : 0,
         });
     }
     async createEntity(inputs, relations = []) {

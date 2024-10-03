@@ -42,9 +42,9 @@ __decorate([
 __decorate([
     (0, swagger_1.ApiPropertyOptional)(),
     __metadata("design:type", Date)
-], EmailTemplate.prototype, "createdAt", void 0);
+], EmailTemplate.prototype, "created_at", void 0);
 __decorate([
     (0, swagger_1.ApiPropertyOptional)(),
     __metadata("design:type", Date)
-], EmailTemplate.prototype, "updatedAt", void 0);
+], EmailTemplate.prototype, "updated_at", void 0);
 //# sourceMappingURL=email-template.serializer.js.map

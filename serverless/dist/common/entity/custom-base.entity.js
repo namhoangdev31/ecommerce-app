@@ -14,7 +14,7 @@ const openapi = require("@nestjs/swagger");
 const typeorm_1 = require("typeorm");
 class CustomBaseEntity extends typeorm_1.BaseEntity {
     static _OPENAPI_METADATA_FACTORY() {
-        return { id: { required: true, type: () => Number }, createdAt: { required: true, type: () => Date }, updatedAt: { required: true, type: () => Date } };
+        return { id: { required: true, type: () => Number }, created_at: { required: true, type: () => Date }, updated_at: { required: true, type: () => Date } };
     }
 }
 exports.CustomBaseEntity = CustomBaseEntity;
@@ -23,18 +23,11 @@ __decorate([
     __metadata("design:type", Number)
 ], CustomBaseEntity.prototype, "id", void 0);
 __decorate([
-    (0, typeorm_1.CreateDateColumn)({
-        type: 'timestamp',
-        default: () => 'CURRENT_TIMESTAMP'
-    }),
+    (0, typeorm_1.CreateDateColumn)(),
     __metadata("design:type", Date)
-], CustomBaseEntity.prototype, "createdAt", void 0);
+], CustomBaseEntity.prototype, "created_at", void 0);
 __decorate([
-    (0, typeorm_1.UpdateDateColumn)({
-        type: 'timestamp',
-        default: () => 'CURRENT_TIMESTAMP',
-        onUpdate: 'CURRENT_TIMESTAMP'
-    }),
+    (0, typeorm_1.UpdateDateColumn)(),
     __metadata("design:type", Date)
-], CustomBaseEntity.prototype, "updatedAt", void 0);
+], CustomBaseEntity.prototype, "updated_at", void 0);
 //# sourceMappingURL=custom-base.entity.js.map

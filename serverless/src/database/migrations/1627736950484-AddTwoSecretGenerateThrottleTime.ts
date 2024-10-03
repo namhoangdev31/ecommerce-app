@@ -8,8 +8,8 @@ export class AddTwoSecretGenerateThrottleTime1627736950484
     new TableColumn({
       name: 'twoFAThrottleTime',
       type: 'timestamp',
-      default: 'now()'
-    })
+      default: 'CURRENT_TIMESTAMP',
+    }),
   ];
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.addColumns(this.tableName, this.columns);

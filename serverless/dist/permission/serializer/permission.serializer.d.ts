@@ -7,6 +7,6 @@ export declare class Permission extends ModelSerializer {
     path: string;
     method: string;
     isDefault: boolean;
-    createdAt: Date;
-    updatedAt: Date;
+    created_at: Date;
+    updated_at: Date;
 }

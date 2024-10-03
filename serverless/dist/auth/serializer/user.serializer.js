@@ -23,7 +23,10 @@ class UserSerializer extends model_serializer_1.ModelSerializer {
 exports.UserSerializer = UserSerializer;
 __decorate([
     (0, class_transformer_1.Expose)({
-        groups: [...exports.ownerUserGroupsForSerializing, ...exports.adminUserGroupsForSerializing]
+        groups: [
+            ...exports.ownerUserGroupsForSerializing,
+            ...exports.adminUserGroupsForSerializing,
+        ],
     }),
     __metadata("design:type", Number)
 ], UserSerializer.prototype, "id", void 0);
@@ -47,7 +50,7 @@ __decorate([
 __decorate([
     (0, swagger_1.ApiProperty)(),
     (0, class_transformer_1.Expose)({
-        groups: exports.ownerUserGroupsForSerializing
+        groups: exports.ownerUserGroupsForSerializing,
     }),
     __metadata("design:type", Boolean)
 ], UserSerializer.prototype, "isTwoFAEnabled", void 0);
@@ -64,42 +67,42 @@ __decorate([
 __decorate([
     (0, swagger_1.ApiPropertyOptional)(),
     (0, class_transformer_1.Expose)({
-        groups: exports.adminUserGroupsForSerializing
+        groups: exports.adminUserGroupsForSerializing,
     }),
     __metadata("design:type", String)
 ], UserSerializer.prototype, "status", void 0);
 __decorate([
     (0, swagger_1.ApiHideProperty)(),
     (0, class_transformer_1.Expose)({
-        groups: exports.ownerUserGroupsForSerializing
+        groups: exports.ownerUserGroupsForSerializing,
     }),
     (0, class_transformer_1.Type)(() => role_serializer_1.RoleSerializer),
     __metadata("design:type", role_serializer_1.RoleSerializer)
 ], UserSerializer.prototype, "role", void 0);
 __decorate([
     (0, class_transformer_1.Exclude)({
-        toClassOnly: true
+        toClassOnly: true,
     }),
     __metadata("design:type", Number)
 ], UserSerializer.prototype, "roleId", void 0);
 __decorate([
     (0, class_transformer_1.Exclude)({
-        toClassOnly: true
+        toClassOnly: true,
     }),
     __metadata("design:type", Date)
 ], UserSerializer.prototype, "tokenValidityDate", void 0);
 __decorate([
     (0, swagger_1.ApiPropertyOptional)(),
     (0, class_transformer_1.Expose)({
-        groups: exports.defaultUserGroupsForSerializing
+        groups: exports.defaultUserGroupsForSerializing,
     }),
     __metadata("design:type", Date)
-], UserSerializer.prototype, "createdAt", void 0);
+], UserSerializer.prototype, "created_at", void 0);
 __decorate([
     (0, swagger_1.ApiPropertyOptional)(),
     (0, class_transformer_1.Expose)({
-        groups: exports.defaultUserGroupsForSerializing
+        groups: exports.defaultUserGroupsForSerializing,
     }),
     __metadata("design:type", Date)
-], UserSerializer.prototype, "updatedAt", void 0);
+], UserSerializer.prototype, "updated_at", void 0);
 //# sourceMappingURL=user.serializer.js.map

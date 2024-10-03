@@ -10,7 +10,7 @@ class addTokenValidityDateInUserEntity1617559216655 {
         await queryRunner.addColumn(this.tableName, new typeorm_1.TableColumn({
             name: 'tokenValidityDate',
             type: 'timestamp',
-            default: 'now()',
+            default: 'CURRENT_TIMESTAMP',
         }));
     }
     async down(queryRunner) {

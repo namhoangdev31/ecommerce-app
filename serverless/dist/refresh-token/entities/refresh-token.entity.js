@@ -35,16 +35,14 @@ __decorate([
     __metadata("design:type", String)
 ], RefreshToken.prototype, "userAgent", void 0);
 __decorate([
-    (0, typeorm_1.Index)(),
     (0, typeorm_1.Column)({
-        nullable: true
+        nullable: true,
     }),
     __metadata("design:type", String)
 ], RefreshToken.prototype, "browser", void 0);
 __decorate([
-    (0, typeorm_1.Index)(),
     (0, typeorm_1.Column)({
-        nullable: true
+        nullable: true,
     }),
     __metadata("design:type", String)
 ], RefreshToken.prototype, "os", void 0);
@@ -58,7 +56,7 @@ __decorate([
 ], RefreshToken.prototype, "expires", void 0);
 exports.RefreshToken = RefreshToken = __decorate([
     (0, typeorm_1.Entity)({
-        name: 'refresh_token'
+        name: 'refresh_token',
     })
 ], RefreshToken);
 //# sourceMappingURL=refresh-token.entity.js.map

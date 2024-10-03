@@ -1,6 +1,6 @@
 import { BaseEntity } from 'typeorm';
 export declare abstract class CustomBaseEntity extends BaseEntity {
     id: number;
-    createdAt: Date;
-    updatedAt: Date;
+    created_at: Date;
+    updated_at: Date;
 }

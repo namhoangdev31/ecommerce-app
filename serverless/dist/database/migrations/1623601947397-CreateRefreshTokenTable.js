@@ -8,8 +8,8 @@ class CreateRefreshTokenTable1623601947397 {
             {
                 table: 'user',
                 field: 'userId',
-                reference: 'id'
-            }
+                reference: 'id',
+            },
         ];
         this.tableName = 'refresh_token';
     }
@@ -22,30 +22,30 @@ class CreateRefreshTokenTable1623601947397 {
                     type: 'int',
                     isPrimary: true,
                     isGenerated: true,
-                    generationStrategy: 'increment'
+                    generationStrategy: 'increment',
                 },
                 {
                     name: 'isRevoked',
                     type: 'boolean',
-                    default: false
+                    default: false,
                 },
                 {
                     name: 'expires',
                     type: 'timestamp',
-                    default: 'now()'
-                }
-            ]
+                    default: 'CURRENT_TIMESTAMP',
+                },
+            ],
         }), false);
         for (const foreignKey of this.foreignKeysArray) {
             await queryRunner.addColumn(this.tableName, new typeorm_1.TableColumn({
                 name: foreignKey.field,
-                type: 'int'
+                type: 'int',
             }));
             await queryRunner.createForeignKey(this.tableName, new typeorm_1.TableForeignKey({
                 columnNames: [foreignKey.field],
                 referencedColumnNames: [foreignKey.reference],
                 referencedTableName: foreignKey.table,
-                onDelete: 'CASCADE'
+                onDelete: 'CASCADE',
             }));
         }
     }

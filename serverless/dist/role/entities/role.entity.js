@@ -28,9 +28,6 @@ let RoleEntity = class RoleEntity extends custom_base_entity_1.CustomBaseEntity 
 exports.RoleEntity = RoleEntity;
 __decorate([
     (0, typeorm_1.Column)('varchar', { length: 100 }),
-    (0, typeorm_1.Index)({
-        unique: true
-    }),
     __metadata("design:type", String)
 ], RoleEntity.prototype, "name", void 0);
 __decorate([
@@ -43,18 +40,18 @@ __decorate([
         name: 'role_permission',
         joinColumn: {
             name: 'roleId',
-            referencedColumnName: 'id'
+            referencedColumnName: 'id',
         },
         inverseJoinColumn: {
             name: 'permissionId',
-            referencedColumnName: 'id'
-        }
+            referencedColumnName: 'id',
+        },
     }),
     __metadata("design:type", Array)
 ], RoleEntity.prototype, "permission", void 0);
 exports.RoleEntity = RoleEntity = __decorate([
     (0, typeorm_1.Entity)({
-        name: 'role'
+        name: 'role',
     }),
     (0, typeorm_1.Unique)(['name']),
     __metadata("design:paramtypes", [Object])

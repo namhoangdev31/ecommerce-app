@@ -17,6 +17,6 @@ export declare class UserSerializer extends ModelSerializer {
     role: RoleSerializer;
     roleId: number;
     tokenValidityDate: Date;
-    createdAt: Date;
-    updatedAt: Date;
+    created_at: Date;
+    updated_at: Date;
 }

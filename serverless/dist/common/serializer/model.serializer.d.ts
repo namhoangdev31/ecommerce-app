@@ -1,5 +1,5 @@
 export declare class ModelSerializer {
     id: number;
-    createdAt: Date;
+    created_at: Date;
     [key: string]: any;
 }

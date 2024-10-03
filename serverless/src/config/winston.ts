@@ -2,10 +2,8 @@ import * as winston from 'winston';
 import { utilities as nestWinstonModuleUtilities } from 'nest-winston';
 import { WinstonModuleOptions } from 'nest-winston';
 import WinstonCloudWatch from 'winston-cloudwatch';
-import * as config from 'config';
 
 const isProduction = process.env.NODE_ENV === 'production';
-const winstonConfig = config.get('winston');
 
 export default {
   format: winston.format.colorize(),
@@ -15,17 +13,13 @@ export default {
         name: 'Truthy CMS',
         awsOptions: {
           credentials: {
-            accessKeyId:
-              process.env.AWS_ACCESS_KEY || winstonConfig.awsAccessKeyId,
-            secretAccessKey:
-              process.env.AWS_KEY_SECRET || winstonConfig.awsSecretAccessKey,
+            accessKeyId: process.env.WINSTON_AWS_ACCESS_KEY_ID,
+            secretAccessKey: process.env.WINSTON_AWS_SECRET_ACCESS_KEY,
           },
         },
-        logGroupName:
-          process.env.CLOUDWATCH_GROUP_NAME || winstonConfig.groupName,
-        logStreamName:
-          process.env.CLOUDWATCH_STREAM_NAME || winstonConfig.streamName,
-        awsRegion: process.env.CLOUDWATCH_AWS_REGION || winstonConfig.awsRegion,
+        logGroupName: process.env.WINSTON_GROUP_NAME,
+        logStreamName: process.env.WINSTON_STREAM_NAME,
+        awsRegion: process.env.WINSTON_AWS_REGION,
         messageFormatter: function (item) {
           return (
             item.level + ': ' + item.message + ' ' + JSON.stringify(item.meta)

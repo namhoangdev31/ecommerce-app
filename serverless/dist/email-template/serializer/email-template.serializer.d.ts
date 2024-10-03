@@ -7,6 +7,6 @@ export declare class EmailTemplate extends ModelSerializer {
     subject: string;
     body: string;
     isDefault: boolean;
-    createdAt: Date;
-    updatedAt: Date;
+    created_at: Date;
+    updated_at: Date;
 }

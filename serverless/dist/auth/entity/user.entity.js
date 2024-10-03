@@ -68,28 +68,21 @@ let UserEntity = class UserEntity extends custom_base_entity_1.CustomBaseEntity 
 };
 exports.UserEntity = UserEntity;
 __decorate([
-    (0, typeorm_1.Index)({
-        unique: true
-    }),
     (0, typeorm_1.Column)(),
     __metadata("design:type", String)
 ], UserEntity.prototype, "username", void 0);
 __decorate([
-    (0, typeorm_1.Index)({
-        unique: true
-    }),
     (0, typeorm_1.Column)(),
     __metadata("design:type", String)
 ], UserEntity.prototype, "email", void 0);
 __decorate([
     (0, typeorm_1.Column)(),
     (0, class_transformer_1.Exclude)({
-        toPlainOnly: true
+        toPlainOnly: true,
     }),
     __metadata("design:type", String)
 ], UserEntity.prototype, "password", void 0);
 __decorate([
-    (0, typeorm_1.Index)(),
     (0, typeorm_1.Column)(),
     __metadata("design:type", String)
 ], UserEntity.prototype, "name", void 0);
@@ -112,52 +105,46 @@ __decorate([
 __decorate([
     (0, typeorm_1.Column)(),
     (0, class_transformer_1.Exclude)({
-        toPlainOnly: true
+        toPlainOnly: true,
     }),
     __metadata("design:type", String)
 ], UserEntity.prototype, "token", void 0);
 __decorate([
-    (0, typeorm_1.CreateDateColumn)({
-        type: 'timestamp',
-        default: () => 'CURRENT_TIMESTAMP'
-    }),
+    (0, typeorm_1.CreateDateColumn)(),
     __metadata("design:type", Date)
 ], UserEntity.prototype, "tokenValidityDate", void 0);
 __decorate([
     (0, typeorm_1.Column)(),
     (0, class_transformer_1.Exclude)({
-        toPlainOnly: true
+        toPlainOnly: true,
     }),
     __metadata("design:type", String)
 ], UserEntity.prototype, "salt", void 0);
 __decorate([
     (0, typeorm_1.Column)({
-        nullable: true
+        nullable: true,
     }),
     (0, class_transformer_1.Exclude)({
-        toPlainOnly: true
+        toPlainOnly: true,
     }),
     __metadata("design:type", String)
 ], UserEntity.prototype, "twoFASecret", void 0);
 __decorate([
     (0, class_transformer_1.Exclude)({
-        toPlainOnly: true
+        toPlainOnly: true,
     }),
-    (0, typeorm_1.CreateDateColumn)({
-        type: 'timestamp',
-        default: () => 'CURRENT_TIMESTAMP'
-    }),
+    (0, typeorm_1.CreateDateColumn)(),
     __metadata("design:type", Date)
 ], UserEntity.prototype, "twoFAThrottleTime", void 0);
 __decorate([
     (0, typeorm_1.Column)({
-        default: false
+        default: false,
     }),
     __metadata("design:type", Boolean)
 ], UserEntity.prototype, "isTwoFAEnabled", void 0);
 __decorate([
     (0, class_transformer_1.Exclude)({
-        toPlainOnly: true
+        toPlainOnly: true,
     }),
     __metadata("design:type", Object)
 ], UserEntity.prototype, "skipHashPassword", void 0);
@@ -184,7 +171,7 @@ __decorate([
 ], UserEntity.prototype, "hashPasswordBeforeUpdate", null);
 exports.UserEntity = UserEntity = __decorate([
     (0, typeorm_1.Entity)({
-        name: 'user'
+        name: 'user',
     })
 ], UserEntity);
 //# sourceMappingURL=user.entity.js.map

@@ -1,5 +1,6 @@
-import { CustomBaseEntity } from 'src/common/entity/custom-base.entity';
-export declare class EmailTemplateEntity extends CustomBaseEntity {
+import { BaseEntity } from 'typeorm';
+export declare class EmailTemplateEntity extends BaseEntity {
+    id: number;
     title: string;
     slug: string;
     sender: string;

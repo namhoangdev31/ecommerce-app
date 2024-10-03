@@ -1,32 +1,9 @@
 "use strict";
-var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    var desc = Object.getOwnPropertyDescriptor(m, k);
-    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
-      desc = { enumerable: true, get: function() { return m[k]; } };
-    }
-    Object.defineProperty(o, k2, desc);
-}) : (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-}));
-var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
-    Object.defineProperty(o, "default", { enumerable: true, value: v });
-}) : function(o, v) {
-    o["default"] = v;
-});
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
-    __setModuleDefault(result, mod);
-    return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.MailModule = void 0;
@@ -34,12 +11,9 @@ const common_1 = require("@nestjs/common");
 const bull_1 = require("@nestjs/bull");
 const mailer_1 = require("@nestjs-modules/mailer");
 const pug_adapter_1 = require("@nestjs-modules/mailer/dist/adapters/pug.adapter");
-const config = __importStar(require("config"));
 const mail_service_1 = require("./mail.service");
 const mail_processor_1 = require("./mail.processor");
 const email_template_module_1 = require("../email-template/email-template.module");
-const mailConfig = config.get('mail');
-const queueConfig = config.get('queue');
 let MailModule = class MailModule {
 };
 exports.MailModule = MailModule;
@@ -48,12 +22,12 @@ exports.MailModule = MailModule = __decorate([
         imports: [
             email_template_module_1.EmailTemplateModule,
             bull_1.BullModule.registerQueueAsync({
-                name: config.get('mail.queueName'),
+                name: process.env.MAIL_QUEUE_NAME,
                 useFactory: () => ({
                     redis: {
-                        host: process.env.REDIS_HOST || queueConfig.host,
-                        port: process.env.REDIS_PORT || queueConfig.port,
-                        password: process.env.REDIS_PASSWORD || queueConfig.password,
+                        host: process.env.QUEUE_HOST,
+                        port: parseInt(process.env.QUEUE_PORT, 10),
+                        password: process.env.QUEUE_PASSWORD,
                         retryStrategy(times) {
                             return Math.min(times * 50, 2000);
                         }
@@ -63,19 +37,19 @@ exports.MailModule = MailModule = __decorate([
             mailer_1.MailerModule.forRootAsync({
                 useFactory: () => ({
                     transport: {
-                        host: process.env.MAIL_HOST || mailConfig.host,
-                        port: process.env.MAIL_PORT || mailConfig.port,
-                        secure: mailConfig.secure,
-                        ignoreTLS: mailConfig.ignoreTLS,
+                        host: process.env.MAIL_HOST,
+                        port: parseInt(process.env.MAIL_PORT, 10),
+                        secure: process.env.MAIL_SECURE === 'true',
+                        ignoreTLS: process.env.MAIL_IGNORE_TLS === 'true',
                         auth: {
-                            user: process.env.MAIL_USER || mailConfig.user,
-                            pass: process.env.MAIL_PASS || mailConfig.pass
+                            user: process.env.MAIL_USER,
+                            pass: process.env.MAIL_PASS
                         }
                     },
                     defaults: {
-                        from: `"${process.env.MAIL_FROM || mailConfig.from}" <${process.env.MAIL_FROM || mailConfig.fromMail}>`
+                        from: `"${process.env.MAIL_FROM}" <${process.env.MAIL_FROM_EMAIL}>`
                     },
-                    preview: mailConfig.preview,
+                    preview: process.env.MAIL_PREVIEW === 'true',
                     template: {
                         dir: __dirname + '/templates/email/layouts/',
                         adapter: new pug_adapter_1.PugAdapter(),

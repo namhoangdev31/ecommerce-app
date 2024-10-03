@@ -42,8 +42,9 @@ export class EmailTemplate1622305543735 implements MigrationInterface {
           },
           {
             name: 'body',
-            type: 'text',
+            type: 'varchar',
             isNullable: true,
+            length: '512',
           },
           {
             name: 'isDefault',
@@ -53,12 +54,12 @@ export class EmailTemplate1622305543735 implements MigrationInterface {
           {
             name: 'created_at',
             type: 'timestamp',
-            default: 'now()',
+            default: 'CURRENT_TIMESTAMP',
           },
           {
             name: 'updated_at',
             type: 'timestamp',
-            default: 'now()',
+            default: 'CURRENT_TIMESTAMP',
           },
         ],
       }),

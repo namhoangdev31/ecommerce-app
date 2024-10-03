@@ -26,7 +26,7 @@ __decorate([
 __decorate([
     (0, swagger_1.ApiPropertyOptional)(),
     (0, class_transformer_1.Expose)({
-        groups: exports.basicFieldGroupsForSerializing
+        groups: exports.basicFieldGroupsForSerializing,
     }),
     __metadata("design:type", String)
 ], RoleSerializer.prototype, "description", void 0);
@@ -37,15 +37,15 @@ __decorate([
 __decorate([
     (0, swagger_1.ApiPropertyOptional)(),
     (0, class_transformer_1.Expose)({
-        groups: exports.basicFieldGroupsForSerializing
+        groups: exports.basicFieldGroupsForSerializing,
     }),
     __metadata("design:type", Date)
-], RoleSerializer.prototype, "createdAt", void 0);
+], RoleSerializer.prototype, "created_at", void 0);
 __decorate([
     (0, swagger_1.ApiPropertyOptional)(),
     (0, class_transformer_1.Expose)({
-        groups: exports.basicFieldGroupsForSerializing
+        groups: exports.basicFieldGroupsForSerializing,
     }),
     __metadata("design:type", Date)
-], RoleSerializer.prototype, "updatedAt", void 0);
+], RoleSerializer.prototype, "updated_at", void 0);
 //# sourceMappingURL=role.serializer.js.map
