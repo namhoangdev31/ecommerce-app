@@ -7,6 +7,9 @@ import {
   IsNotEmpty,
   Matches,
   MinLength,
+  IsOptional,
+  IsArray,
+  IsBoolean,
 } from 'class-validator';
 import { Exclude } from 'class-transformer';
 import { ApiProperty } from '@nestjs/swagger';
@@ -14,6 +17,8 @@ import {
   INVALID_PASSWORD_FORMAT,
   INVALID_PASSWORD_LENGTH,
 } from '../../shared/constants/strings.constants';
+import { NavItem } from './navItem.schema';
+import { Header } from './header.schema';
 
 export type UserDocument = HydratedDocument<User>;
 
@@ -44,6 +49,35 @@ export class User {
     message: INVALID_PASSWORD_FORMAT,
   })
   password: string;
+
+  @Prop({ type: Boolean, default: null })
+  @IsOptional()
+  @IsBoolean()
+  enable_header: boolean | null;
+
+  @Prop({ type: Boolean, default: null })
+  @IsOptional()
+  @IsBoolean()
+  enable_footer: boolean | null;
+
+  @Prop({ type: Boolean, default: null })
+  @IsOptional()
+  @IsBoolean()
+  enable_settings: boolean | null;
+
+  @Prop({ type: [Object], default: null })
+  @IsOptional()
+  @IsArray()
+  header: Header[] | null;
+
+  @Prop({ type: [Object], default: null })
+  @IsOptional()
+  @IsArray()
+  navItems: NavItem[] | null;
+
+  @Prop({ type: Object, default: null })
+  @IsOptional()
+  footer: any | null;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);
