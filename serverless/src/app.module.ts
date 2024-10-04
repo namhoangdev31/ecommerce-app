@@ -1,3 +1,5 @@
+import { GlobalModule } from './modules/global/global.module';
+import { HeaderModule } from './modules/header/header.module';
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
@@ -20,8 +22,10 @@ import { AuthModule } from './modules/auth/auth.module';
       inject: [ConfigService],
     }),
     DatabaseModule,
-    SharedModule,
     AuthModule,
+    SharedModule,
+    HeaderModule,
+    GlobalModule,
   ],
   controllers: [AppController],
   providers: [AppService],

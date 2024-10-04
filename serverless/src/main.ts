@@ -25,7 +25,8 @@ async function bootstrap() {
   SwaggerModule.setup('api-swagger', app, document);
   const port = configService.get<number>('NEST_PORT');
   await app.listen(port).then(() => {
-    console.log(`API server started on port http://localhost:${port}`);
+    console.log(`API server started on port http://localhost:${port}/api`);
+    console.log(`Swagger => http://localhost:${port}/api-swagger`);
   });
 }
 bootstrap();
