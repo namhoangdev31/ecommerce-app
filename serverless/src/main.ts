@@ -4,9 +4,11 @@ import { ConfigService } from '@nestjs/config';
 import * as express from 'express';
 import { AppModule } from './app.module';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
+import { NestExpressApplication } from '@nestjs/platform-express';
+import { join } from 'path';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create<NestExpressApplication>(AppModule);
   const configService = app.get(ConfigService);
 
   app.useGlobalPipes(new ValidationPipe());
@@ -14,7 +16,10 @@ async function bootstrap() {
 
   app.setGlobalPrefix(configService.get('API_PREFIX'));
 
-  app.use(express.static('public'));
+  app.useStaticAssets(join(__dirname, '..', 'public'));
+  app.setBaseViewsDir(join(__dirname, '..', 'views'));
+  app.setViewEngine('ejs');
+
   const config = new DocumentBuilder()
     .setTitle('Pricesenz Backend API Docs')
     .setDescription('Pricesenz Backend API Docs and Structure')

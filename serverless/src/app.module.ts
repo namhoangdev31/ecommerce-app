@@ -1,3 +1,4 @@
+import { ViewsModule } from './modules/views/views.module';
 import { GlobalModule } from './modules/global/global.module';
 import { HeaderModule } from './modules/header/header.module';
 import { Module } from '@nestjs/common';
@@ -26,6 +27,7 @@ import { AuthModule } from './modules/auth/auth.module';
     SharedModule,
     HeaderModule,
     GlobalModule,
+    ViewsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -5,6 +5,7 @@ import { LoginDto } from './dto/login.dto';
 import { RegisterDto } from './dto/register.dto';
 import { UserRepository } from '../../database/repositories/user.repository';
 import { INCORRECT_CREDENTIAL } from '../../shared/constants/strings.constants';
+import { LoginResponse } from 'src/interfaces/login';
 
 @Injectable()
 export class AuthService {
@@ -13,7 +14,7 @@ export class AuthService {
     private readonly jwtService: JwtService,
   ) {}
 
-  async login(data: LoginDto) {
+  async login(data: LoginDto): Promise<LoginResponse> {
     const user = await this.userRepository.findByEmail(data.email);
     if (!user) {
       throw new BadRequestException(INCORRECT_CREDENTIAL);
@@ -24,9 +25,13 @@ export class AuthService {
       throw new BadRequestException(INCORRECT_CREDENTIAL);
     }
 
-    return this.jwtService.sign({
-      _id: user._id,
-    });
+    return {
+      accessToken: this.jwtService.sign({
+        id: user._id,
+        email: user.email,
+        name: user.name,
+      }),
+    };
   }
 
   async register(data: RegisterDto) {

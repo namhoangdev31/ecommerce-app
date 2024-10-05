@@ -13,12 +13,18 @@ import { SharedModule } from '../../shared/shared.module';
     DatabaseModule,
     SharedModule,
     JwtModule.registerAsync({
-      useFactory: (configService: ConfigService) => ({
-        secret: configService.get('JWT_SECRET'),
-        signOptions: {
-          expiresIn: configService.get('ACCESS_TOKEN_EXPIRES_IN'),
-        },
-      }),
+      useFactory: (configService: ConfigService) => {
+        const expiresIn = configService.get('ACCESS_TOKEN_EXPIRES_IN');
+        if (typeof expiresIn !== 'string' && typeof expiresIn !== 'number') {
+          throw new Error('ACCESS_TOKEN_EXPIRES_IN must be a number or string');
+        }
+        return {
+          secret: configService.get('JWT_SECRET'),
+          signOptions: {
+            expiresIn: expiresIn,
+          },
+        };
+      },
       inject: [ConfigService],
     }),
     ThrottlerModule.forRoot([
