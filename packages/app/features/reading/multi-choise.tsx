@@ -57,7 +57,9 @@ export default function MultiChoiceReadingScreen() {
     const handleAnswerSelect = (questionIndex: number, answer: string) => {
         const newAnswers = [...userAnswers];
         newAnswers[questionIndex] = answer;
+        console.log(newAnswers);
         setUserAnswers(newAnswers);
+        setSavedAnswers(newAnswers);
     };
 
     const handleSaveAnswers = () => {
@@ -107,13 +109,16 @@ export default function MultiChoiceReadingScreen() {
                         <View key={qIndex} className="mb-6">
                             <Text className="text-lg font-semibold mb-2">{qIndex + 1}. {q.question}</Text>
                             {q.options.map((option, oIndex) => (
-                                <TouchableOpacity
-                                    key={oIndex}
-                                    onPress={() => handleAnswerSelect(qIndex, String.fromCharCode(65 + oIndex))}
-                                    className={`p-2 mb-2 rounded-lg ${userAnswers[qIndex] === String.fromCharCode(65 + oIndex) ? 'bg-blue-200' : 'bg-gray-100'}`}
-                                >
-                                    <Text>{String.fromCharCode(65 + oIndex)}. {option}</Text>
-                                </TouchableOpacity>
+                                <View key={oIndex} className="flex-row items-center mb-2">
+                                    <input
+                                        type="checkbox"
+                                        value={String.fromCharCode(65 + oIndex)}
+                                        checked={userAnswers[qIndex] === String.fromCharCode(65 + oIndex)}
+                                        onChange={() => handleAnswerSelect(qIndex, String.fromCharCode(65 + oIndex))}
+                                        className="form-checkbox h-5 w-5 text-blue-600"
+                                    />
+                                    <Text className="ml-2">{String.fromCharCode(65 + oIndex)}. {option}</Text>
+                                </View>
                             ))}
                         </View>
                     ))}
@@ -129,7 +134,7 @@ export default function MultiChoiceReadingScreen() {
                         ))}
                     </View>
                 )}
-                <View className="flex flex-row justify-between w-full mt-3 p-6">
+                <View className="flex flex-row justify-between w-full mt-3">
                     {isLoading ? (
                         <View className="flex-1 items-center justify-center">
                             <ActivityIndicator size="large" color="#0000ff" />
@@ -137,15 +142,24 @@ export default function MultiChoiceReadingScreen() {
                         </View>
                     ) : (
                         <>
-                            <TouchableOpacity onPress={handleSaveAnswers} className="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded flex-1 mr-2">
-                                <Text className="text-center text-white">Lưu đáp án</Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity onPress={handleSubmit} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded flex-1 mr-2">
-                                <Text className="text-center text-white">Gửi câu trả lời</Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity onPress={handleRefresh} className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded flex-1 ml-2">
-                                <Text className="text-center text-white">Làm mới câu hỏi</Text>
-                            </TouchableOpacity>
+                            <button 
+                                onClick={handleSaveAnswers}
+                                className="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-1 px-3 rounded flex-1 mr-2 text-sm"
+                            >
+                                Lưu đáp án
+                            </button>
+                            <button 
+                                onClick={handleSubmit}
+                                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-3 rounded flex-1 mr-2 text-sm"
+                            >
+                                Gửi câu trả lời
+                            </button>
+                            <button 
+                                onClick={handleRefresh}
+                                className="bg-green-500 hover:bg-green-700 text-white font-bold py-1 px-3 rounded flex-1 ml-2 text-sm"
+                            >
+                                Làm mới câu hỏi
+                            </button>
                         </>
                     )}
                 </View>
