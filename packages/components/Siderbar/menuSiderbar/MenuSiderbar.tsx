@@ -7,6 +7,8 @@ import { AgentIcon } from '../../../assets/icons/AgentIcon'
 import { LogoutIcon } from '../../../assets/icons/LogoutIcon'
 import { Routes } from '../../../constants/Routes'
 import { HomeIcon } from '../../../assets/icons/HomeIcon'
+import { LoanIcon } from '../../../assets/icons/LoanIcon'
+import { NextIcon } from '../../../assets/icons/NextIcon'
 // import { useAuth } from '/hooks/useAuth';
 
 export const MenuSidebar = () => {
@@ -42,6 +44,18 @@ export const MenuSidebar = () => {
         },
       ]
     },
+    {
+      key: '/learning',
+      icon: <LoanIcon fill="#FFF" />,
+      label: 'Learning',
+      onClick: () => push('/learning'),
+    },
+    {
+      key: '/reading',
+      icon: <NextIcon fill="#FFF" />,
+      label: 'Reading',
+      onClick: () => push('/reading'),
+    }
   ]
 
   const push = (path: Routes) => {

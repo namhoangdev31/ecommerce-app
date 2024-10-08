@@ -3,10 +3,10 @@ import { ApiProperty } from '@nestjs/swagger';
 
 export class LoginDto {
   @IsEmail()
-  @ApiProperty({ example: 'namHoang@example.com' }) // Cập nhật ví dụ cho email
+  @ApiProperty({ example: 'nguyenhoangnam31082000@gmail.com' }) // Cập nhật ví dụ cho email
   email: string;
 
   @IsString()
-  @ApiProperty({ example: 'password123' }) // Cập nhật ví dụ cho mật khẩu
+  @ApiProperty({ example: 'Nam310820@' }) // Cập nhật ví dụ cho mật khẩu
   password: string;
 }

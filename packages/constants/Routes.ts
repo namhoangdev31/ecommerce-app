@@ -2,7 +2,7 @@ import { Roles } from './constants';
 
 export type Routes =
   | '/login'
-  | '/products' | '/' | '/dashboard'
+  | '/products' | '/' | '/dashboard' | '/learning' | '/reading'
   ;
 
 export const PERMISSION_ROUTE: Record<Routes, Array<Roles>> = {
@@ -10,6 +10,8 @@ export const PERMISSION_ROUTE: Record<Routes, Array<Roles>> = {
   "/products": [Roles.Admin],
   "/" : [],
   "/dashboard": [],
+  "/learning": [],
+  "/reading": [],
 };
 
 export const NAME_PAGE: Partial<Record<Routes, string>> = {

@@ -1,4 +1,3 @@
-import { ViewsModule } from './modules/views/views.module';
 import { GlobalModule } from './modules/global/global.module';
 import { HeaderModule } from './modules/header/header.module';
 import { Module } from '@nestjs/common';
@@ -9,6 +8,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { DatabaseModule } from './database/database.module';
 import { SharedModule } from './shared/shared.module';
 import { AuthModule } from './modules/auth/auth.module';
+import { ViewsModule } from './modules/views/views.module';
 
 @Module({
   imports: [
