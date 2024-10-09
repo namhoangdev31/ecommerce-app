@@ -19,7 +19,7 @@
     "build": "turbo run build",
     "native": "cd apps/expo && yarn start",
     "web": "cd apps/next && yarn next",
-    "server": "cd serverless && yarn start:dev"
+    "server": "cd apps/serverless && yarn start:dev"
   },
   "resolutions": {
     "metro": "~0.76.7",
