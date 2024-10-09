@@ -1,7 +1,6 @@
 import { Avatar, Button, Input, Layout, theme } from 'antd'
 import { ArrowLeftOutlined } from '@ant-design/icons'
 import { useRouter } from 'next/router'
-import styles from './styles.module.css'
 import { ExclamationMarkIcon } from '../../assets/icons/ExclamationMarkIcon'
 import { SearchIcon } from '../../assets/icons/SearchIcon'
 import { useSearch } from '../../hooks/useSearch'
@@ -24,42 +23,43 @@ export const HeaderDashboard = () => {
   // const { userInfo } = useAuth()
 
   return (
-    <Header style={{ padding: 0, background: 'none', zIndex: 99 }}>
-      <div className={styles.contentHeader}>
-        <div className={styles.contentBreadcrumb}>
+    <header className="p-0 bg-transparent z-[99]">
+      <div className="py-3 px-4 flex justify-between bg-[#F8FAFC]">
+        <div className="flex-1 flex gap-2 items-center">
           {SHOW_BUTTONBACK[pathname as Routes] && (
             <Button
-              icon={<ArrowLeftOutlined style={{ fontSize: '16px' }} />}
+              icon={<ArrowLeftOutlined className="text-sm" />}
               onClick={() => back()}
+              size="small"
             />
           )}
           <div>
-            <p className={styles.breadcrumb}>
-              Pagina / {NAME_PAGE[pathname as Routes]}
+            <p className="text-[#5B8DEF] font-poppins text-xs font-normal">
+              Page / {NAME_PAGE[pathname as Routes]}
             </p>
-            <p className={styles.title} style={{ color: colorPrimary }}>
+            <p className="font-montserrat text-2xl font-bold" style={{ color: colorPrimary }}>
               {NAME_PAGE[pathname as Routes]}
             </p>
           </div>
         </div>
 
-        <div className={styles.contentSearch}>
+        <div className="grid grid-cols-[1fr_25px_30px] gap-[3px] rounded-md bg-white items-center">
           {!NOT_SHOW_INPUT[pathname as Routes] && (
             <Input
-              prefix={<SearchIcon style={{ marginRight: '5px' }} />}
-              className={styles.inputSearch}
+              prefix={<SearchIcon className="mr-[3px]" />}
+              className="bg-[#F8FAFC] placeholder-[#5B8DEF] text-md font-normal leading-4"
               placeholder="Buscar"
-              size="large"
+              size="middle"
               onChange={(event) => onSearchValue(event.target.value)}
               value={searchValue}
             />
           )}
           {NOT_SHOW_INPUT[pathname as Routes] && <div></div>}
-          <Button icon={<ExclamationMarkIcon />} type="text"></Button>
+          <Button icon={<ExclamationMarkIcon />} type="text" size="small"></Button>
 
-          {/*<Avatar>{userInfo?.username.slice(0, 2).toUpperCase()}</Avatar>*/}
+          {/*<Avatar size="small">{userInfo?.username.slice(0, 2).toUpperCase()}</Avatar>*/}
         </div>
       </div>
-    </Header>
+    </header>
   )
 }

@@ -1,14 +1,14 @@
 import { Button, Divider, theme } from 'antd'
 import styles from './styles.module.css'
-import { UserIcon } from '../../../assets/icons/userIcon'
 import { LeftArrowIcon } from '../../../assets/icons/LeftArrowIcon'
+import { AppIcon } from '../../../assets/icons/AppIcon'
 
 interface Props {
   collapsed: boolean
   onCollapsed: () => void
 }
 
-export const SiderbarHeader = ({ collapsed, onCollapsed }: Props) => {
+export const SidebarHeader = ({ collapsed, onCollapsed }: Props) => {
   const {
     token: { colorBgContainer },
   } = theme.useToken()
@@ -19,8 +19,8 @@ export const SiderbarHeader = ({ collapsed, onCollapsed }: Props) => {
       className={styles.contentHeader}
       style={{ backgroundColor: colorBgContainer }}
     >
-      <div className={styles.infoHeader}>
-        <UserIcon />
+      <div className={`${!collapsed ? styles.infoHeader : styles.collapsed}`}>
+        <AppIcon className="w-[44px]" />
         {!collapsed && (
           <div className={styles.info}>
             {/*<p className={styles.roleUser}>{userInfo?.role?.type}</p>*/}
