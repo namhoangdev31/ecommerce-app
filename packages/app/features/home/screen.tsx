@@ -25,7 +25,6 @@ const Tab = createBottomTabNavigator()
 import { MainTab } from '../../../components/home/home_tab'
 
 function AboutTab() {
-
   return (
     <SafeAreaView className="flex-1">
       <ScrollView>
@@ -67,6 +66,7 @@ export function HomeScreen() {
         name="Home"
         options={{
           headerShown: false,
+          headerTitle: 'Home',
           tabBarIcon: ({ color }) => (
             <Ionicons size={24} name="home" color={color} />
           ),

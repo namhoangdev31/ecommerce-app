@@ -15,16 +15,11 @@ export function HomeWebScreen() {
       })
   }
 
-  const getGemini = () => {
-
-  }
-
   return (
     <View className="flex-1 items-center justify-center">
       <TextLink className="w-1/3" tw="text-1" href="/">
-        asdasdasd
+        Home
       </TextLink>
-      <button onClick={fetchUsers}>Fetch Users</button>
     </View>
   )
 }
