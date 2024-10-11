@@ -33,6 +33,11 @@ export function MainContent() {
             <Text className="font-regular px-2 text-xs">Reading Task</Text>
           </View>
         </Link>
+        <Link href="/listen-task">
+          <View className="m-4 items-center rounded-lg bg-[#FFF] p-3">
+            <Text className="font-regular px-2 text-xs">Listen Task</Text>
+          </View>
+        </Link>
       </ScrollView>
     </SafeAreaView>
   )
