@@ -40,7 +40,7 @@ export const useReadTaskStore = create<ReadTaskState>((set, get) => ({
     try {
       set({ isLoading: true })
       const result = await model.generateContent(
-        'Tạo một đoạn văn ngắn IELTS Reading band 9.0 khoảng 80 từ và 1 câu hỏi trắc nghiệm về đoạn văn đó. Câu hỏi có 4 lựa chọn. Hãy định dạng kết quả như sau: [PASSAGE] Nội dung đoạn văn [/PASSAGE] [QUESTION] Câu hỏi? A. Lựa chọn A B. Lựa chọn B C. Lựa chọn C D. Lựa chọn D [/QUESTION]',
+        'Tạo một đoạn văn ngắn về các chủ đề đa dạng IELTS Reading band 9.0 khoảng 80 từ và 1 câu hỏi trắc nghiệm về đoạn văn đó. Câu hỏi có 4 lựa chọn. Hãy định dạng kết quả như sau: [PASSAGE] Nội dung đoạn văn [/PASSAGE] [QUESTION] Câu hỏi? A. Lựa chọn A B. Lựa chọn B C. Lựa chọn C D. Lựa chọn D [/QUESTION]',
       )
       const response = await result.response
       const text = response.text()

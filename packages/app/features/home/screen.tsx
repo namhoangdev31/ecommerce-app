@@ -23,6 +23,8 @@ import { IconButton, MD3Colors, Button } from 'react-native-paper'
 const Tab = createBottomTabNavigator()
 
 import { MainTab } from '../../../components/home/home_tab'
+import NotificationScreen from '../notification/screen'
+import ProfileScreen from 'app/features/profile/screen'
 
 function AboutTab() {
   return (
@@ -40,14 +42,6 @@ function AboutTab() {
         </Column>
       </ScrollView>
     </SafeAreaView>
-  )
-}
-
-function ContactTab() {
-  return (
-    <View className="flex-1 items-center justify-center">
-      <Text className="text-2xl font-bold">Contact</Text>
-    </View>
   )
 }
 
@@ -74,34 +68,6 @@ export function HomeScreen() {
         component={MainTab}
       />
       <Tab.Screen
-        name="Sale"
-        options={{
-          headerShown: false,
-          title: 'House Sale',
-          tabBarIcon: ({ color }) => (
-            <Ionicons size={24} name="ios-compass-sharp" color={color} />
-          ),
-          headerTintColor: MD3Colors.neutral10,
-          headerTitleAlign: 'center',
-          headerShadowVisible: false,
-        }}
-        component={AboutTab}
-      />
-      <Tab.Screen
-        name="Customer"
-        options={{
-          headerShown: false,
-          title: 'Customer',
-          tabBarIcon: ({ color }) => (
-            <Ionicons size={24} name="ios-people" color={color} />
-          ),
-          headerTintColor: MD3Colors.neutral10,
-          headerTitleAlign: 'center',
-          headerShadowVisible: false,
-        }}
-        component={AboutTab}
-      />
-      <Tab.Screen
         name="Notifications"
         options={{
           headerShown: false,
@@ -113,7 +79,7 @@ export function HomeScreen() {
           headerTitleAlign: 'center',
           headerShadowVisible: false,
         }}
-        component={AboutTab}
+        component={NotificationScreen}
       />
 
       <Tab.Screen
@@ -128,7 +94,7 @@ export function HomeScreen() {
             />
           ),
         }}
-        component={ContactTab}
+        component={ProfileScreen}
       />
     </Tab.Navigator>
   )

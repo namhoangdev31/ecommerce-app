@@ -1,18 +1,35 @@
 {
   "expo": {
-    "name": "solito-nativewind",
-    "slug": "solito-nativewind",
+    "name": "English AI",
+    "slug": "english-ai",
     "version": "1.0.0",
-    "scheme": "solito-nativewind",
+    "scheme": "englishai",
+    "orientation": "portrait",
+    "userInterfaceStyle": "automatic",
     "platforms": [
       "ios",
       "android"
     ],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "splash": {
+      "image": "./assets/images/doll.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#3F76FF"
+    },
     "ios": {
-      "bundleIdentifier": "com.solito.nativewind"
+      "supportsTablet": true,
+      "bundleIdentifier": "com.nhn.englishai",
+      "splash": {
+        "image": "./assets/images/doll.png",
+        "resizeMode": "contain",
+        "backgroundColor": "#3F76FF"
+      }
     },
     "android": {
-      "package": "com.solito.nativewind"
-    }
+      "package": "com.nhn.englishai"
+    },
+    "icon": "./assets/images/icon.png"
   }
 }

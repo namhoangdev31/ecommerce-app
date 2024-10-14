@@ -1,8 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react'
-import {
-  TouchableOpacity,
-  ScrollView,
-} from 'app/design/total-design'
+import { TouchableOpacity, ScrollView } from 'app/design/total-design'
 import { View } from 'app/design/view'
 import { Text } from 'app/design/typography'
 import { ActivityIndicator, Animated } from 'react-native'
@@ -15,6 +12,7 @@ import Ionicons from '@expo/vector-icons/Ionicons'
 export default function ListenTask() {
   const [isSpeaking, setIsSpeaking] = useState(false)
   const navigation = useNavigation()
+  const [voiceChoose, setVoice] = useState('')
   const animationValues = useRef(
     [...Array(18)].map(() => new Animated.Value(0)),
   ).current
@@ -49,8 +47,39 @@ export default function ListenTask() {
     })
   }, [navigation, handleRefresh])
 
+  const getVoice = async () => {
+    const voices = await Tts.voices()
+    const availableVoices = voices
+      .filter((v) => !v.networkConnectionRequired && !v.notInstalled)
+      .map((v) => {
+        return { id: v.id, name: v.name, language: v.language }
+      })
+    // Log list of available voices
+    if (availableVoices.length > 0) {
+      const firstVoice = availableVoices.find(
+        (voice) => voice.language === 'en-GB',
+      )
+      if (firstVoice) {
+        setVoice(firstVoice.id)
+        console.log(
+          'Available voice names:',
+          availableVoices.map((v) => v.name).toString(),
+        )
+        console.log(
+          'Available voice languages:',
+          availableVoices.map((v) => v.language).toString(),
+        )
+      } else {
+        console.log('First voice is undefined')
+      }
+    } else {
+      console.log('No available voices found')
+    }
+  }
+
   useEffect(() => {
-    Tts.setDefaultLanguage('en-US')
+    getVoice().then((r) => console.log('Done'))
+    Tts.setDefaultLanguage('en-GB')
     const startListener = () => setIsSpeaking(true)
     const finishListener = () => {
       setIsSpeaking(false)
@@ -60,11 +89,11 @@ export default function ListenTask() {
       setIsSpeaking(false)
       stopAnimation()
     }
-    
+
     Tts.addEventListener('tts-start', startListener)
     Tts.addEventListener('tts-finish', finishListener)
     Tts.addEventListener('tts-cancel', cancelListener)
-    
+
     getPassageAndQuestion()
 
     // return () => {
@@ -108,13 +137,15 @@ export default function ListenTask() {
     const thingToSay = passage
     console.log(thingToSay)
     if (isSpeaking) {
-      Tts.stop()
+      await Tts.stop()
       setIsSpeaking(false)
       stopAnimation()
     } else {
       startAnimation()
       try {
-        await Tts.speak(thingToSay)
+        // Change voice to a better one
+
+        Tts.speak(thingToSay)
       } catch (error) {
         console.error('Lỗi khi phát âm:', error)
         setIsSpeaking(false)
@@ -167,7 +198,9 @@ export default function ListenTask() {
               </TouchableOpacity>
               {!response && (
                 <View className="w-full rounded-lg bg-white p-4 shadow-lg">
-                  <Text className="mb-2 text-lg font-bold text-blue-900">Câu hỏi:</Text>
+                  <Text className="mb-2 text-lg font-bold text-blue-900">
+                    Câu hỏi:
+                  </Text>
                   <Text className="mb-2 text-base font-semibold">
                     {question.question}
                   </Text>
@@ -198,7 +231,7 @@ export default function ListenTask() {
                 className="mt-4 rounded bg-blue-500 px-8 py-3"
               >
                 <Text className="text-center font-bold text-white">
-                  {response ? "Câu hỏi tiếp theo" : "Gửi câu trả lời"}
+                  {response ? 'Câu hỏi tiếp theo' : 'Gửi câu trả lời'}
                 </Text>
               </TouchableOpacity>
             </>
