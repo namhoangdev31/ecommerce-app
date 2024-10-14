@@ -19,7 +19,7 @@
     },
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.nhn.englishai",
+      "bundleIdentifier": "com.nhn.aienglish",
       "splash": {
         "image": "./assets/images/doll.png",
         "resizeMode": "contain",
@@ -27,7 +27,7 @@
       }
     },
     "android": {
-      "package": "com.nhn.englishai"
+      "package": "com.nhn.aienglish"
     },
     "icon": "./assets/images/icon.png"
   }
