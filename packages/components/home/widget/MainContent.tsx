@@ -6,39 +6,104 @@ import {
 import { View } from 'app/design/view'
 import { Text } from 'app/design/typography'
 import { Ionicons } from '@expo/vector-icons'
-import { Link } from 'solito/link'
+import { Image } from 'app/design/image'
+import { useRouter } from 'solito/router'
 import React from 'react'
+import { LinearGradient } from 'react-native-linear-gradient'
+
+const LessonCard = ({ icon, title, gradientColors, onPress }) => (
+  <TouchableOpacity
+    className="my-2 overflow-hidden rounded-xl shadow-md"
+    onPress={onPress}
+  >
+    <LinearGradient
+      colors={gradientColors}
+      start={{ x: 1, y: 0 }}
+      end={{ x: 0, y: 0 }}
+      className="flex-row items-center p-4"
+    >
+      <View
+        className="mr-4 rounded-full p-2"
+        style={{ backgroundColor: gradientColors[1] }}
+      >
+        <Ionicons name={icon} size={24} color="white" />
+      </View>
+      <Text className="text-lg font-bold text-white">{title}</Text>
+      <View className="ml-auto">
+        <Ionicons name="chevron-forward" size={24} color="white" />
+      </View>
+    </LinearGradient>
+  </TouchableOpacity>
+)
 
 export function MainContent() {
+  const router = useRouter()
+
+  const handlePress = (route) => {
+    router.push(route)
+  }
+
   return (
-    <SafeAreaView className="flex-1">
-      <View className="flex-row flex-wrap items-center justify-between bg-[#EAF2F5] py-1">
-        <Text className="font-regular px-4 text-xs">Có 123 kết quả</Text>
-        <TouchableOpacity
-          className="flex-row bg-transparent p-2"
-          onPress={() => {}}
-        >
-          <Text className="font-regular px-2 text-xs">Option 1</Text>
-          <Ionicons size={14} name="ios-chevron-down" />
-        </TouchableOpacity>
-      </View>
-      <ScrollView className="bg-[#EAF2F5]">
-        <Link href="/write-task">
-          <View className="m-4 items-center rounded-lg bg-[#FFF] p-3">
-            <Text className="font-regular px-2 text-xs">Writing Task</Text>
+    <LinearGradient
+      colors={['#3F76FF', '#9FBAFF', '#FFFFFF']}
+      className="flex-1"
+    >
+      <SafeAreaView className="flex-1">
+        <View className="flex-row items-center justify-between p-4">
+          <View className="flex-row items-center">
+            <Image
+              source={{ uri: 'https://placekitten.com/40/40' }}
+              className="h-10 w-10 rounded-full"
+            />
+            <View className="ml-2">
+              <Text className="font-bold text-white">Người dùng</Text>
+              <Text className="text-white">0 XP</Text>
+            </View>
           </View>
-        </Link>
-        <Link href="/read-task">
-          <View className="m-4 items-center rounded-lg bg-[#FFF] p-3">
-            <Text className="font-regular px-2 text-xs">Reading Task</Text>
+          <View className="flex-row">
+            <TouchableOpacity onPress={() => console.log('Flame pressed')}>
+              <View className="mr-4">
+                <Ionicons name="flame" size={24} color="#FFD700" />
+              </View>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => console.log('Heart pressed')}>
+              <Ionicons name="ios-heart-circle-outline" size={24} color="#FF69B4" />
+            </TouchableOpacity>
           </View>
-        </Link>
-        <Link href="/listen-task">
-          <View className="m-4 items-center rounded-lg bg-[#FFF] p-3">
-            <Text className="font-regular px-2 text-xs">Listen Task</Text>
-          </View>
-        </Link>
-      </ScrollView>
-    </SafeAreaView>
+        </View>
+        <ScrollView className="flex-1 px-4 pt-4">
+          <LessonCard
+            icon="ios-pencil"
+            title="Viết"
+            gradientColors={['#7CFC00', '#32CD32']}
+            onPress={() => handlePress('/write-task')}
+          />
+          <LessonCard
+            icon="ios-book"
+            title="Đọc"
+            gradientColors={['#9400D3', '#8A2BE2']}
+            onPress={() => handlePress('/read-task')}
+          />
+          <LessonCard
+            icon="ios-headset"
+            title="Nghe"
+            gradientColors={['#00BFFF', '#1E90FF']}
+            onPress={() => handlePress('/listen-task')}
+          />
+          <LessonCard
+            icon="ios-chatbubbles"
+            title="Nói"
+            gradientColors={['#FFA500', '#FF8C00']}
+            onPress={() => {}}
+          />
+          <LessonCard
+            icon="ios-school"
+            title="Ngữ pháp"
+            gradientColors={['#FF6347', '#DC143C']}
+            onPress={() => {}}
+          />
+        </ScrollView>
+      </SafeAreaView>
+    </LinearGradient>
   )
 }

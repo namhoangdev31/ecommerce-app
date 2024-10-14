@@ -4,7 +4,6 @@
     "slug": "english-ai",
     "version": "1.0.0",
     "scheme": "englishai",
-    "orientation": "portrait",
     "userInterfaceStyle": "automatic",
     "platforms": [
       "ios",

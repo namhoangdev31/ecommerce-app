@@ -8,6 +8,7 @@ import { useNavigation } from '@react-navigation/native'
 import Tts from 'react-native-tts'
 import { useReadTaskStore } from 'app/utils/read-task/zustand'
 import Ionicons from '@expo/vector-icons/Ionicons'
+import LinearGradient from 'react-native-linear-gradient'
 
 export default function ListenTask() {
   const [isSpeaking, setIsSpeaking] = useState(false)
@@ -36,11 +37,18 @@ export default function ListenTask() {
       headerShown: true,
       headerTitle: 'Listen Task',
       headerBackTitle: 'Back',
+      headerBackground: () => (
+        <LinearGradient
+          colors={['#0033CC', '#3366FF', '#6699FF', '#99CCFF', '#FFFFFF']}
+          style={{ flex: 1 }}
+        />
+      ),
+      headerTintColor: '#fff',
       headerRight: () => (
         <Ionicons
           name="ios-arrow-forward"
           size={20}
-          color="#0051e3"
+          color="#FFFFFF"
           onPress={handleRefresh}
         />
       ),

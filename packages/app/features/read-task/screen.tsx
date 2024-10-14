@@ -5,6 +5,7 @@ import { ScrollView, TouchableOpacity, ActivityIndicator } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 import { useReadTaskStore } from 'app/utils/read-task/zustand'
 import { Ionicons } from '@expo/vector-icons'
+import LinearGradient from 'react-native-linear-gradient'
 
 export default function ReadTask() {
   const navigation = useNavigation()
@@ -26,11 +27,18 @@ export default function ReadTask() {
       headerShown: true,
       headerTitle: 'Read Task',
       headerBackTitle: 'Back',
+      headerBackground: () => (
+        <LinearGradient
+          colors={['#0033CC', '#3366FF', '#6699FF', '#99CCFF', '#FFFFFF']}
+          style={{ flex: 1 }}
+        />
+      ),
+      headerTintColor: '#fff',
       headerRight: () => (
         <Ionicons
           name="ios-arrow-forward"
           size={20}
-          color="#0051e3"
+          color="#FFFFFF"
           onPress={handleRefresh}
         />
       ),

@@ -25,25 +25,8 @@ const Tab = createBottomTabNavigator()
 import { MainTab } from '../../../components/home/home_tab'
 import NotificationScreen from '../notification/screen'
 import ProfileScreen from 'app/features/profile/screen'
-
-function AboutTab() {
-  return (
-    <SafeAreaView className="flex-1">
-      <ScrollView>
-        <Column className="items-center justify-center pl-1.5 pr-1.5">
-          {[...Array(10)].map((_, index) => (
-            <Text key={index} className="mb-4 text-2xl font-bold">
-              Home ${index}
-            </Text>
-          ))}
-          <View className="flex-1 items-center justify-center">
-            <Text className="text-2xl font-bold">About</Text>
-          </View>
-        </Column>
-      </ScrollView>
-    </SafeAreaView>
-  )
-}
+import LoginScreen from '../login/screen'
+import RegisterScreen from '../register/screen'
 
 export function HomeScreen() {
   const navigation = useNavigation()
@@ -55,7 +38,7 @@ export function HomeScreen() {
   }, [navigation])
 
   return (
-    <Tab.Navigator initialRouteName="Home">
+    <Tab.Navigator initialRouteName="Home" screenOptions={{ headerShown: false, tabBarStyle: { backgroundColor: '#fff' } }}>
       <Tab.Screen
         name="Home"
         options={{

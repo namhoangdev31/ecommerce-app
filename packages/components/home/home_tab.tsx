@@ -29,7 +29,7 @@ export function MainTab() {
         name="Main"
         component={MainContent}
         options={{
-          headerShown: true,
+          headerShown: false,
           headerTitleAlign: 'center',
           headerTitle: 'Home',
           headerStyle: {

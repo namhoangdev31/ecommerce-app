@@ -17,6 +17,7 @@ import Animated, {
   withSpring,
   runOnJS,
 } from 'react-native-reanimated'
+import { LinearGradient } from 'react-native-linear-gradient'
 
 interface Notification {
   id: string
@@ -29,19 +30,19 @@ interface Notification {
 const mockNotifications: Notification[] = [
   {
     id: '1',
-    title: 'New lesson available',
-    message: 'Check out our new listening comprehension lesson!',
+    title: 'Bài học mới có sẵn',
+    message: 'Hãy xem bài học nghe hiểu mới của chúng tôi!',
     date: '2023-06-01',
     read: false,
   },
   {
     id: '2',
-    title: 'Practice reminder',
-    message: "Don't forget to practice your speaking skills today!",
+    title: 'Nhắc nhở luyện tập',
+    message: "Đừng quên luyện tập kỹ năng nói của bạn hôm nay!",
     date: '2023-05-31',
     read: true,
   },
-  // Add more mock notifications as needed
+  // Thêm các thông báo giả khác nếu cần
 ]
 
 export default function NotificationScreen() {
@@ -50,9 +51,13 @@ export default function NotificationScreen() {
 
   React.useLayoutEffect(() => {
     navigation.setOptions({
-      headerShown: true,
-      headerTitle: 'Notifications',
-      headerBackTitle: 'Back',
+      headerShown: false,
+      headerTitle: 'Thông báo',
+      headerBackTitle: 'Quay lại',
+      headerStyle: {
+        backgroundColor: '#3F76FF',
+      },
+      headerTintColor: '#fff',
     })
   }, [navigation])
 
@@ -62,7 +67,7 @@ export default function NotificationScreen() {
         (notification) => notification.id !== id,
       )
       if (updatedNotifications.length === prevNotifications.length) {
-        console.warn(`Notification with id ${id} not found`)
+        console.warn(`Không tìm thấy thông báo với id ${id}`)
       }
       return updatedNotifications
     })
@@ -121,26 +126,31 @@ export default function NotificationScreen() {
   }
 
   return (
-    <SafeAreaView className="flex-1 bg-gray-100">
-      <ScrollView className="flex-1 p-4">
-        {notifications.length > 0 ? (
-          notifications.map(renderNotification)
-        ) : (
-          <View className="flex-1 items-center justify-center py-20">
-            <Ionicons
-              name="notifications-off-outline"
-              size={64}
-              color="#9CA3AF"
-            />
-            <Text className="mt-4 text-xl font-semibold text-gray-500">
-              No notifications
-            </Text>
-            <Text className="mt-2 text-center text-gray-400">
-              You're all caught up! Check back later for new notifications.
-            </Text>
-          </View>
-        )}
-      </ScrollView>
-    </SafeAreaView>
+    <LinearGradient
+      colors={['#3F76FF', '#9FBAFF', '#FFFFFF']}
+      className="flex-1"
+    >
+      <SafeAreaView className="flex-1">
+        <ScrollView className="flex-1 p-4">
+          {notifications.length > 0 ? (
+            notifications.map(renderNotification)
+          ) : (
+            <View className="flex-1 items-center justify-center py-20">
+              <Ionicons
+                name="notifications-off-outline"
+                size={64}
+                color="#9CA3AF"
+              />
+              <Text className="mt-4 text-xl font-semibold text-gray-500">
+                Không có thông báo
+              </Text>
+              <Text className="mt-2 text-center text-gray-400">
+                Bạn đã cập nhật tất cả! Hãy quay lại sau để xem các thông báo mới.
+              </Text>
+            </View>
+          )}
+        </ScrollView>
+      </SafeAreaView>
+    </LinearGradient>
   )
 }

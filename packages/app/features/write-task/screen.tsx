@@ -1,8 +1,4 @@
-import {
-  SafeAreaView,
-  ScrollView,
-  TextInput,
-} from 'app/design/total-design'
+import { SafeAreaView, ScrollView, TextInput } from 'app/design/total-design'
 import { View } from 'app/design/view'
 import { Text } from 'app/design/typography'
 import { useNavigation } from '@react-navigation/native'
@@ -17,34 +13,32 @@ import {
 } from 'react-native'
 import { useWriteTaskStore } from 'app/utils/write-task/zustand-store'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
+import LinearGradient from 'react-native-linear-gradient'
 
 const Tab = createBottomTabNavigator()
 
 function InputScreen() {
-  const {
-    input,
-    setInput,
-    handleSubmit,
-  } = useWriteTaskStore()
+  const { input, setInput, handleSubmit } = useWriteTaskStore()
 
   return (
     <View className="flex-1 bg-white">
       <View className="flex-1 p-4">
         <TextInput
+          // onPressIn={Keyboard.dismiss}
           className="flex-1 text-sm"
           multiline={true}
-          placeholder="Nhập câu trả lời của bạn ở đây..."
+          placeholder="Please enter your answer here..."
           value={input}
           onChangeText={(newText) => setInput(newText)}
           textAlignVertical="top"
         />
       </View>
       <View className="items-end border-gray-200 bg-gray-100 p-2">
-        <TouchableOpacity 
+        <TouchableOpacity
           onPress={handleSubmit}
           className="rounded-md bg-blue-500 px-4 py-2"
         >
-          <Text className="font-bold text-white items-center">Gửi</Text>
+          <Text className="items-center font-bold text-white">Gửi</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -52,12 +46,7 @@ function InputScreen() {
 }
 
 function ContentScreen() {
-  const {
-    responses,
-    errors,
-    question,
-    isLoading,
-  } = useWriteTaskStore()
+  const { responses, errors, question, isLoading } = useWriteTaskStore()
 
   if (isLoading) {
     return (
@@ -87,9 +76,7 @@ function ContentScreen() {
                     {part.split('**').map((subPart, subIndex) => (
                       <Text
                         key={subIndex}
-                        style={
-                          subIndex % 2 === 1 ? { fontWeight: 'bold' } : {}
-                        }
+                        style={subIndex % 2 === 1 ? { fontWeight: 'bold' } : {}}
                       >
                         {subPart}
                       </Text>
@@ -137,11 +124,18 @@ export default function WriteTask() {
       headerShown: true,
       headerTitle: 'Write Task',
       headerBackTitle: 'Back',
+      headerBackground: () => (
+        <LinearGradient
+          colors={['#0033CC', '#3366FF', '#6699FF', '#99CCFF', '#FFFFFF']}
+          style={{ flex: 1 }}
+        />
+      ),
+      headerTintColor: '#fff',
       headerRight: () => (
         <Ionicons
           name="ios-refresh-circle-outline"
           size={20}
-          color="#0051e3"
+          color="#FFFFFF"
           onPress={handleRefresh}
         />
       ),
@@ -153,29 +147,29 @@ export default function WriteTask() {
   }, [])
 
   return (
-      <SafeAreaView className="flex-1">
-        <Tab.Navigator>
-          <Tab.Screen 
-            name="Content" 
-            component={ContentScreen}
-            options={{
-              headerShown: false,
-              tabBarIcon: ({ color, size }) => (
-                <Ionicons name="ios-document-text" color={color} size={size} />
-              ),
-            }}
-          />
-          <Tab.Screen 
-            name="Input" 
-            component={InputScreen}
-            options={{
-              headerShown: false,
-              tabBarIcon: ({ color, size }) => (
-                <Ionicons name="ios-create" color={color} size={size} />
-              ),
-            }}
-          />
-        </Tab.Navigator>
-      </SafeAreaView>
+    <SafeAreaView className="flex-1">
+      <Tab.Navigator>
+        <Tab.Screen
+          name="Content"
+          component={ContentScreen}
+          options={{
+            headerShown: false,
+            tabBarIcon: ({ color, size }) => (
+              <Ionicons name="ios-document-text" color={color} size={size} />
+            ),
+          }}
+        />
+        <Tab.Screen
+          name="Input"
+          component={InputScreen}
+          options={{
+            headerShown: false,
+            tabBarIcon: ({ color, size }) => (
+              <Ionicons name="ios-create" color={color} size={size} />
+            ),
+          }}
+        />
+      </Tab.Navigator>
+    </SafeAreaView>
   )
 }
