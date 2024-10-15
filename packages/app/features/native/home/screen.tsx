@@ -22,9 +22,9 @@ import { IconButton, MD3Colors, Button } from 'react-native-paper'
 
 const Tab = createBottomTabNavigator()
 
-import { MainTab } from '../../../components/home/home_tab'
+import { MainTab } from '../../../../components/home/home_tab'
 import NotificationScreen from '../notification/screen'
-import ProfileScreen from 'app/features/profile/screen'
+import ProfileScreen from 'app/features/native/profile/screen'
 import LoginScreen from '../login/screen'
 import RegisterScreen from '../register/screen'
 

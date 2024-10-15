@@ -3,7 +3,7 @@ import { Text } from 'app/design/typography'
 import React, { useEffect } from 'react'
 import { ScrollView, TouchableOpacity, ActivityIndicator } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
-import { useReadTaskStore } from 'app/utils/read-task/zustand'
+import { useReadTaskStore } from 'app/features/native/read-task/zustand'
 import { Ionicons } from '@expo/vector-icons'
 import LinearGradient from 'react-native-linear-gradient'
 
@@ -54,14 +54,14 @@ export default function ReadTask() {
     <ScrollView className="flex-1 bg-gray-100">
       <View className="flex w-full flex-col items-center p-4">
         <View className="mb-4 w-full rounded-lg bg-white p-4 shadow-lg">
-          <Text className="mb-2 text-lg font-bold text-blue-900">
-            Passage:
-          </Text>
+          <Text className="mb-2 text-lg font-bold text-blue-900">Passage:</Text>
           <Text className="text-base leading-relaxed">{passage}</Text>
         </View>
         {!response ? (
           <View className="mb-4 w-full rounded-lg bg-white p-4 shadow-lg">
-            <Text className="mb-2 text-lg font-bold text-blue-900">Question:</Text>
+            <Text className="mb-2 text-lg font-bold text-blue-900">
+              Question:
+            </Text>
             <Text className="mb-2 text-base font-semibold">
               {question.question}
             </Text>
@@ -127,7 +127,7 @@ export default function ReadTask() {
                 className="mr-2 flex-1 rounded bg-blue-500 p-3"
               >
                 <Text className="text-center font-bold text-white">
-                  {response ? "Next Question" : "Submit Answer"}
+                  {response ? 'Next Question' : 'Submit Answer'}
                 </Text>
               </TouchableOpacity>
             </>

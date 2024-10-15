@@ -6,7 +6,7 @@ import { ActivityIndicator, Animated } from 'react-native'
 import { SafeAreaView } from 'app/design/total-design'
 import { useNavigation } from '@react-navigation/native'
 import Tts from 'react-native-tts'
-import { useReadTaskStore } from 'app/utils/read-task/zustand'
+import { useReadTaskStore } from 'app/features/native/read-task/zustand'
 import Ionicons from '@expo/vector-icons/Ionicons'
 import LinearGradient from 'react-native-linear-gradient'
 

@@ -11,7 +11,7 @@ import {
   ActivityIndicator,
   TouchableOpacity,
 } from 'react-native'
-import { useWriteTaskStore } from 'app/utils/write-task/zustand-store'
+import { useWriteTaskStore } from 'app/features/native/write-task/zustand-store'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import LinearGradient from 'react-native-linear-gradient'
 

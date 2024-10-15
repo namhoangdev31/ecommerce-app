@@ -1,2 +1,2 @@
-import WriteTask from 'app/features/write-task/screen'
+import WriteTask from 'app/features/native/write-task/screen'
 export default WriteTask

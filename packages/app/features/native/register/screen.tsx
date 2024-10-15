@@ -16,6 +16,7 @@ import { Ionicons } from '@expo/vector-icons'
 import { create } from 'zustand'
 import { useNavigation } from '@react-navigation/native'
 import { useRouter } from 'expo-router'
+
 interface RegisterState {
   fullName: string
   email: string
@@ -23,12 +24,20 @@ interface RegisterState {
   confirmPassword: string
   isPasswordVisible: boolean
   isConfirmPasswordVisible: boolean
+  fullNameError: string
+  emailError: string
+  passwordError: string
+  confirmPasswordError: string
   setFullName: (fullName: string) => void
   setEmail: (email: string) => void
   setPassword: (password: string) => void
   setConfirmPassword: (confirmPassword: string) => void
   togglePasswordVisibility: () => void
   toggleConfirmPasswordVisibility: () => void
+  validateFullName: () => boolean
+  validateEmail: () => boolean
+  validatePassword: () => boolean
+  validateConfirmPassword: () => boolean
 }
 
 const useRegisterStore = create<RegisterState>((set) => ({
@@ -38,16 +47,77 @@ const useRegisterStore = create<RegisterState>((set) => ({
   confirmPassword: '',
   isPasswordVisible: false,
   isConfirmPasswordVisible: false,
-  setFullName: (fullName) => set({ fullName }),
-  setEmail: (email) => set({ email }),
-  setPassword: (password) => set({ password }),
-  setConfirmPassword: (confirmPassword) => set({ confirmPassword }),
+  fullNameError: '',
+  emailError: '',
+  passwordError: '',
+  confirmPasswordError: '',
+  setFullName: (fullName) => set({ fullName, fullNameError: '' }),
+  setEmail: (email) => set({ email, emailError: '' }),
+  setPassword: (password) => set({ password, passwordError: '' }),
+  setConfirmPassword: (confirmPassword) => set({ confirmPassword, confirmPasswordError: '' }),
   togglePasswordVisibility: () =>
     set((state) => ({ isPasswordVisible: !state.isPasswordVisible })),
   toggleConfirmPasswordVisibility: () =>
     set((state) => ({
       isConfirmPasswordVisible: !state.isConfirmPasswordVisible,
     })),
+  validateFullName: () => {
+    let isValid = true
+    set((state) => {
+      if (!state.fullName.trim()) {
+        isValid = false
+        return { fullNameError: 'Họ và tên không được để trống' }
+      }
+      return { fullNameError: '' }
+    })
+    return isValid
+  },
+  validateEmail: () => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    let isValid = true
+    set((state) => {
+      if (!state.email.trim()) {
+        isValid = false
+        return { emailError: 'Email không được để trống' }
+      }
+      if (!emailRegex.test(state.email)) {
+        isValid = false
+        return { emailError: 'Email không hợp lệ' }
+      }
+      return { emailError: '' }
+    })
+    return isValid
+  },
+  validatePassword: () => {
+    let isValid = true
+    set((state) => {
+      if (!state.password) {
+        isValid = false
+        return { passwordError: 'Mật khẩu không được để trống' }
+      }
+      if (state.password.length < 6) {
+        isValid = false
+        return { passwordError: 'Mật khẩu phải có ít nhất 6 ký tự' }
+      }
+      return { passwordError: '' }
+    })
+    return isValid
+  },
+  validateConfirmPassword: () => {
+    let isValid = true
+    set((state) => {
+      if (!state.confirmPassword) {
+        isValid = false
+        return { confirmPasswordError: 'Xác nhận mật khẩu không được để trống' }
+      }
+      if (state.confirmPassword !== state.password) {
+        isValid = false
+        return { confirmPasswordError: 'Mật khẩu xác nhận không khớp' }
+      }
+      return { confirmPasswordError: '' }
+    })
+    return isValid
+  },
 }))
 
 const RegisterScreen = () => {
@@ -60,12 +130,20 @@ const RegisterScreen = () => {
     confirmPassword,
     isPasswordVisible,
     isConfirmPasswordVisible,
+    fullNameError,
+    emailError,
+    passwordError,
+    confirmPasswordError,
     setFullName,
     setEmail,
     setPassword,
     setConfirmPassword,
     togglePasswordVisibility,
     toggleConfirmPasswordVisibility,
+    validateFullName,
+    validateEmail,
+    validatePassword,
+    validateConfirmPassword,
   } = useRegisterStore()
 
   const fadeAnim = useRef(new Animated.Value(0)).current
@@ -123,6 +201,20 @@ const RegisterScreen = () => {
     ]).start()
   }
 
+  const handleRegister = () => {
+    const isFullNameValid = validateFullName()
+    const isEmailValid = validateEmail()
+    const isPasswordValid = validatePassword()
+    const isConfirmPasswordValid = validateConfirmPassword()
+
+    if (isFullNameValid && isEmailValid && isPasswordValid && isConfirmPasswordValid) {
+      // Proceed with registration
+      console.log('Registration successful')
+    } else {
+      startShake()
+    }
+  }
+
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <LinearGradient
@@ -169,6 +261,7 @@ const RegisterScreen = () => {
                   onChangeText={setFullName}
                   className="rounded-xl bg-white/20 px-4 py-3 text-white"
                 />
+                {fullNameError ? <Text className="mt-1 text-red-500">{fullNameError}</Text> : null}
               </View>
 
               <View className="mb-4">
@@ -179,6 +272,7 @@ const RegisterScreen = () => {
                   onChangeText={setEmail}
                   className="rounded-xl bg-white/20 px-4 py-3 text-white"
                 />
+                {emailError ? <Text className="mt-1 text-red-500">{emailError}</Text> : null}
               </View>
 
               <View className="relative mb-4">
@@ -200,6 +294,7 @@ const RegisterScreen = () => {
                     color="white"
                   />
                 </TouchableOpacity>
+                {passwordError ? <Text className="mt-1 text-red-500">{passwordError}</Text> : null}
               </View>
 
               <View className="relative mb-6">
@@ -221,11 +316,12 @@ const RegisterScreen = () => {
                     color="white"
                   />
                 </TouchableOpacity>
+                {confirmPasswordError ? <Text className="mt-1 text-red-500">{confirmPasswordError}</Text> : null}
               </View>
 
               <TouchableOpacity
                 className="mb-4 rounded-xl bg-white py-3"
-                onPress={startShake}
+                onPress={handleRegister}
               >
                 <Text className="text-center text-base font-bold text-[#3b5998]">
                   ĐĂNG KÝ

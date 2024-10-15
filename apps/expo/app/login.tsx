@@ -1,3 +1,3 @@
-import LoginScreen from 'app/features/login/screen'
+import LoginScreen from 'app/features/native/login/screen'
 
 export default LoginScreen

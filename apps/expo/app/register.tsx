@@ -1,3 +1,3 @@
-import RegisterScreen from 'app/features/register/screen'
+import RegisterScreen from 'app/features/native/register/screen'
 
 export default RegisterScreen

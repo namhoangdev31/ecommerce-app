@@ -1,2 +1,2 @@
-import ReadTask from 'app/features/read-task/screen'
+import ReadTask from 'app/features/native/read-task/screen'
 export default ReadTask
