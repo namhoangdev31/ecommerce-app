@@ -77,7 +77,7 @@ const LoginScreen = () => {
           >
             <View className="items-center">
               <Image
-                source={require('../../../../apps/expo/assets/images/doll.png')}
+                source={require('../../../../assets/doll.png')}
                 style={{ width: 100, height: 100 }}
                 resizeMode="contain"
               />

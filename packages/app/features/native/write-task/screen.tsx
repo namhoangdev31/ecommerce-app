@@ -2,7 +2,7 @@ import { SafeAreaView, ScrollView, TextInput } from 'app/design/total-design'
 import { View } from 'app/design/view'
 import { Text } from 'app/design/typography'
 import { useNavigation } from '@react-navigation/native'
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Ionicons } from '@expo/vector-icons'
 import {
   Keyboard,
@@ -10,38 +10,63 @@ import {
   Platform,
   ActivityIndicator,
   TouchableOpacity,
+  Dimensions,
 } from 'react-native'
 import { useWriteTaskStore } from 'app/features/native/write-task/zustand-store'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import LinearGradient from 'react-native-linear-gradient'
+import { TouchableWithoutFeedback } from 'react-native'
 
 const Tab = createBottomTabNavigator()
 
 function InputScreen() {
-  const { input, setInput, handleSubmit } = useWriteTaskStore()
+  const { input, setInput, handleSubmit, suggestion } = useWriteTaskStore()
+  const [isLandscape, setIsLandscape] = useState(false)
+
+  useEffect(() => {
+    const updateOrientation = () => {
+      const { width, height } = Dimensions.get('window')
+      setIsLandscape(width > height)
+    }
+
+    const subscription = Dimensions.addEventListener('change', updateOrientation)
+    updateOrientation()
+
+    return () => subscription.remove()
+  }, [])
 
   return (
-    <View className="flex-1 bg-white">
-      <View className="flex-1 p-4">
-        <TextInput
-          // onPressIn={Keyboard.dismiss}
-          className="flex-1 text-sm"
-          multiline={true}
-          placeholder="Please enter your answer here..."
-          value={input}
-          onChangeText={(newText) => setInput(newText)}
-          textAlignVertical="top"
-        />
-      </View>
-      <View className="items-end border-gray-200 bg-gray-100 p-2">
-        <TouchableOpacity
-          onPress={handleSubmit}
-          className="rounded-md bg-blue-500 px-4 py-2"
-        >
-          <Text className="items-center font-bold text-white">Gửi</Text>
-        </TouchableOpacity>
-      </View>
-    </View>
+    <SafeAreaView>
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+      <ScrollView>
+        <View className={`flex-1 bg-white ${isLandscape ? 'flex-row' : ''}`}>
+          <View className={`${isLandscape ? 'w-1/2' : 'h-1/2'} flex-1 p-4`}>
+            <TextInput
+              className="flex-1 rounded-md border border-gray-300 p-2 text-sm h-full"
+              multiline={true}
+              style={{ minHeight: isLandscape ? '100%' : 350 }}
+              placeholder="Vui lòng nhập câu trả lời của bạn tại đây..."
+              value={input}
+              onChangeText={(newText) => setInput(newText)}
+              textAlignVertical="top"
+            />
+          </View>
+          {suggestion && (
+            <View className={`${isLandscape ? 'w-1/2 p-4' : 'm-1'} rounded-md bg-blue-50 p-2`}>
+              <Text className="text-xs font-semibold text-blue-800">Gợi ý:</Text>
+              <Text className="mt-0.5 text-xs text-blue-700">
+                {suggestion.split('').map((char, index) => (
+                  <Text key={index}>
+                    {char === '*' ? '' : char}
+                  </Text>
+                ))}
+              </Text>
+            </View>
+          )}
+        </View>
+      </ScrollView>
+    </TouchableWithoutFeedback>
+    </SafeAreaView>
   )
 }
 
@@ -52,7 +77,7 @@ function ContentScreen() {
     return (
       <View className="flex-1 items-center justify-center">
         <ActivityIndicator size="large" color="#0051e3" />
-        <Text className="mt-4 text-sm">Loading...</Text>
+        <Text className="mt-4 text-sm">Đang tải...</Text>
       </View>
     )
   }
@@ -61,7 +86,7 @@ function ContentScreen() {
     <ScrollView className="gap-2 p-3">
       <View className="w-full bg-white p-4">
         <Text className="text-l mb-4 font-bold">
-          AI Evaluation and Explanation:
+          Đánh giá và Giải thích của AI:
         </Text>
         <View className="space-y-4">
           {responses.map((response, index) => (
@@ -86,7 +111,7 @@ function ContentScreen() {
               </Text>
               {errors[index] && (
                 <View className="mt-4 border-l-4 border-red-500 bg-red-100 p-4">
-                  <Text className="font-semibold text-red-700">Error:</Text>
+                  <Text className="font-semibold text-red-700">Lỗi:</Text>
                   <Text className="mt-1 text-red-600">{errors[index]}</Text>
                 </View>
               )}
@@ -117,7 +142,8 @@ function ContentScreen() {
 
 export default function WriteTask() {
   const navigation = useNavigation()
-  const { getQuestion, handleRefresh } = useWriteTaskStore()
+  const { getQuestion, handleRefresh, handleSubmit } = useWriteTaskStore()
+  const [currentScreen, setCurrentScreen] = useState('Content')
 
   React.useLayoutEffect(() => {
     navigation.setOptions({
@@ -133,22 +159,29 @@ export default function WriteTask() {
       headerTintColor: '#fff',
       headerRight: () => (
         <Ionicons
-          name="ios-refresh-circle-outline"
+          name={currentScreen === 'Input' ? 'ios-send' : 'ios-refresh-circle-outline'}
           size={20}
           color="#FFFFFF"
-          onPress={handleRefresh}
+          onPress={currentScreen === 'Input' ? handleSubmit : handleRefresh}
         />
       ),
     })
-  }, [navigation])
+  }, [navigation, currentScreen])
 
   useEffect(() => {
     getQuestion()
   }, [])
 
   return (
-    <SafeAreaView className="flex-1">
-      <Tab.Navigator>
+    // <SafeAreaView className="flex-1">
+      <Tab.Navigator
+        screenListeners={{
+          state: (e) => {
+            const currentRouteName = (e as any).data?.state?.routes?.[(e as any).data?.state?.index]?.name
+            setCurrentScreen(currentRouteName || 'Content')
+          },
+        }}
+      >
         <Tab.Screen
           name="Content"
           component={ContentScreen}
@@ -165,11 +198,11 @@ export default function WriteTask() {
           options={{
             headerShown: false,
             tabBarIcon: ({ color, size }) => (
-              <Ionicons name="ios-create" color={color} size={size} />
+              <Ionicons name={currentScreen === 'Input' ? 'ios-send' : 'ios-create'} color={color} size={size} />
             ),
           }}
         />
       </Tab.Navigator>
-    </SafeAreaView>
+    // </SafeAreaView>
   )
 }

@@ -231,7 +231,7 @@ const RegisterScreen = () => {
           >
             <View className="items-center">
               <Animated.Image
-                source={require('../../../../apps/expo/assets/images/doll.png')}
+                source={require('../../../../assets/doll.png')}
                 style={{
                   width: 120,
                   height: 120,

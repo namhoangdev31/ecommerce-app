@@ -6,6 +6,7 @@ interface WriteTaskState {
   responses: string[]
   errors: string[]
   question: string
+  suggestion: string
   isLoading: boolean
   setInput: (input: string) => void
   setResponses: (responses: string[]) => void
@@ -26,21 +27,23 @@ export const useWriteTaskStore = create<WriteTaskState>((set, get) => ({
   errors: [],
   question: '',
   isLoading: false,
+  suggestion: '',
   setInput: (input) => set({ input }),
   setResponses: (responses) => set({ responses }),
   setErrors: (errors) => set({ errors }),
   setQuestion: (question) => set({ question }),
   setIsLoading: (isLoading) => set({ isLoading }),
-
+  setSuggestion: (suggestion) => set({ suggestion }),
   getQuestion: async () => {
     set({ isLoading: true })
     try {
       const result = await model.generateContent(
-        'Generate an IELTS Writing Task question with a common or complex topic, suitable for band 8.0'
+        'Generate an IELTS Writing Task question with a common or complex topic, suitable for band 8.0. Then, provide a suggestion for the answer. Separate the question and suggestion with "###".'
       )
       const response = await result.response
       const text = response.text()
-      set({ question: text })
+      const [topic, suggestion] = text.split('###').map(item => item.trim())
+      set({ question: topic, suggestion })
     } catch (error) {
       console.error('Lỗi khi tạo câu hỏi:', error)
     } finally {
