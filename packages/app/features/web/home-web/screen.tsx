@@ -61,7 +61,7 @@ const DashboardScreen = () => {
   );
 
   return (
-    <div className="w-full bg-gray-900">
+    <div className="w-full bg-gray-900 h-screen p-2">
       <div className="p-6" style={{ background: 'linear-gradient(to bottom, #1F2937, #374151)' }}>
         <div className="flex justify-between items-center mb-4">
           <h1 className="text-3xl font-bold text-white">Welcome, {userName}!</h1>

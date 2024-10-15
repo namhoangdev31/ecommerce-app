@@ -38,7 +38,7 @@ export default function LearningScreen() {
     };
 
     return (
-        <View className="flex flex-col items-center w-full min-h-screen bg-gray-900">
+        <View className="flex flex-col items-center w-full min-h-screen bg-gray-900 h-screen p-2">
             <View className="w-full p-2 bg-gray-800 shadow-md">
                 <Text className="text-xl font-bold text-center text-white">IELTS Writing Task - Band 8.0</Text>
             </View>

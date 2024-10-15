@@ -8,6 +8,7 @@ import { HomeIcon } from '../../../assets/icons/HomeIcon'
 import { LoanIcon } from '../../../assets/icons/LoanIcon'
 import { NextIcon } from '../../../assets/icons/NextIcon'
 import { InvoiceIcon } from '../../../assets/icons/InvoiceIcon'
+import { CollectionIcon } from '../../../assets/icons/CollectionIcon'
 // import { useAuth } from '/hooks/useAuth';
 
 export const MenuSidebar = () => {
@@ -30,9 +31,9 @@ export const MenuSidebar = () => {
 
       children: [
         {
-          key: '/learning',
+          key: '/writing',
           label: 'Write Task',
-          onClick: () => push('/learning'),
+          onClick: () => push('/writing'),
         },
         {
           key: '/reading',
@@ -41,10 +42,16 @@ export const MenuSidebar = () => {
         },
         {
           key: '/reading/multi-choice',
-          label: 'Read Task Multiple',
+          label: 'Multiple Choice',
           onClick: () => push('/reading/multi-choice'),
         },
       ]
+    },
+    {
+      key: '/course',
+      icon: <CollectionIcon fill="#FFF" />,
+      label: 'Training program',
+      onClick: () => push('/course'),
     }
   ]
 

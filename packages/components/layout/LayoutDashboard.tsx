@@ -28,7 +28,7 @@ export const LayoutDashboard = ({ children }: Props) => {
       />
       <Layout className="h-screen dark:bg-gray-900">
         {/* <HeaderDashboard /> */}
-        <Content className="site-layout my-4 p-6 min-h-[280px] bg-transparent overflow-auto max-h-full dark:text-white">
+        <Content className="site-layout min-h-[280px] bg-transparent overflow-auto max-h-full dark:text-white">
           {children}
         </Content>
       </Layout>

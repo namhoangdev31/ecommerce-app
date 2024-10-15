@@ -12,6 +12,7 @@
     "@ai-sdk/google": "0.0.23",
     "@expo/next-adapter": "5.0.2",
     "@google/generative-ai": "^0.3.1",
+    "@nandorojo/heroicons": "^0.3.0",
     "@prisma/client": "^5.19.1",
     "antd": "^5.21.0",
     "app": "*",
