@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
-import { Star, Clock, DocumentText, AcademicCap, ArrowsUpDown, BookmarkSquare, Share, ChevronRight, User, ChatBubbleLeftRight, Play } from '@nandorojo/heroicons/24/outline';
+import { Star, Clock, DocumentText, AcademicCap, ArrowsUpDown, BookmarkSquare, Share, ChevronRight, User, ChatBubbleLeftRight, Play, XMark } from '@nandorojo/heroicons/24/outline';
 
 // Types
 interface Course {
@@ -95,7 +95,7 @@ const CourseSyllabus = ({ syllabus }: { syllabus: string[] }) => (
 );
 
 // Action Buttons Component
-const ActionButtons = ({ course }: { course: Course }) => {
+const ActionButtons = ({ course, onChatClick }: { course: Course, onChatClick: () => void }) => {
     const handleEnroll = () => {
         console.log(`Enrolling in course ${course.id}`);
         // Implement enrollment logic here
@@ -134,6 +134,13 @@ const ActionButtons = ({ course }: { course: Course }) => {
                 >
                     <Share className="h-5 w-5 mr-2" />
                     Share
+                </button>
+                <button
+                    className="flex-1 bg-gray-700 hover:bg-gray-600 text-gray-100 py-2 px-4 rounded-md transition duration-300 flex items-center justify-center"
+                    onClick={onChatClick}
+                >
+                    <ChatBubbleLeftRight className="h-5 w-5 mr-2" />
+                    Chat Now
                 </button>
             </div>
         </div>
@@ -199,10 +206,37 @@ const CourseReviews = ({ reviews }: { reviews: Review[] }) => (
     </div>
 );
 
+// New Component: Chat Window
+const ChatWindow = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) => {
+    if (!isOpen) return null;
+
+    return (
+        <div className="fixed bottom-4 right-4 w-80 h-96 bg-gray-800 rounded-lg shadow-lg overflow-hidden flex flex-col">
+            <div className="bg-gray-700 p-4 flex justify-between items-center">
+                <h3 className="text-lg font-semibold text-gray-100">Chat</h3>
+                <button onClick={onClose} className="text-gray-300 hover:text-gray-100">
+                    <XMark className="h-6 w-6" />
+                </button>
+            </div>
+            <div className="flex-grow p-4 overflow-y-auto">
+                {/* Chat messages would go here */}
+            </div>
+            <div className="p-4 border-t border-gray-700">
+                <input
+                    type="text"
+                    placeholder="Type a message..."
+                    className="w-full bg-gray-700 text-gray-100 rounded-full px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+            </div>
+        </div>
+    );
+};
+
 const CourseDetailScreen = () => {
     const router = useRouter();
     const { id } = router.query;
     const [reviews, setReviews] = useState<Review[]>([]);
+    const [isChatOpen, setIsChatOpen] = useState(false);
 
     useEffect(() => {
         // Simulating API call to fetch reviews
@@ -252,6 +286,14 @@ const CourseDetailScreen = () => {
         videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ", // Replace with actual preview video URL
     };
 
+    const handleChatClick = () => {
+        setIsChatOpen(true);
+    };
+
+    const handleChatClose = () => {
+        setIsChatOpen(false);
+    };
+
     return (
         <div className="min-h-screen bg-gradient-to-b from-gray-900 to-gray-800 text-gray-100">
             <Header course={course} />
@@ -267,11 +309,12 @@ const CourseDetailScreen = () => {
                     </div>
                     <div className="lg:col-span-1">
                         <div className="bg-gray-800 shadow-lg rounded-lg p-6 sticky top-6">
-                            <ActionButtons course={course} />
+                            <ActionButtons course={course} onChatClick={handleChatClick} />
                         </div>
                     </div>
                 </div>
             </main>
+            <ChatWindow isOpen={isChatOpen} onClose={handleChatClose} />
         </div>
     );
 };
