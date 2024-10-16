@@ -307,7 +307,7 @@ const CourseCard: React.FC<{
 )
 
 // Main component
-const CourseScreen = () => {
+const CourseScreen: React.FC = () => {
   const router = useRouter()
   const {
     selectedCategory,
