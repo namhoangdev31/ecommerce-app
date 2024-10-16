@@ -17,6 +17,7 @@ export default function LearningScreen() {
         responses,
         errors,
         question,
+        suggestion,
         isLoading,
         setInput,
         setResponses,
@@ -84,6 +85,12 @@ export default function LearningScreen() {
                             </React.Fragment>
                         ))}
                     </Text>
+                )}
+                {suggestion && (
+                    <View className="mb-3">
+                        <Text className="text-sm font-bold text-white mb-1">Suggestion:</Text>
+                        <Text className="text-sm text-gray-300 p-2 bg-gray-700 rounded-lg">{suggestion}</Text>
+                    </View>
                 )}
                 <form onSubmit={onSubmit} className="space-y-3">
                     <textarea
