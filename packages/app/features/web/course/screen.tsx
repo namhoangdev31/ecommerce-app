@@ -225,7 +225,13 @@ const Sidebar: React.FC<{
 )
 
 // CourseCard component
-const CourseCard = ({
+const CourseCard: React.FC<{
+  course: Course;
+  handleEnroll: (courseId: number) => void;
+  handleSaveCourse: (courseId: number) => void;
+  handleShareCourse: (courseId: number) => void;
+  savedCourses: number[];
+}> = ({
   course,
   handleEnroll,
   handleSaveCourse,
