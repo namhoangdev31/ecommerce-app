@@ -105,7 +105,18 @@ const Header: React.FC<{ searchQuery: string; setSearchQuery: (query: string) =>
 )
 
 // Sidebar component
-const Sidebar = ({
+const Sidebar: React.FC<{
+  selectedCategory: string
+  setSelectedCategory: (category: string) => void
+  sortBy: string
+  setSortBy: (sortBy: string) => void
+  priceRange: [number, number]
+  setPriceRange: (range: [number, number]) => void
+  selectedLevel: string
+  setSelectedLevel: (level: string) => void
+  isOpen: boolean
+  closeSidebar: () => void
+}> = ({
   selectedCategory,
   setSelectedCategory,
   sortBy,
