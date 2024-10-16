@@ -2,10 +2,19 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 
+interface Course {
+  id: number;
+  name: string;
+  progress: number;
+  students: number;
+  status: string;
+  color: string;
+}
+
 const DashboardScreen = () => {
   const [userRoles, setUserRoles] = useState<('student' | 'teacher')[]>(['student', 'teacher']);
   const [userName, setUserName] = useState('John Doe');
-  const [courses, setCourses] = useState([
+  const [courses, setCourses] = useState<Course[]>([
     { id: 1, name: 'Mathematics 101', progress: 75, students: 30, status: 'In Progress', color: '#4CAF50' },
     { id: 2, name: 'English Literature', progress: 60, students: 25, status: 'In Progress', color: '#2196F3' },
     { id: 3, name: 'Physics', progress: 40, students: 20, status: 'Not Started', color: '#FFC107' },
@@ -34,7 +43,7 @@ const DashboardScreen = () => {
     setSelectedRole(prevRole => prevRole === 'student' ? 'teacher' : 'student');
   };
 
-  const renderCourseItem = (course) => (
+  const renderCourseItem = (course: Course) => (
     <Link href={`/course/${course.id}`} key={course.id} className={`block rounded-lg p-4 mb-3 hover:opacity-90 transition-opacity duration-200`} style={{ backgroundColor: course.color }}>
       <h3 className="text-lg font-semibold text-white mb-2">{course.name}</h3>
       <div className="flex justify-between items-center">
@@ -50,7 +59,7 @@ const DashboardScreen = () => {
     </Link>
   );
 
-  const renderDashboardItem = (title, color, href) => (
+  const renderDashboardItem = (title: string, color: string, href: string) => (
     <Link href={href} key={title} className={`w-[48%] p-4 rounded-lg mb-3 flex items-center justify-center hover:opacity-90 transition-opacity duration-200`} style={{ backgroundColor: color }}>
       <span className="text-white font-medium text-center">{title}</span>
     </Link>
