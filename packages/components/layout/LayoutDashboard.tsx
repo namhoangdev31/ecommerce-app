@@ -26,7 +26,7 @@ export const LayoutDashboard = ({ children }: Props) => {
           return setCollapsed(!collapsed)
         }}
       />
-      <Layout className="h-screen dark:bg-gray-900">
+      <Layout className={`h-screen dark:bg-gray-900 transition-all duration-300`}>
         {/* <HeaderDashboard /> */}
         <Content className="site-layout min-h-[280px] bg-transparent overflow-auto max-h-full dark:text-white">
           {children}

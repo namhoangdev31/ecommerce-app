@@ -11367,6 +11367,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"hyphenate-style-name@npm:^1.0.0":
+  version: 1.1.0
+  resolution: "hyphenate-style-name@npm:1.1.0"
+  checksum: b9ed74e29181d96bd58a2d0e62fc4a19879db591dba268275829ff0ae595fcdf11faafaeaa63330a45c3004664d7db1f0fc7cdb372af8ee4615ed8260302c207
+  languageName: node
+  linkType: hard
+
 "hyphenate-style-name@npm:^1.0.3":
   version: 1.0.4
   resolution: "hyphenate-style-name@npm:1.0.4"
@@ -13399,6 +13406,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"matchmediaquery@npm:^0.4.2":
+  version: 0.4.2
+  resolution: "matchmediaquery@npm:0.4.2"
+  dependencies:
+    css-mediaquery: ^0.1.2
+  checksum: 0d495dd20a4bdd4c6485c43fe9363d41de6c8cbe3bb4c259f39b885f1d2627f102ac21a759b6108a313d0dbd3445edb9847b734cff2f06b5b19fed62dbb7856f
+  languageName: node
+  linkType: hard
+
 "md5-file@npm:^3.2.3":
   version: 3.2.3
   resolution: "md5-file@npm:3.2.3"
@@ -14317,6 +14333,7 @@ __metadata:
     prisma: ^5.19.1
     raf: ^3.4.1
     react-icons: ^5.3.0
+    react-responsive: ^10.0.0
     setimmediate: ^1.0.5
     tailwindcss: ^3.0.24
     zustand: ^5.0.0-rc.2
@@ -15619,7 +15636,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"prop-types@npm:^15.7.2, prop-types@npm:^15.8.1":
+"prop-types@npm:^15.6.1, prop-types@npm:^15.7.2, prop-types@npm:^15.8.1":
   version: 15.8.1
   resolution: "prop-types@npm:15.8.1"
   dependencies:
@@ -16642,6 +16659,20 @@ __metadata:
   languageName: node
   linkType: hard
 
+"react-responsive@npm:^10.0.0":
+  version: 10.0.0
+  resolution: "react-responsive@npm:10.0.0"
+  dependencies:
+    hyphenate-style-name: ^1.0.0
+    matchmediaquery: ^0.4.2
+    prop-types: ^15.6.1
+    shallow-equal: ^3.1.0
+  peerDependencies:
+    react: ">=16.8.0"
+  checksum: 49580f3fd333316704f774a241dc733506a27b23d1f397fc63e100df08a80ee4ae14cb2b2b1e2bf79e0ee2989d73761f10ec5f9e0caa208a907aee548d85818e
+  languageName: node
+  linkType: hard
+
 "react-shallow-renderer@npm:^16.15.0":
   version: 16.15.0
   resolution: "react-shallow-renderer@npm:16.15.0"
@@ -17488,6 +17519,13 @@ __metadata:
   dependencies:
     kind-of: ^6.0.2
   checksum: 39b3dd9630a774aba288a680e7d2901f5c0eae7b8387fc5c8ea559918b29b3da144b7bdb990d7ccd9e11be05508ac9e459ce51d01fd65e583282f6ffafcba2e7
+  languageName: node
+  linkType: hard
+
+"shallow-equal@npm:^3.1.0":
+  version: 3.1.0
+  resolution: "shallow-equal@npm:3.1.0"
+  checksum: 7eab4ae9fbd79c8913a88d6af873548b6ce619baab2e9e0a2f11696881cdaae289d51423837f6aca38de874581609c8e5e2fa052d8b79c10b55ac9fe7bd2f2f2
   languageName: node
   linkType: hard
 
