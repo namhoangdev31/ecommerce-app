@@ -13,6 +13,7 @@ interface WriteTaskState {
   setErrors: (errors: string[]) => void
   setQuestion: (question: string) => void
   setIsLoading: (isLoading: boolean) => void
+  setSuggestion: (suggestion: string) => void
   getQuestion: () => Promise<void>
   handleSubmit: () => Promise<void>
   handleRefresh: () => void
@@ -33,7 +34,7 @@ export const useWriteTaskStore = create<WriteTaskState>((set, get) => ({
   setErrors: (errors) => set({ errors }),
   setQuestion: (question) => set({ question }),
   setIsLoading: (isLoading) => set({ isLoading }),
-  setSuggestion: (suggestion) => set({ suggestion }),
+  setSuggestion: (suggestion: string) => set({ suggestion }),
   getQuestion: async () => {
     set({ isLoading: true })
     try {
@@ -43,7 +44,7 @@ export const useWriteTaskStore = create<WriteTaskState>((set, get) => ({
       const response = await result.response
       const text = response.text()
       const [topic, suggestion] = text.split('###').map(item => item.trim())
-      set({ question: topic, suggestion })
+      set({ question: topic, suggestion: suggestion || '' })
     } catch (error) {
       console.error('Lỗi khi tạo câu hỏi:', error)
     } finally {
