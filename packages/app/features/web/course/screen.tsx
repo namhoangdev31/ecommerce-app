@@ -78,7 +78,7 @@ const categories = [
 const levels = ['All', 'Beginner', 'Intermediate', 'Advanced']
 
 // Header component
-const Header = ({ searchQuery, setSearchQuery, toggleSidebar }) => (
+const Header: React.FC<{ searchQuery: string; setSearchQuery: (query: string) => void; toggleSidebar: () => void }> = ({ searchQuery, setSearchQuery, toggleSidebar }) => (
   <header className="sticky top-0 z-10 bg-gray-800 shadow">
     <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 sm:px-6 lg:px-8">
       <h1 className="text-xl font-bold text-gray-100 sm:text-2xl">Fubao Course</h1>
