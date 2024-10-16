@@ -1,7 +1,7 @@
-import { Button, Divider, theme } from 'antd'
-import styles from './styles.module.css'
+import { Button, Divider } from 'antd'
 import { LeftArrowIcon } from '../../../assets/icons/LeftArrowIcon'
-import { AppIcon } from '../../../assets/icons/AppIcon'
+import AppIcon from '../../../assets/icons/AppIcon'
+import { useTheme } from 'next-themes'
 
 interface Props {
   collapsed: boolean
@@ -9,35 +9,17 @@ interface Props {
 }
 
 export const SidebarHeader = ({ collapsed, onCollapsed }: Props) => {
-  const {
-    token: { colorBgContainer },
-  } = theme.useToken()
-  // const { userInfo } = useAuth();
-
   return (
-    <div
-      className={styles.contentHeader}
-      style={{ backgroundColor: colorBgContainer }}
-    >
-      <div className={`${!collapsed ? styles.infoHeader : styles.collapsed}`}>
-        <AppIcon className="w-[44px]" />
-        {!collapsed && (
-          <div className={styles.info}>
-            {/*<p className={styles.roleUser}>{userInfo?.role?.type}</p>*/}
-            {/*<p className={styles.username}>{userInfo?.username}</p>*/}
-          </div>
-        )}
-      </div>
-      <div
-        className={`${styles.buttonMenu} ${collapsed && styles.buttonRigth}`}
+    <div className="p-5 pb-1 relative rounded-tr-[11px] bg-gray-800">
+      <div 
+        className={`flex items-center ${collapsed ? 'justify-center' : 'justify-center'} transition-all duration-500 cursor-pointer`}
+        // onClick={onCollapsed}
       >
-        <Button
-          icon={<LeftArrowIcon />}
-          type="default"
-          onClick={onCollapsed}
-        ></Button>
+        <div className="bg-[#3498db] rounded-full p-2">
+          <AppIcon />
+        </div>
       </div>
-      <Divider />
+      <Divider className="bg-gray-700 mt-4" />
     </div>
   )
 }

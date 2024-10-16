@@ -2,10 +2,12 @@
   "compilerOptions": {
     "strictNullChecks": true,
     "noUncheckedIndexedAccess": true,
+    "esModuleInterop": true,
     "paths": {
       "app/*": ["./packages/app/*"]
     },
     "jsx": "react-jsx"
   },
-  "extends": "expo/tsconfig.base"
+  "extends": "expo/tsconfig.base",
+  "exclude": ["node_modules", "babel.config.js", "metro.config.js", "jest.config.js"]
 }

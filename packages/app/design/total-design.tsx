@@ -30,5 +30,3 @@ export const ScrollView = styled(ReactNativeScrollView)
 export const TouchableOpacity = styled(ReactNativeTouchableOpacity)
 
 export const TextInput = styled(ReactNativeTextInput)
-
-export const StyledDropDownPicker = styled(DropDownPicker)

@@ -3,6 +3,7 @@
   "name": "app",
   "main": "index.ts",
   "dependencies": {
+    "db": "*",
     "moti": "latest",
     "nativewind": "2.0.11",
     "solito": "4.0.1"

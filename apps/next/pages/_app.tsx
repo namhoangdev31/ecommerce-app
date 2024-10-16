@@ -4,6 +4,7 @@ import 'setimmediate'
 import { Provider } from 'app/provider'
 import Head from 'next/head'
 import React from 'react'
+import { ThemeProvider } from 'next-themes'
 
 import '../global.css'
 import { AppProps } from 'next/app'
@@ -23,9 +24,9 @@ export default function MyApp({ Component, pageProps }: ExtendedAppProps) {
     })
 
   return (
-    <>
+    <ThemeProvider attribute="class" defaultTheme="dark">
       <Head>
-        <title>Ứng dụng mẫu Solito</title>
+        <title>Fubao : Education</title>
         <meta
           name="description"
           content="Expo + Next.js với Solito. Bởi Fernando Rojo."
@@ -35,6 +36,6 @@ export default function MyApp({ Component, pageProps }: ExtendedAppProps) {
       <Provider>
         <>{getLayout(<Component {...pageProps} />)}</>
       </Provider>
-    </>
+    </ThemeProvider>
   )
 }

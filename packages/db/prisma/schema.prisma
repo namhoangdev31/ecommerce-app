@@ -1,0 +1,745 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+type CategoriesBreadcrumbs {
+  doc   String
+  id    String
+  label String
+}
+
+type GlobalsNavItems {
+  id   String
+  link GlobalsNavItemsLink
+}
+
+type GlobalsNavItemsLink {
+  label     String
+  reference GlobalsNavItemsLinkReference
+  type      String
+}
+
+type GlobalsNavItemsLinkReference {
+  relationTo String
+  value      String
+}
+
+type MediaCaption {
+  children MediaCaptionChildren[]
+}
+
+type MediaCaptionChildren {
+  children MediaCaptionChildrenChildren[]
+  linkType String?
+  newTab   Boolean?
+  text     String?
+  type     String?
+  url      String?
+}
+
+type MediaCaptionChildrenChildren {
+  text String
+}
+
+type PagesHero {
+  links    PagesHeroLinks[]
+  media    String?
+  richText PagesHeroRichText[]
+  type     String
+}
+
+type PagesHeroLinks {
+  id   String
+  link PagesHeroLinksLink
+}
+
+type PagesHeroLinksLink {
+  appearance String
+  label      String
+  newTab     Boolean?
+  reference  PagesHeroLinksLinkReference?
+  type       String
+  url        String
+}
+
+type PagesHeroLinksLinkReference {
+  relationTo String
+  value      String
+}
+
+type PagesHeroRichText {
+  children PagesHeroRichTextChildren[]
+  type     String
+}
+
+type PagesHeroRichTextChildren {
+  children PagesHeroRichTextChildrenChildren[]
+  linkType String?
+  newTab   Boolean?
+  text     String?
+  type     String?
+  url      String?
+}
+
+type PagesHeroRichTextChildrenChildren {
+  text String
+}
+
+type PagesLayout {
+  blockName    String?
+  blockType    String
+  /// Could not determine type: the field only had null or empty values in the sample set.
+  categories   Json?
+  columns      PagesLayoutColumns[]
+  id           String
+  introContent PagesLayoutIntroContent[]
+  limit        Int?
+  links        PagesLayoutLinks[]
+  media        String?
+  populateBy   String?
+  position     String?
+  relationTo   String?
+  richText     PagesLayoutRichText[]
+}
+
+type PagesLayoutColumns {
+  enableLink Boolean?
+  id         String
+  link       PagesLayoutColumnsLink
+  richText   PagesLayoutColumnsRichText[]
+  size       String
+}
+
+type PagesLayoutColumnsLink {
+  appearance String
+  label      String?
+  /// Could not determine type: the field only had null or empty values in the sample set.
+  reference  Json?
+  type       String
+  url        String?
+}
+
+type PagesLayoutColumnsRichText {
+  children PagesLayoutColumnsRichTextChildren[]
+  type     String?
+}
+
+type PagesLayoutColumnsRichTextChildren {
+  children PagesLayoutColumnsRichTextChildrenChildren[]
+  linkType String?
+  text     String?
+  type     String?
+  url      String?
+}
+
+type PagesLayoutColumnsRichTextChildrenChildren {
+  text String
+}
+
+type PagesLayoutIntroContent {
+  children PagesLayoutIntroContentChildren[]
+  type     String
+}
+
+type PagesLayoutIntroContentChildren {
+  text String
+}
+
+type PagesLayoutLinks {
+  id   String
+  link PagesLayoutLinksLink
+}
+
+type PagesLayoutLinksLink {
+  appearance String
+  label      String
+  reference  PagesLayoutLinksLinkReference
+  type       String
+  url        String
+}
+
+type PagesLayoutLinksLinkReference {
+  relationTo String
+  value      String
+}
+
+type PagesLayoutRichText {
+  children PagesLayoutRichTextChildren[]
+  type     String?
+}
+
+type PagesLayoutRichTextChildren {
+  children PagesLayoutRichTextChildrenChildren[]
+  linkType String?
+  text     String?
+  type     String?
+  url      String?
+}
+
+type PagesLayoutRichTextChildrenChildren {
+  text String
+}
+
+type PagesMeta {
+  description String
+  image       String?
+  title       String
+}
+
+type PagesVersionsVersion {
+  status      String                       @map("_status")
+  createdAt   DateTime                     @db.Date
+  hero        PagesVersionsVersionHero
+  layout      PagesVersionsVersionLayout[]
+  meta        PagesVersionsVersionMeta
+  publishedOn DateTime                     @db.Date
+  slug        String
+  title       String
+  updatedAt   DateTime                     @db.Date
+}
+
+type PagesVersionsVersionHero {
+  links    PagesVersionsVersionHeroLinks[]
+  media    String?
+  richText PagesVersionsVersionHeroRichText[]
+  type     String
+}
+
+type PagesVersionsVersionHeroLinks {
+  id   String
+  link PagesVersionsVersionHeroLinksLink
+}
+
+type PagesVersionsVersionHeroLinksLink {
+  appearance String
+  label      String
+  newTab     Boolean?
+  reference  PagesVersionsVersionHeroLinksLinkReference?
+  type       String
+  url        String
+}
+
+type PagesVersionsVersionHeroLinksLinkReference {
+  relationTo String
+  value      String
+}
+
+type PagesVersionsVersionHeroRichText {
+  children PagesVersionsVersionHeroRichTextChildren[]
+  type     String
+}
+
+type PagesVersionsVersionHeroRichTextChildren {
+  children PagesVersionsVersionHeroRichTextChildrenChildren[]
+  linkType String?
+  newTab   Boolean?
+  text     String?
+  type     String?
+  url      String?
+}
+
+type PagesVersionsVersionHeroRichTextChildrenChildren {
+  text String
+}
+
+type PagesVersionsVersionLayout {
+  blockName    String?
+  blockType    String
+  /// Could not determine type: the field only had null or empty values in the sample set.
+  categories   Json?
+  columns      PagesVersionsVersionLayoutColumns[]
+  id           String
+  introContent PagesVersionsVersionLayoutIntroContent[]
+  limit        Int?
+  links        PagesVersionsVersionLayoutLinks[]
+  media        String?
+  populateBy   String?
+  position     String?
+  relationTo   String?
+  richText     PagesVersionsVersionLayoutRichText[]
+}
+
+type PagesVersionsVersionLayoutColumns {
+  enableLink Boolean?
+  id         String
+  link       PagesVersionsVersionLayoutColumnsLink
+  richText   PagesVersionsVersionLayoutColumnsRichText[]
+  size       String
+}
+
+type PagesVersionsVersionLayoutColumnsLink {
+  appearance String
+  label      String?
+  /// Could not determine type: the field only had null or empty values in the sample set.
+  reference  Json?
+  type       String
+  url        String?
+}
+
+type PagesVersionsVersionLayoutColumnsRichText {
+  children PagesVersionsVersionLayoutColumnsRichTextChildren[]
+  type     String?
+}
+
+type PagesVersionsVersionLayoutColumnsRichTextChildren {
+  children PagesVersionsVersionLayoutColumnsRichTextChildrenChildren[]
+  linkType String?
+  text     String?
+  type     String?
+  url      String?
+}
+
+type PagesVersionsVersionLayoutColumnsRichTextChildrenChildren {
+  text String
+}
+
+type PagesVersionsVersionLayoutIntroContent {
+  children PagesVersionsVersionLayoutIntroContentChildren[]
+  type     String
+}
+
+type PagesVersionsVersionLayoutIntroContentChildren {
+  text String
+}
+
+type PagesVersionsVersionLayoutLinks {
+  id   String
+  link PagesVersionsVersionLayoutLinksLink
+}
+
+type PagesVersionsVersionLayoutLinksLink {
+  appearance String
+  label      String
+  reference  PagesVersionsVersionLayoutLinksLinkReference
+  type       String
+  url        String
+}
+
+type PagesVersionsVersionLayoutLinksLinkReference {
+  relationTo String
+  value      String
+}
+
+type PagesVersionsVersionLayoutRichText {
+  children PagesVersionsVersionLayoutRichTextChildren[]
+  type     String?
+}
+
+type PagesVersionsVersionLayoutRichTextChildren {
+  children PagesVersionsVersionLayoutRichTextChildrenChildren[]
+  linkType String?
+  text     String?
+  type     String?
+  url      String?
+}
+
+type PagesVersionsVersionLayoutRichTextChildrenChildren {
+  text String
+}
+
+type PagesVersionsVersionMeta {
+  description String
+  image       String?
+  title       String
+}
+
+type PayloadPreferencesUser {
+  relationTo String
+  value      String
+}
+
+type PayloadPreferencesValue {
+  columns PayloadPreferencesValueColumns[]
+  fields  PayloadPreferencesValueFields?
+  limit   String?
+  open    Boolean?
+  sort    String?
+}
+
+type PayloadPreferencesValueColumns {
+  accessor String
+  active   Boolean
+}
+
+type PayloadPreferencesValueFields {
+  tabs_1 PayloadPreferencesValueFieldsTabs1 @map("tabs-1")
+}
+
+type PayloadPreferencesValueFieldsTabs1 {
+  tabIndex Int
+}
+
+type PreferencesValue {
+  limit String
+}
+
+type ProductsLayout {
+  blockType String
+  columns   ProductsLayoutColumns[]
+  id        String
+}
+
+type ProductsLayoutColumns {
+  id       String
+  link     ProductsLayoutColumnsLink
+  richText ProductsLayoutColumnsRichText[]
+  size     String
+}
+
+type ProductsLayoutColumnsLink {
+  appearance String
+  label      String
+  /// Could not determine type: the field only had null or empty values in the sample set.
+  reference  Json?
+  type       String
+  url        String
+}
+
+type ProductsLayoutColumnsRichText {
+  children ProductsLayoutColumnsRichTextChildren[]
+}
+
+type ProductsLayoutColumnsRichTextChildren {
+  text String
+}
+
+type ProductsMeta {
+  description String
+  image       String
+  title       String
+}
+
+type ProductsPaywall {
+  blockType String
+  columns   ProductsPaywallColumns[]
+  id        String
+}
+
+type ProductsPaywallColumns {
+  id       String
+  link     ProductsPaywallColumnsLink
+  richText ProductsPaywallColumnsRichText[]
+  size     String
+}
+
+type ProductsPaywallColumnsLink {
+  appearance String
+  label      String
+  /// Could not determine type: the field only had null or empty values in the sample set.
+  reference  Json?
+  type       String
+  url        String
+}
+
+type ProductsPaywallColumnsRichText {
+  children ProductsPaywallColumnsRichTextChildren[]
+}
+
+type ProductsPaywallColumnsRichTextChildren {
+  bold Boolean?
+  text String
+}
+
+type ProductsVersionsVersion {
+  status          String                           @map("_status")
+  categories      String[]
+  createdAt       DateTime                         @db.Date
+  enablePaywall   Boolean
+  layout          ProductsVersionsVersionLayout[]
+  meta            ProductsVersionsVersionMeta
+  paywall         ProductsVersionsVersionPaywall[]
+  priceJSON       String
+  publishedOn     DateTime                         @db.Date
+  relatedProducts String[]
+  skipSync        Boolean
+  slug            String
+  stripeProductID String
+  title           String
+  updatedAt       DateTime                         @db.Date
+}
+
+type ProductsVersionsVersionLayout {
+  blockType String
+  columns   ProductsVersionsVersionLayoutColumns[]
+  id        String
+}
+
+type ProductsVersionsVersionLayoutColumns {
+  id       String
+  link     ProductsVersionsVersionLayoutColumnsLink
+  richText ProductsVersionsVersionLayoutColumnsRichText[]
+  size     String
+}
+
+type ProductsVersionsVersionLayoutColumnsLink {
+  appearance String
+  label      String
+  /// Could not determine type: the field only had null or empty values in the sample set.
+  reference  Json?
+  type       String
+  url        String
+}
+
+type ProductsVersionsVersionLayoutColumnsRichText {
+  children ProductsVersionsVersionLayoutColumnsRichTextChildren[]
+}
+
+type ProductsVersionsVersionLayoutColumnsRichTextChildren {
+  text String
+}
+
+type ProductsVersionsVersionMeta {
+  description String
+  image       String
+  title       String
+}
+
+type ProductsVersionsVersionPaywall {
+  blockType String
+  columns   ProductsVersionsVersionPaywallColumns[]
+  id        String
+}
+
+type ProductsVersionsVersionPaywallColumns {
+  id       String
+  link     ProductsVersionsVersionPaywallColumnsLink
+  richText ProductsVersionsVersionPaywallColumnsRichText[]
+  size     String
+}
+
+type ProductsVersionsVersionPaywallColumnsLink {
+  appearance String
+  label      String
+  /// Could not determine type: the field only had null or empty values in the sample set.
+  reference  Json?
+  type       String
+  url        String
+}
+
+type ProductsVersionsVersionPaywallColumnsRichText {
+  children ProductsVersionsVersionPaywallColumnsRichTextChildren[]
+}
+
+type ProductsVersionsVersionPaywallColumnsRichTextChildren {
+  bold Boolean?
+  text String
+}
+
+type UsersCart {
+  /// Could not determine type: the field only had null or empty values in the sample set.
+  items Json?
+}
+
+model Post {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+}
+
+model TokenWhiteList {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+}
+
+model User {
+  id    String @id @default(auto()) @map("_id") @db.ObjectId
+  /// Field referred in an index, but found no data to define the type.
+  email Json?  @unique
+}
+
+model pages_versions {
+  id        String               @id @default(auto()) @map("_id") @db.ObjectId
+  v         Int                  @map("__v")
+  createdAt DateTime             @db.Date
+  latest    Boolean
+  parent    String
+  updatedAt DateTime             @db.Date
+  version   PagesVersionsVersion
+
+  @@index([parent], map: "parent_1")
+  @@index([version.slug], map: "version.slug_1")
+  @@index([version.createdAt], map: "version.createdAt_1")
+  @@index([version.status], map: "version._status_1")
+  @@index([createdAt], map: "createdAt_1")
+  @@index([updatedAt], map: "updatedAt_1")
+  @@index([latest], map: "latest_1")
+  @@map("_pages_versions")
+}
+
+model preferences {
+  id             String   @id @default(auto()) @map("_id") @db.ObjectId
+  v              Int      @map("__v")
+  createdAt      DateTime @db.Date
+  key            String
+  updatedAt      DateTime @db.Date
+  user           String   @db.ObjectId
+  userCollection String
+  /// Multiple data types found: PreferencesValue: 66.7%, Array(String): 33.3% out of 4 sampled entries
+  value          Json?
+
+  @@unique([user, key, userCollection], map: "user_1_key_1_userCollection_1")
+  @@map("_preferences")
+}
+
+model products_versions {
+  id        String                  @id @default(auto()) @map("_id") @db.ObjectId
+  v         Int                     @map("__v")
+  createdAt DateTime                @db.Date
+  latest    Boolean?
+  parent    String
+  updatedAt DateTime                @db.Date
+  version   ProductsVersionsVersion
+
+  @@index([parent], map: "parent_1")
+  @@index([version.slug], map: "version.slug_1")
+  @@index([version.createdAt], map: "version.createdAt_1")
+  @@index([version.status], map: "version._status_1")
+  @@index([createdAt], map: "createdAt_1")
+  @@index([updatedAt], map: "updatedAt_1")
+  @@index([latest], map: "latest_1")
+  @@map("_products_versions")
+}
+
+model categories {
+  id          String                  @id @default(auto()) @map("_id") @db.ObjectId
+  v           Int                     @map("__v")
+  breadcrumbs CategoriesBreadcrumbs[]
+  createdAt   DateTime                @db.Date
+  title       String
+  updatedAt   DateTime                @db.Date
+
+  @@index([createdAt], map: "createdAt_1")
+}
+
+model globals {
+  id           String            @id @default(auto()) @map("_id") @db.ObjectId
+  v            Int               @map("__v")
+  createdAt    DateTime          @db.Date
+  globalType   String
+  navItems     GlobalsNavItems[]
+  productsPage String?
+  updatedAt    DateTime          @db.Date
+}
+
+model media {
+  id        String         @id @default(auto()) @map("_id") @db.ObjectId
+  v         Int            @map("__v")
+  alt       String
+  caption   MediaCaption[]
+  createdAt DateTime       @db.Date
+  filename  String         @unique(map: "filename_1")
+  filesize  Int
+  focalX    Int
+  focalY    Int
+  height    Int
+  mimeType  String
+  updatedAt DateTime       @db.Date
+  width     Int
+
+  @@index([createdAt], map: "createdAt_1")
+}
+
+model orders {
+  id        String @id @default(auto()) @map("_id") @db.ObjectId
+  /// Field referred in an index, but found no data to define the type.
+  createdAt Json?
+
+  @@index([createdAt], map: "createdAt_1")
+}
+
+model pages {
+  id          String        @id @default(auto()) @map("_id") @db.ObjectId
+  v           Int           @map("__v")
+  status      String        @map("_status")
+  createdAt   DateTime      @db.Date
+  hero        PagesHero
+  layout      PagesLayout[]
+  meta        PagesMeta
+  publishedOn DateTime      @db.Date
+  slug        String
+  title       String
+  updatedAt   DateTime      @db.Date
+
+  @@index([createdAt], map: "createdAt_1")
+  @@index([slug], map: "slug_1")
+  @@index([status], map: "_status_1")
+}
+
+model payload_migrations {
+  id        String @id @default(auto()) @map("_id") @db.ObjectId
+  /// Field referred in an index, but found no data to define the type.
+  createdAt Json?
+
+  @@index([createdAt], map: "createdAt_1")
+  @@map("payload-migrations")
+}
+
+model payload_preferences {
+  id        String                   @id @default(auto()) @map("_id") @db.ObjectId
+  v         Int                      @map("__v")
+  createdAt DateTime                 @db.Date
+  key       String
+  updatedAt DateTime                 @db.Date
+  user      PayloadPreferencesUser
+  value     PayloadPreferencesValue?
+
+  @@index([createdAt], map: "createdAt_1")
+  @@index([user], map: "user_1")
+  @@index([key], map: "key_1")
+  @@map("payload-preferences")
+}
+
+model products {
+  id              String            @id @default(auto()) @map("_id") @db.ObjectId
+  v               Int               @map("__v")
+  status          String            @map("_status")
+  categories      String[]
+  createdAt       DateTime          @db.Date
+  enablePaywall   Boolean?
+  layout          ProductsLayout[]
+  meta            ProductsMeta
+  paywall         ProductsPaywall[]
+  priceJSON       String?
+  publishedOn     DateTime          @db.Date
+  relatedProducts String[]
+  skipSync        Boolean
+  slug            String
+  stripeProductID String
+  title           String
+  updatedAt       DateTime          @db.Date
+
+  @@index([createdAt], map: "createdAt_1")
+  @@index([slug], map: "slug_1")
+  @@index([status], map: "_status_1")
+}
+
+model redirects {
+  id        String @id @default(auto()) @map("_id") @db.ObjectId
+  /// Field referred in an index, but found no data to define the type.
+  createdAt Json?
+  /// Field referred in an index, but found no data to define the type.
+  from      Json?
+
+  @@index([createdAt], map: "createdAt_1")
+  @@index([from], map: "from_1")
+}
+
+model users {
+  id            String    @id @default(auto()) @map("_id") @db.ObjectId
+  v             Int       @map("__v")
+  cart          UsersCart
+  createdAt     DateTime  @db.Date
+  email         String    @unique(map: "email_1")
+  hash          String
+  /// Could not determine type: the field only had null or empty values in the sample set.
+  lockUntil     Json?
+  loginAttempts Int
+  name          String
+  roles         String[]
+  salt          String
+  updatedAt     DateTime  @db.Date
+
+  @@index([createdAt], map: "createdAt_1")
+}

@@ -6,6 +6,7 @@
     "packages/*"
   ],
   "devDependencies": {
+    "@nestjs/mongoose": "^10.0.10",
     "@types/react": "^18.2.21",
     "@types/react-native": "^0.72.2",
     "eslint": "^8.21.0",
@@ -15,9 +16,10 @@
     "typescript": "^5.2.2"
   },
   "scripts": {
-    "native": "cd apps/expo && yarn start",
+    "build": "turbo run build",
+    "native": "cd apps/expo && yarn start:ios",
     "web": "cd apps/next && yarn next",
-    "server": "cd serverless && yarn start:dev"
+    "server": "cd apps/serverless && yarn start:dev"
   },
   "resolutions": {
     "metro": "~0.76.7",

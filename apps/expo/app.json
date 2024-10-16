@@ -1,12 +1,34 @@
 {
   "expo": {
-    "name": "solito-nativewind",
-    "slug": "solito-nativewind",
+    "name": "Fubao",
+    "slug": "fubao",
     "version": "1.0.0",
-    "scheme": "solito-nativewind",
-    "platforms": ["ios", "android"],
+    "scheme": "englishai",
+    "userInterfaceStyle": "automatic",
+    "platforms": [
+      "ios",
+      "android"
+    ],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "splash": {
+      "image": "./assets/images/doll.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#3F76FF"
+    },
     "ios": {
-      "bundleIdentifier": "com.solito.nativewind"
-    }
+      "supportsTablet": true,
+      "bundleIdentifier": "com.nhn.aienglish",
+      "splash": {
+        "image": "./assets/images/doll.png",
+        "resizeMode": "contain",
+        "backgroundColor": "#3F76FF"
+      }
+    },
+    "android": {
+      "package": "com.nhn.aienglish"
+    },
+    "icon": "./assets/images/icon.png"
   }
 }

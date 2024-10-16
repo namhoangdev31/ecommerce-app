@@ -1,3 +1,3 @@
-import { HomeWebScreen } from 'app/features/home-web/screen'
+import DashboardScreen from 'app/features/web/home-web/screen'
 
-export default HomeWebScreen
+export default DashboardScreen

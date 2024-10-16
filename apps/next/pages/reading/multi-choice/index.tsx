@@ -1,2 +1,2 @@
-import MultiChoiceReadingScreen from 'app/features/reading/multi-choise'
+import MultiChoiceReadingScreen from 'app/features/web/reading/multi-choise'
 export default MultiChoiceReadingScreen
