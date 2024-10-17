@@ -1,15 +1,19 @@
-import { View } from "app/design/view";
-import { Text } from "app/design/typography";
 import React, { useEffect } from "react";
-import { GetStaticProps } from "next";
-import { ScrollView, ActivityIndicator } from "react-native";
 import { useWriteTaskStore } from '../../native/write-task/zustand-store';
-
-export const getStaticProps: GetStaticProps = async () => {
-    return {
-        props: {},
-    };
-};
+import {
+  AiOutlineStar,
+  AiOutlineClockCircle,
+  AiOutlineFileText,
+  AiOutlineUser,
+  AiOutlineArrowsAlt,
+  AiOutlineShareAlt,
+  AiOutlineRight,
+  AiOutlineMessage,
+  AiOutlinePlayCircle,
+  AiOutlineClose,
+  AiOutlineSend
+} from 'react-icons/ai';
+import { FaGraduationCap } from 'react-icons/fa';
 
 export default function LearningScreen() {
     const {
@@ -39,58 +43,58 @@ export default function LearningScreen() {
     };
 
     return (
-        <View className="flex flex-col items-center w-full min-h-screen bg-gray-900 h-screen p-2">
-            <View className="w-full p-2 bg-gray-800 shadow-md">
-                <Text className="text-xl font-bold text-center text-white">IELTS Writing Task - Band 8.0</Text>
-            </View>
-            <View className="flex-1 w-full">
-                <ScrollView className="w-full px-2 py-4">
-                    <Text className="text-lg py-1 font-bold mb-3 text-white">AI Evaluation and Explanation:</Text>
+        <div className="flex flex-col items-center w-full min-h-screen bg-gray-900 h-screen p-2">
+            <header className="w-full p-2 bg-gray-800 shadow-md">
+                <h1 className="text-xl font-bold text-center text-white">IELTS Writing Task - Band 8.0</h1>
+            </header>
+            <main className="flex-1 w-full overflow-auto">
+                <div className="w-full p-8">
+                    <h2 className="text-lg py-1 font-bold mb-3 text-white">Đánh giá và Giải thích của AI:</h2>
                     {responses.map((response, index) => (
-                        <View key={index} className="bg-gray-800 p-4 rounded-lg shadow-xl mb-4 border border-gray-700">
-                            <Text className="text-sm text-gray-200 leading-relaxed">
+                        <div key={index} className="bg-gray-800 p-4 rounded-lg shadow-xl mb-4 border border-gray-700">
+                            <p className="text-sm text-gray-200 leading-relaxed">
                                 {response.split('##').map((part, partIndex) => (
                                     <React.Fragment key={partIndex}>
-                                        {partIndex > 0 && <Text className="font-bold">##</Text>}
+                                        {partIndex > 0 && <span className="font-bold">##</span>}
                                         {part.split('**').map((subPart, subIndex) => (
-                                            <Text key={subIndex} style={subIndex % 2 === 1 ? { fontWeight: 'bold' } : {}}>
+                                            <span key={subIndex} className={subIndex % 2 === 1 ? 'font-bold' : ''}>
                                                 {subPart}
-                                            </Text>
+                                            </span>
                                         ))}
                                     </React.Fragment>
                                 ))}
-                            </Text>
+                            </p>
                             {errors[index] && (
-                                <View className="mt-3 bg-red-900 border-l-4 border-red-500 p-2 rounded-r-lg">
-                                    <Text className="text-red-300 font-semibold text-xs">Error:</Text>
-                                    <Text className="text-red-200 mt-1 text-xs">{errors[index]}</Text>
-                                </View>
+                                <div className="mt-3 bg-red-900 border-l-4 border-red-500 p-2 rounded-r-lg">
+                                    <p className="text-red-300 font-semibold text-xs">Error:</p>
+                                    <p className="text-red-200 mt-1 text-xs">{errors[index]}</p>
+                                </div>
                             )}
-                        </View>
+                        </div>
                     ))}
-                </ScrollView>
-            </View>
-            <View className="w-full p-4 bg-gray-800 shadow-lg">
-                <Text className="text-lg font-bold mb-3 text-white">IELTS Writing Task Question:</Text>
+                </div>
+            </main>
+            <footer className="w-full p-4 bg-gray-800 shadow-lg">
+                <h2 className="text-lg font-bold mb-3 text-white">IELTS Writing Task Question:</h2>
                 {question && (
-                    <Text className="text-sm font-medium mb-3 p-3 bg-blue-900 rounded-lg shadow-md text-blue-200">
+                    <p className="text-sm font-medium mb-3 p-3 bg-blue-900 rounded-lg shadow-md text-blue-200">
                         {question.split('##').map((part, index) => (
                             <React.Fragment key={index}>
-                                {index > 0 && <Text className="font-bold">##</Text>}
+                                {index > 0 && <span className="font-bold">##</span>}
                                 {part.split('**').map((subPart, subIndex) => (
-                                    <Text key={subIndex} style={subIndex % 2 === 1 ? { fontWeight: 'bold' } : {}}>
+                                    <span key={subIndex} className={subIndex % 2 === 1 ? 'font-bold' : ''}>
                                         {subPart}
-                                    </Text>
+                                    </span>
                                 ))}
                             </React.Fragment>
                         ))}
-                    </Text>
+                    </p>
                 )}
                 {suggestion && (
-                    <View className="mb-3">
-                        <Text className="text-sm font-bold text-white mb-1">Suggestion:</Text>
-                        <Text className="text-sm text-gray-300 p-2 bg-gray-700 rounded-lg">{suggestion}</Text>
-                    </View>
+                    <div className="mb-3">
+                        <h3 className="text-sm font-bold text-white mb-1">Suggestion:</h3>
+                        <p className="text-sm text-gray-300 p-2 bg-gray-700 rounded-lg">{suggestion}</p>
+                    </div>
                 )}
                 <form onSubmit={onSubmit} className="space-y-3">
                     <textarea
@@ -101,32 +105,34 @@ export default function LearningScreen() {
                         disabled={isLoading}
                         style={{ minHeight: 150, maxHeight: 300 }}
                     />
-                    <View className="flex flex-row justify-between w-full mt-3">
+                    <div className="flex flex-row justify-between w-full mt-3">
                         {isLoading ? (
-                            <View className="flex-1 items-center justify-center">
-                                <ActivityIndicator size="large" color="#60A5FA" />
-                                <Text className="mt-2 text-blue-300 font-medium text-xs">Processing...</Text>
-                            </View>
+                            <div className="flex-1 items-center justify-center">
+                                <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-blue-500 mx-auto"></div>
+                                <p className="mt-2 text-blue-300 font-medium text-xs text-center">Processing...</p>
+                            </div>
                         ) : (
-                            <View className="flex flex-row justify-between w-full">
+                            <div className="flex flex-row justify-between w-full">
                                 <button
                                     type="submit"
-                                    className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg w-[49%] transition duration-300 ease-in-out transform hover:scale-120 text-sm"
+                                    className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg w-[49%] transition duration-300 ease-in-out transform hover:scale-105 text-sm flex items-center justify-center"
                                 >
+                                    <AiOutlineSend className="w-5 h-5 mr-2" />
                                     Submit Answer
                                 </button>
                                 <button
                                     type="button"
                                     onClick={handleRefresh}
-                                    className="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-lg w-[49%] transition duration-300 ease-in-out transform hover:scale-120 text-sm"
+                                    className="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-lg w-[49%] transition duration-300 ease-in-out transform hover:scale-105 text-sm flex items-center justify-center"
                                 >
+                                    <AiOutlineArrowsAlt className="w-5 h-5 mr-2" />
                                     Refresh Question
                                 </button>
-                            </View>
+                            </div>
                         )}
-                    </View>
+                    </div>
                 </form>
-            </View>
-        </View>
+            </footer>
+        </div>
     );
 }

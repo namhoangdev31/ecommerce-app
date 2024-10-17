@@ -43,13 +43,13 @@ export const Sidebar = ({ collapsed: propCollapsed, onCollapsed }: Props) => {
       collapsed={collapsed}
       collapsedWidth={80}
       className={`
-        bg-white dark:bg-gray-800 
-        md:static absolute z-10 h-screen md:h-auto
+        absolute 
+        z-10 h-screen bg-gray-800 md:static md:h-auto
         ${collapsed ? 'w-0 sm:w-20' : 'w-64'} 
         transition-all duration-300 ease-in-out
       `}
     >
-      <div className="flex h-full flex-col">
+      <div className="flex h-full flex-col justify-center">
         <SidebarHeader
           collapsed={collapsed}
           onCollapsed={() => setCollapsed(!collapsed)}

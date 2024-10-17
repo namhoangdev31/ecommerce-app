@@ -1,20 +1,20 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { useRouter } from 'next/router'
 import {
-  Star,
-  Clock,
-  DocumentText,
-  AcademicCap,
-  ArrowsUpDown,
-  BookmarkSquare,
-  Share,
-  ChevronRight,
-  User,
-  ChatBubbleLeftRight,
-  Play,
-  XMark,
-  PaperAirplane,
-} from '@nandorojo/heroicons/24/outline'
+  FaStar,
+  FaClock,
+  FaFileAlt,
+  FaGraduationCap,
+  FaArrowsAltV,
+  FaBookmark,
+  FaShare,
+  FaChevronRight,
+  FaUser,
+  FaComments,
+  FaPlay,
+  FaTimes,
+  FaPaperPlane,
+} from 'react-icons/fa'
 import { create } from 'zustand'
 // Types
 interface Course {
@@ -68,27 +68,27 @@ const CourseInfo = ({ course }: { course: Course }) => (
   <div className="mb-8 rounded-lg bg-gray-800 p-8 shadow-lg transition-all duration-300 hover:shadow-xl">
     <div className="grid grid-cols-2 gap-8 md:grid-cols-3">
       <InfoItem
-        icon={<Clock className="h-7 w-7 text-blue-400" />}
+        icon={<FaClock className="h-7 w-7 text-blue-400" />}
         label="Duration"
         value={course.duration}
       />
       <InfoItem
-        icon={<DocumentText className="h-7 w-7 text-green-400" />}
+        icon={<FaFileAlt className="h-7 w-7 text-green-400" />}
         label="Lessons"
         value={`${course.lessons} lessons`}
       />
       <InfoItem
-        icon={<AcademicCap className="h-7 w-7 text-yellow-400" />}
+        icon={<FaGraduationCap className="h-7 w-7 text-yellow-400" />}
         label="Instructor"
         value={course.instructor}
       />
       <InfoItem
-        icon={<ArrowsUpDown className="h-7 w-7 text-purple-400" />}
+        icon={<FaArrowsAltV className="h-7 w-7 text-purple-400" />}
         label="Level"
         value={course.level}
       />
       <InfoItem
-        icon={<Star className="h-7 w-7 text-yellow-400" />}
+        icon={<FaStar className="h-7 w-7 text-yellow-400" />}
         label="Rating"
         value={`${
           course.rating
@@ -142,7 +142,7 @@ const CourseSyllabus = ({ syllabus }: { syllabus: string[] }) => (
     <ul className="space-y-3">
       {syllabus.map((item, index) => (
         <li key={index} className="flex items-start">
-          <ChevronRight className="mr-2 mt-0.5 h-5 w-5 text-blue-400" />
+          <FaChevronRight className="mr-2 mt-0.5 h-5 w-5 text-blue-400" />
           <span className="text-gray-300">{item}</span>
         </li>
       ))}
@@ -179,7 +179,7 @@ const ActionButtons = ({
         className="flex w-full items-center justify-center rounded-md bg-blue-600 px-6 py-3 text-lg font-medium text-gray-100 transition duration-300 hover:bg-blue-700"
         onClick={handleEnroll}
       >
-        <AcademicCap className="mr-2 h-6 w-6" />
+        <FaGraduationCap className="mr-2 h-6 w-6" />
         Enroll Now
       </button>
       <div className="flex space-x-4">
@@ -187,21 +187,21 @@ const ActionButtons = ({
           className="flex flex-1 items-center justify-center rounded-md bg-gray-700 px-4 py-2 text-gray-100 transition duration-300 hover:bg-gray-600"
           onClick={handleSave}
         >
-          <BookmarkSquare className="mr-2 h-5 w-5" />
+          <FaBookmark className="mr-2 h-5 w-5" />
           Save
         </button>
         <button
           className="flex flex-1 items-center justify-center rounded-md bg-gray-700 px-4 py-2 text-gray-100 transition duration-300 hover:bg-gray-600"
           onClick={handleShare}
         >
-          <Share className="mr-2 h-5 w-5" />
+          <FaShare className="mr-2 h-5 w-5" />
           Share
         </button>
         <button
           className="flex flex-1 items-center justify-center rounded-md bg-gray-700 px-4 py-2 text-gray-100 transition duration-300 hover:bg-gray-600"
           onClick={onChatClick}
         >
-          <ChatBubbleLeftRight className="mr-2 h-5 w-5" />
+          <FaComments className="mr-2 h-5 w-5" />
           Chat Now
         </button>
       </div>
@@ -216,7 +216,7 @@ const InstructorInfo = ({ instructor }: { instructor: string }) => {
       <h2 className="mb-4 text-xl font-semibold">Instructor</h2>
       <div className="flex items-center">
         <div className="mr-4 flex h-16 w-16 items-center justify-center rounded-full bg-gray-700">
-          <User className="h-8 w-8 text-gray-400" />
+          <FaUser className="h-8 w-8 text-gray-400" />
         </div>
         <div>
           <h3 className="text-lg font-medium">{instructor}</h3>
@@ -260,7 +260,7 @@ const CourseReviews = ({ reviews }: { reviews: Review[] }) => (
           <div className="mb-2 flex items-center justify-between">
             <span className="font-medium text-gray-200">{review.userName}</span>
             <div className="flex items-center">
-              <Star className="mr-1 h-5 w-5 text-yellow-400" />
+              <FaStar className="mr-1 h-5 w-5 text-yellow-400" />
               <span className="text-gray-300">{review.rating}</span>
             </div>
           </div>
@@ -339,7 +339,7 @@ const ChatWindow = ({
           Chat with {course.instructor}
         </h3>
         <button onClick={onClose} className="text-gray-300 hover:text-gray-100">
-          <XMark className="h-6 w-6" />
+          <FaTimes className="h-6 w-6" />
         </button>
       </div>
       <div className="flex-grow overflow-y-auto p-4">
@@ -375,7 +375,7 @@ const ChatWindow = ({
             }
           }}
         />
-        <PaperAirplane
+        <FaPaperPlane
           className="m-1 h-6 w-6 hover:cursor-pointer"
           onClick={() => {
             const input = document.querySelector(

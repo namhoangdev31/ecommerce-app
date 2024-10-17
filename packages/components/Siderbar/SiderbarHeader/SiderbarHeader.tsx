@@ -13,7 +13,7 @@ export const SidebarHeader = ({ collapsed, onCollapsed }: Props) => {
     <div className="p-5 pb-1 relative rounded-tr-[11px] bg-gray-800">
       <div 
         className={`flex items-center ${collapsed ? 'justify-center' : 'justify-center'} transition-all duration-500 cursor-pointer`}
-        // onClick={onCollapsed}
+        onClick={onCollapsed}
       >
         <div className="bg-[#3498db] rounded-full p-2">
           <AppIcon />

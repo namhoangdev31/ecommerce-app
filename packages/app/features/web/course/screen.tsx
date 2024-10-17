@@ -1,17 +1,19 @@
 import React, { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 import {
-  MagnifyingGlass,
-  DocumentText,
-  RectangleStack,
-  AcademicCap,
-  Clock,
-  Star,
-  ArrowsUpDown,
-  BookmarkSquare,
-  Share,
-  AdjustmentsHorizontal,
-} from '@nandorojo/heroicons/24/outline'
+  HiMagnifyingGlass,
+  HiDocumentText,
+  HiSquares2X2,
+  HiAcademicCap,
+  HiClock,
+  HiStar,
+  HiArrowsUpDown,
+  HiBookmark,
+  HiShare,
+  HiAdjustmentsHorizontal,
+  HiChevronLeft,
+  HiChevronRight,
+} from 'react-icons/hi2'
 import { create } from 'zustand'
 
 // Types and interfaces
@@ -37,6 +39,8 @@ interface CourseState {
   priceRange: [number, number]
   selectedLevel: string
   savedCourses: number[]
+  currentPage: number
+  itemsPerPage: number
   setSelectedCategory: (category: string) => void
   setSearchQuery: (query: string) => void
   setSortBy: (sortBy: string) => void
@@ -45,6 +49,8 @@ interface CourseState {
   setPriceRange: (range: [number, number]) => void
   setSelectedLevel: (level: string) => void
   setSavedCourses: (savedCourses: number[]) => void
+  setCurrentPage: (page: number) => void
+  setItemsPerPage: (items: number) => void
 }
 
 // Zustand store
@@ -57,6 +63,8 @@ const useCourseStore = create<CourseState>((set) => ({
   priceRange: [0, 1000],
   selectedLevel: 'All',
   savedCourses: [],
+  currentPage: 1,
+  itemsPerPage: 9,
   setSelectedCategory: (category) => set({ selectedCategory: category }),
   setSearchQuery: (query) => set({ searchQuery: query }),
   setSortBy: (sortBy) => set({ sortBy }),
@@ -65,6 +73,8 @@ const useCourseStore = create<CourseState>((set) => ({
   setPriceRange: (range) => set({ priceRange: range }),
   setSelectedLevel: (level) => set({ selectedLevel: level }),
   setSavedCourses: (savedCourses) => set({ savedCourses }),
+  setCurrentPage: (page) => set({ currentPage: page }),
+  setItemsPerPage: (items) => set({ itemsPerPage: items }),
 }))
 
 const categories = [
@@ -78,10 +88,15 @@ const categories = [
 const levels = ['All', 'Beginner', 'Intermediate', 'Advanced']
 
 // Header component
-const Header: React.FC<{ searchQuery: string; setSearchQuery: (query: string) => void; toggleSidebar: () => void }> = ({ searchQuery, setSearchQuery, toggleSidebar }) => (
+const Header: React.FC<{
+  searchQuery: string
+  setSearchQuery: (query: string) => void
+}> = ({ searchQuery, setSearchQuery }) => (
   <header className="sticky top-0 z-10 bg-gray-800 shadow">
     <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 sm:px-6 lg:px-8">
-      <h1 className="text-xl font-bold text-gray-100 sm:text-2xl">Fubao Course</h1>
+      <h1 className="text-xl font-bold text-gray-100 sm:text-2xl">
+        Fubao Course
+      </h1>
       <div className="flex items-center">
         <div className="relative mr-2">
           <input
@@ -91,21 +106,15 @@ const Header: React.FC<{ searchQuery: string; setSearchQuery: (query: string) =>
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
           />
-          <MagnifyingGlass className="absolute left-2 top-1/2 h-4 w-4 -translate-y-1/2 transform text-gray-400" />
+          <HiMagnifyingGlass className="absolute left-2 top-1/2 h-4 w-4 -translate-y-1/2 transform text-gray-400" />
         </div>
-        <button
-          className="rounded-md bg-gray-700 p-2 text-gray-100 hover:bg-gray-600 md:hidden"
-          onClick={toggleSidebar}
-        >
-          <AdjustmentsHorizontal className="h-5 w-5" />
-        </button>
       </div>
     </div>
   </header>
 )
 
-// Sidebar component
-const Sidebar: React.FC<{
+// FilterSidebar component
+const FilterSidebar: React.FC<{
   selectedCategory: string
   setSelectedCategory: (category: string) => void
   sortBy: string
@@ -114,8 +123,6 @@ const Sidebar: React.FC<{
   setPriceRange: (range: [number, number]) => void
   selectedLevel: string
   setSelectedLevel: (level: string) => void
-  isOpen: boolean
-  closeSidebar: () => void
 }> = ({
   selectedCategory,
   setSelectedCategory,
@@ -125,91 +132,74 @@ const Sidebar: React.FC<{
   setPriceRange,
   selectedLevel,
   setSelectedLevel,
-  isOpen,
-  closeSidebar,
 }) => (
-  <div
-    className={`fixed inset-y-0 left-0 z-20 w-64 transform overflow-y-auto bg-gray-800 p-2 transition-transform duration-300 ease-in-out md:static md:z-0 md:w-full md:transform-none ${
-      isOpen ? 'translate-x-0' : '-translate-x-full'
-    }`}
-  >
-    <button
-      className="absolute right-2 top-2 text-gray-400 hover:text-gray-100 md:hidden"
-      onClick={closeSidebar}
-    >
-      &times;
-    </button>
-    <div className="space-y-3">
-      <div className="rounded-lg bg-gray-700 p-2 shadow">
-        <div className="mb-1 flex items-center justify-between">
-          <h2 className="text-sm font-semibold text-gray-100">Categories</h2>
-          <RectangleStack className="h-3 w-3 text-gray-400" />
-        </div>
-        <ul className="space-y-1">
-          {categories.map((category) => (
-            <li
-              key={category}
-              className={`cursor-pointer text-xs text-gray-300 hover:text-gray-100 ${
-                selectedCategory === category ? 'font-semibold text-gray-100' : ''
-              }`}
-              onClick={() => {
-                setSelectedCategory(category)
-                closeSidebar()
-              }}
-            >
-              {category}
-            </li>
-          ))}
-        </ul>
-      </div>
-      <div className="rounded-lg bg-gray-700 p-2 shadow">
-        <h2 className="mb-1 text-sm font-semibold text-gray-100">Sort By</h2>
+  <div className="hidden w-72 flex-shrink-0 bg-gray-800 p-6 lg:block">
+    <h3 className="mb-6 text-2xl font-bold text-gray-100">Bộ lọc khóa học</h3>
+    <div className="space-y-6">
+      <div>
+        <h4 className="mb-2 text-lg font-semibold text-gray-100">Danh mục</h4>
         <select
-          className="w-full rounded-md border border-gray-600 bg-gray-600 px-1 py-0.5 text-xs text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="w-full rounded-lg border-2 border-gray-600 bg-gray-700 px-4 py-3 text-base text-gray-100 transition-all duration-300 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          value={selectedCategory}
+          onChange={(e) => setSelectedCategory(e.target.value)}
+        >
+          {categories.map((category) => (
+            <option key={category} value={category}>
+              {category}
+            </option>
+          ))}
+        </select>
+      </div>
+      <div>
+        <h4 className="mb-2 text-lg font-semibold text-gray-100">Sắp xếp theo</h4>
+        <select
+          className="w-full rounded-lg border-2 border-gray-600 bg-gray-700 px-4 py-3 text-base text-gray-100 transition-all duration-300 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
           value={sortBy}
           onChange={(e) => setSortBy(e.target.value)}
         >
-          <option value="popularity">Popularity</option>
-          <option value="rating">Rating</option>
-          <option value="price_low">Price: Low to High</option>
-          <option value="price_high">Price: High to Low</option>
+          <option value="popularity">Phổ biến nhất</option>
+          <option value="rating">Đánh giá cao nhất</option>
+          <option value="price_low">Giá: Thấp đến cao</option>
+          <option value="price_high">Giá: Cao đến thấp</option>
         </select>
       </div>
-      <div className="rounded-lg bg-gray-700 p-2 shadow">
-        <h2 className="mb-1 text-sm font-semibold text-gray-100">Price Range</h2>
-        <div className="flex items-center justify-between">
-          <input
-            type="range"
-            min="0"
-            max="1000"
-            step="10"
-            value={priceRange[0]}
-            onChange={(e) =>
-              setPriceRange([Number(e.target.value), priceRange[1]])
-            }
-            className="w-full"
-          />
-          <span className="ml-1 text-xs text-gray-300">${priceRange[0]}</span>
-        </div>
-        <div className="mt-1 flex items-center justify-between">
-          <input
-            type="range"
-            min="0"
-            max="1000"
-            step="10"
-            value={priceRange[1]}
-            onChange={(e) =>
-              setPriceRange([priceRange[0], Number(e.target.value)])
-            }
-            className="w-full"
-          />
-          <span className="ml-1 text-xs text-gray-300">${priceRange[1]}</span>
+      <div>
+        <h4 className="mb-2 text-lg font-semibold text-gray-100">Khoảng giá</h4>
+        <div className="space-y-4">
+          <div className="flex items-center justify-between">
+            <input
+              type="range"
+              min="0"
+              max="1000"
+              step="10"
+              value={priceRange[0]}
+              onChange={(e) =>
+                setPriceRange([Number(e.target.value), priceRange[1]])
+              }
+              className="w-full accent-blue-500"
+            />
+            <span className="ml-4 text-base text-gray-300">${priceRange[0]}</span>
+          </div>
+          <div className="flex items-center justify-between">
+            <input
+              type="range"
+              min="0"
+              max="1000"
+              step="10"
+              value={priceRange[1]}
+              onChange={(e) =>
+                setPriceRange([priceRange[0], Number(e.target.value)])
+              }
+              className="w-full accent-blue-500"
+            />
+            <span className="ml-4 text-base text-gray-300">${priceRange[1]}</span>
+          </div>
         </div>
       </div>
-      <div className="rounded-lg bg-gray-700 p-2 shadow">
-        <h2 className="mb-1 text-sm font-semibold text-gray-100">Level</h2>
+      <div>
+        <h4 className="mb-2 text-lg font-semibold text-gray-100">Cấp độ</h4>
         <select
-          className="w-full rounded-md border border-gray-600 bg-gray-600 px-1 py-0.5 text-xs text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="w-full rounded-lg border-2 border-gray-600 bg-gray-700 px-4 py-3 text-base text-gray-100 transition-all duration-300 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
           value={selectedLevel}
           onChange={(e) => setSelectedLevel(e.target.value)}
         >
@@ -224,13 +214,172 @@ const Sidebar: React.FC<{
   </div>
 )
 
+// FilterModal component (for mobile)
+const FilterModal: React.FC<{
+  selectedCategory: string
+  setSelectedCategory: (category: string) => void
+  sortBy: string
+  setSortBy: (sortBy: string) => void
+  priceRange: [number, number]
+  setPriceRange: (range: [number, number]) => void
+  selectedLevel: string
+  setSelectedLevel: (level: string) => void
+  isOpen: boolean
+  closeModal: () => void
+}> = ({
+  selectedCategory,
+  setSelectedCategory,
+  sortBy,
+  setSortBy,
+  priceRange,
+  setPriceRange,
+  selectedLevel,
+  setSelectedLevel,
+  isOpen,
+  closeModal,
+}) => (
+  <div
+    className={`fixed inset-0 z-50 overflow-y-auto lg:hidden ${
+      isOpen ? 'block' : 'hidden'
+    }`}
+  >
+    <div className="flex min-h-screen items-end justify-center px-4 pb-20 pt-4 text-center sm:block sm:p-0">
+      <div className="fixed inset-0 transition-opacity" aria-hidden="true">
+        <div className="absolute inset-0 bg-gray-500 opacity-75"></div>
+      </div>
+      <span
+        className="hidden sm:inline-block sm:h-screen sm:align-middle"
+        aria-hidden="true"
+      >
+        &#8203;
+      </span>
+      <div className="inline-block transform overflow-hidden rounded-lg bg-gray-800 text-left align-bottom shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg sm:align-middle">
+        <div className="bg-gray-800 px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
+          <div className="sm:flex sm:items-start">
+            <div className="mt-3 w-full text-center sm:ml-4 sm:mt-0 sm:text-left">
+              <h3
+                className="text-lg font-medium leading-6 text-gray-100"
+                id="modal-title"
+              >
+                Bộ lọc khóa học
+              </h3>
+              <div className="mt-4 space-y-4">
+                <div>
+                  <h4 className="mb-1 text-sm font-semibold text-gray-100">
+                    Chủ đề
+                  </h4>
+                  <select
+                    className="w-full rounded-md border border-gray-600 bg-gray-700 px-3 py-2 text-sm text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    value={selectedCategory}
+                    onChange={(e) => setSelectedCategory(e.target.value)}
+                  >
+                    {categories.map((category) => (
+                      <option key={category} value={category}>
+                        {category}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                <div>
+                  <h4 className="mb-1 text-sm font-semibold text-gray-100">
+                    Sắp xếp theo
+                  </h4>
+                  <select
+                    className="w-full rounded-md border border-gray-600 bg-gray-700 px-3 py-2 text-sm text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    value={sortBy}
+                    onChange={(e) => setSortBy(e.target.value)}
+                  >
+                    <option value="popularity">Phổ biến nhất</option>
+                    <option value="rating">Đánh giá cao nhất</option>
+                    <option value="price_low">Giá thấp đến cao</option>
+                    <option value="price_high">Giá cao đến thấp</option>
+                  </select>
+                </div>
+                <div>
+                  <h4 className="mb-1 text-sm font-semibold text-gray-100">
+                    Khoảng giá (VNĐ)
+                  </h4>
+                  <div className="flex items-center justify-between">
+                    <input
+                      type="range"
+                      min="0"
+                      max="5000000"
+                      step="100000"
+                      value={priceRange[0]}
+                      onChange={(e) =>
+                        setPriceRange([Number(e.target.value), priceRange[1]])
+                      }
+                      className="w-full"
+                    />
+                    <span className="ml-2 text-sm text-gray-300">
+                      {priceRange[0].toLocaleString()}đ
+                    </span>
+                  </div>
+                  <div className="mt-2 flex items-center justify-between">
+                    <input
+                      type="range"
+                      min="0"
+                      max="5000000"
+                      step="100000"
+                      value={priceRange[1]}
+                      onChange={(e) =>
+                        setPriceRange([priceRange[0], Number(e.target.value)])
+                      }
+                      className="w-full"
+                    />
+                    <span className="ml-2 text-sm text-gray-300">
+                      {priceRange[1].toLocaleString()}đ
+                    </span>
+                  </div>
+                </div>
+                <div>
+                  <h4 className="mb-1 text-sm font-semibold text-gray-100">
+                    Trình độ
+                  </h4>
+                  <select
+                    className="w-full rounded-md border border-gray-600 bg-gray-700 px-3 py-2 text-sm text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    value={selectedLevel}
+                    onChange={(e) => setSelectedLevel(e.target.value)}
+                  >
+                    {levels.map((level) => (
+                      <option key={level} value={level}>
+                        {level}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className="bg-gray-800 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
+          <button
+            type="button"
+            className="inline-flex w-full justify-center rounded-md border border-transparent bg-blue-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 sm:ml-3 sm:w-auto sm:text-sm"
+            onClick={closeModal}
+          >
+            Áp dụng
+          </button>
+          <button
+            type="button"
+            className="mt-3 inline-flex w-full justify-center rounded-md border border-gray-300 bg-gray-700 px-4 py-2 text-base font-medium text-gray-100 shadow-sm hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 sm:mt-0 sm:w-auto sm:text-sm"
+            onClick={closeModal}
+          >
+            Đóng
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+)
+
 // CourseCard component
 const CourseCard: React.FC<{
-  course: Course;
-  handleEnroll: (courseId: number) => void;
-  handleSaveCourse: (courseId: number) => void;
-  handleShareCourse: (courseId: number) => void;
-  savedCourses: number[];
+  course: Course
+  handleEnroll: (courseId: number) => void
+  handleSaveCourse: (courseId: number) => void
+  handleShareCourse: (courseId: number) => void
+  savedCourses: number[]
 }> = ({
   course,
   handleEnroll,
@@ -249,27 +398,29 @@ const CourseCard: React.FC<{
         <h3 className="mb-2 text-sm font-semibold text-gray-100 sm:text-base">
           {course.title}
         </h3>
-        <p className="mb-3 text-xs text-gray-400 sm:text-sm">{course.category}</p>
+        <p className="mb-3 text-xs text-gray-400 sm:text-sm">
+          {course.category}
+        </p>
         <div className="mb-1 flex items-center text-xs text-gray-400 sm:text-sm">
-          <DocumentText className="mr-2 h-3 w-3 sm:h-4 sm:w-4" />
+          <HiDocumentText className="mr-2 h-3 w-3 sm:h-4 sm:w-4" />
           <span>{course.lessons} lessons</span>
         </div>
         <div className="mb-1 flex items-center text-xs text-gray-400 sm:text-sm">
-          <Clock className="mr-2 h-3 w-3 sm:h-4 sm:w-4" />
+          <HiClock className="mr-2 h-3 w-3 sm:h-4 sm:w-4" />
           <span>{course.duration}</span>
         </div>
         <div className="mb-1 flex items-center text-xs text-gray-400 sm:text-sm">
-          <AcademicCap className="mr-2 h-3 w-3 sm:h-4 sm:w-4" />
+          <HiAcademicCap className="mr-2 h-3 w-3 sm:h-4 sm:w-4" />
           <span>{course.instructor}</span>
         </div>
         <div className="mb-1 flex items-center text-xs text-gray-400 sm:text-sm">
-          <Star className="mr-2 h-3 w-3 text-yellow-400 sm:h-4 sm:w-4" />
+          <HiStar className="mr-2 h-3 w-3 text-yellow-400 sm:h-4 sm:w-4" />
           <span>
             {course.rating} ({course.enrolled} enrolled)
           </span>
         </div>
         <div className="mb-1 flex items-center text-xs text-gray-400 sm:text-sm">
-          <ArrowsUpDown className="mr-2 h-3 w-3 sm:h-4 sm:w-4" />
+          <HiArrowsUpDown className="mr-2 h-3 w-3 sm:h-4 sm:w-4" />
           <span>{course.level}</span>
         </div>
         <div className="mb-3 flex items-center text-xs text-gray-400 sm:text-sm">
@@ -293,16 +444,43 @@ const CourseCard: React.FC<{
           }`}
           onClick={() => handleSaveCourse(course.id)}
         >
-          <BookmarkSquare className="h-4 w-4 text-gray-100 sm:h-5 sm:w-5" />
+          <HiBookmark className="h-4 w-4 text-gray-100 sm:h-5 sm:w-5" />
         </button>
         <button
           className="ml-2 rounded-md bg-gray-700 p-1 transition duration-300 hover:bg-gray-600 sm:p-2"
           onClick={() => handleShareCourse(course.id)}
         >
-          <Share className="h-4 w-4 text-gray-100 sm:h-5 sm:w-5" />
+          <HiShare className="h-4 w-4 text-gray-100 sm:h-5 sm:w-5" />
         </button>
       </div>
     </div>
+  </div>
+)
+
+// Pagination component
+const Pagination: React.FC<{
+  currentPage: number
+  totalPages: number
+  onPageChange: (page: number) => void
+}> = ({ currentPage, totalPages, onPageChange }) => (
+  <div className="mt-6 flex items-center justify-center space-x-2">
+    <button
+      className="rounded-md bg-gray-700 p-2 text-gray-100 transition duration-300 hover:bg-gray-600 disabled:opacity-50"
+      onClick={() => onPageChange(currentPage - 1)}
+      disabled={currentPage === 1}
+    >
+      <HiChevronLeft className="h-5 w-5" />
+    </button>
+    <span className="text-sm text-gray-400">
+      Trang {currentPage} / {totalPages}
+    </span>
+    <button
+      className="rounded-md bg-gray-700 p-2 text-gray-100 transition duration-300 hover:bg-gray-600 disabled:opacity-50"
+      onClick={() => onPageChange(currentPage + 1)}
+      disabled={currentPage === totalPages}
+    >
+      <HiChevronRight className="h-5 w-5" />
+    </button>
   </div>
 )
 
@@ -318,6 +496,8 @@ const CourseScreen: React.FC = () => {
     priceRange,
     selectedLevel,
     savedCourses,
+    currentPage,
+    itemsPerPage,
     setSelectedCategory,
     setSearchQuery,
     setSortBy,
@@ -326,9 +506,10 @@ const CourseScreen: React.FC = () => {
     setPriceRange,
     setSelectedLevel,
     setSavedCourses,
+    setCurrentPage,
   } = useCourseStore()
 
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false)
+  const [isModalOpen, setIsModalOpen] = useState(false)
 
   useEffect(() => {
     const fetchCourses = async () => {
@@ -425,6 +606,12 @@ const CourseScreen: React.FC = () => {
     return 0
   })
 
+  const totalPages = Math.ceil(sortedCourses.length / itemsPerPage)
+  const paginatedCourses = sortedCourses.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage,
+  )
+
   const handleEnroll = (courseId: number) => {
     console.log(`Enrolling in course ${courseId}`)
     router.push(`/course/${courseId}`)
@@ -443,42 +630,68 @@ const CourseScreen: React.FC = () => {
     // Implement sharing functionality here
   }
 
-  const toggleSidebar = () => {
-    setIsSidebarOpen(!isSidebarOpen)
+  const toggleModal = () => {
+    setIsModalOpen(!isModalOpen)
   }
 
-  const closeSidebar = () => {
-    setIsSidebarOpen(false)
+  const closeModal = () => {
+    setIsModalOpen(false)
+  }
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page)
   }
 
   return (
     <div className="min-h-screen bg-gray-900 text-gray-100">
-      <Header searchQuery={searchQuery} setSearchQuery={setSearchQuery} toggleSidebar={toggleSidebar} />
-      <main className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
-        <div className="flex flex-col gap-6 md:flex-row">
-          <div className="md:w-1/4">
-            <Sidebar
-              selectedCategory={selectedCategory}
-              setSelectedCategory={setSelectedCategory}
-              sortBy={sortBy}
-              setSortBy={setSortBy}
-              priceRange={priceRange}
-              setPriceRange={setPriceRange}
-              selectedLevel={selectedLevel}
-              setSelectedLevel={setSelectedLevel}
-              isOpen={isSidebarOpen}
-              closeSidebar={closeSidebar}
-            />
+      <Header
+        searchQuery={searchQuery}
+        setSearchQuery={setSearchQuery}
+      />
+      <main className="mx-auto flex max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
+        <FilterSidebar
+          selectedCategory={selectedCategory}
+          setSelectedCategory={setSelectedCategory}
+          sortBy={sortBy}
+          setSortBy={setSortBy}
+          priceRange={priceRange}
+          setPriceRange={setPriceRange}
+          selectedLevel={selectedLevel}
+          setSelectedLevel={setSelectedLevel}
+        />
+        <div className="flex-grow">
+          <div className="mb-4 flex items-center justify-between lg:hidden">
+            <h2 className="text-lg font-semibold">Courses</h2>
+            <button
+              className="rounded-md bg-gray-700 p-2 text-gray-100 transition duration-300 hover:bg-gray-600"
+              onClick={toggleModal}
+            >
+              <HiAdjustmentsHorizontal className="h-5 w-5" />
+            </button>
           </div>
-          <div className="md:w-3/4">
-            {loading ? (
-              <div className="py-10 text-center">
-                <div className="mx-auto h-10 w-10 animate-spin rounded-full border-b-2 border-t-2 border-blue-500 sm:h-12 sm:w-12"></div>
-                <p className="mt-4 text-sm text-gray-400 sm:text-base">Loading courses...</p>
-              </div>
-            ) : (
+          <FilterModal
+            selectedCategory={selectedCategory}
+            setSelectedCategory={setSelectedCategory}
+            sortBy={sortBy}
+            setSortBy={setSortBy}
+            priceRange={priceRange}
+            setPriceRange={setPriceRange}
+            selectedLevel={selectedLevel}
+            setSelectedLevel={setSelectedLevel}
+            isOpen={isModalOpen}
+            closeModal={closeModal}
+          />
+          {loading ? (
+            <div className="py-10 text-center">
+              <div className="mx-auto h-10 w-10 animate-spin rounded-full border-b-2 border-t-2 border-blue-500 sm:h-12 sm:w-12"></div>
+              <p className="mt-4 text-sm text-gray-400 sm:text-base">
+                Loading courses...
+              </p>
+            </div>
+          ) : (
+            <>
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                {sortedCourses.map((course) => (
+                {paginatedCourses.map((course) => (
                   <CourseCard
                     key={course.id}
                     course={course}
@@ -489,8 +702,13 @@ const CourseScreen: React.FC = () => {
                   />
                 ))}
               </div>
-            )}
-          </div>
+              <Pagination
+                currentPage={currentPage}
+                totalPages={totalPages}
+                onPageChange={handlePageChange}
+              />
+            </>
+          )}
         </div>
       </main>
     </div>
