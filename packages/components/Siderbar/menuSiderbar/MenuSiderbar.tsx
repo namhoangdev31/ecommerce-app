@@ -70,7 +70,7 @@ export const MenuSidebar = () => {
       {contextHolder}
       <Menu
         mode="inline"
-        className="bg-gray-800 text-white [&_.ant-menu-item]:text-white [&_.ant-menu-item-icon]:text-white [&_.ant-menu-submenu-title]:text-white [&_.ant-menu-submenu-arrow]:text-white [&_.ant-menu-item-selected]:text-white [&_.ant-menu-item-selected]:bg-gray-700 [&_.ant-menu-item-selected]:shadow-[0_-2px_1px_rgba(255,255,255,0.05),0_1px_1px_rgba(255,255,255,0.05)] [&_.ant-menu-item-selected]:flex [&_.ant-menu-item-selected]:font-semibold [&_.ant-menu-item-selected]:text-center font-inter"
+        className="bg-gray-800 text-white [&_.ant-menu-item]:text-white [&_.ant-menu-item-icon]:text-white [&_.ant-menu-submenu-title]:text-white [&_.ant-menu-submenu-arrow]:text-white [&_.ant-menu-item-selected]:bg-gray-700 [&_.ant-menu-item-selected]:shadow-[0_-2px_1px_rgba(255,255,255,0.05),0_1px_1px_rgba(255,255,255,0.05)] [&_.ant-menu-item-selected]:font-semibold [&_.ant-menu-item-selected]:text-center font-inter"
         selectedKeys={optionSelect ? [optionSelect] : []}
         items={OPTION_MENU}
       />
