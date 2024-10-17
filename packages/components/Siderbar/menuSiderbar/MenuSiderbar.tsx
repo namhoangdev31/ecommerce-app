@@ -2,13 +2,8 @@ import { useRouter } from 'next/router'
 import { Menu, message } from 'antd'
 import { useEffect, useState } from 'react'
 import type { MenuProps } from 'antd'
-import { LogoutIcon } from '../../../assets/icons/LogoutIcon'
 import { Routes } from '../../../constants/Routes'
-import { HomeIcon } from '../../../assets/icons/HomeIcon'
-import { LoanIcon } from '../../../assets/icons/LoanIcon'
-import { NextIcon } from '../../../assets/icons/NextIcon'
-import { InvoiceIcon } from '../../../assets/icons/InvoiceIcon'
-import { CollectionIcon } from '../../../assets/icons/CollectionIcon'
+import { HiHome, HiDocumentText, HiCollection, HiLogout } from 'react-icons/hi'
 // import { useAuth } from '/hooks/useAuth';
 
 export const MenuSidebar = () => {
@@ -20,15 +15,14 @@ export const MenuSidebar = () => {
   const OPTION_MENU: MenuProps['items'] = [
     {
       key: '/',
-      icon: <HomeIcon fill="#FFF" />,
+      icon: <HiHome size={20} />,
       label: 'DashBoard',
       onClick: () => push('/'),
     },
     {
       key: '/tasks',
-      icon: <InvoiceIcon fill="#FFF" />,
+      icon: <HiDocumentText size={20} />,
       label: 'Tasks',
-
       children: [
         {
           key: '/writing',
@@ -49,13 +43,13 @@ export const MenuSidebar = () => {
     },
     {
       key: '/course',
-      icon: <CollectionIcon fill="#FFF" />,
+      icon: <HiCollection size={20} />,
       label: 'Training program',
       onClick: () => push('/course'),
     }
   ]
 
-  const push = (path: any) => {
+  const push = (path: string) => {
     router.push(path).catch(async () => {
       await messageApi.error(`No se encontro la ruta ${path}`)
     })
@@ -87,9 +81,9 @@ export const MenuSidebar = () => {
         items={[
           {
             key: '1',
-            icon: <LogoutIcon fill="#FFF" />,
+            icon: <HiLogout size={24} color='red'/>,
             label: 'Logout',
-            onClick: () => logout(),
+            onClick: logout,
           },
         ]}
       />

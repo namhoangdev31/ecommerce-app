@@ -3,10 +3,10 @@
   "private": true,
   "workspaces": [
     "apps/*",
-    "packages/*"
+    "packages/*",
+    "serverless/*"
   ],
   "devDependencies": {
-    "@nestjs/mongoose": "^10.0.10",
     "@types/react": "^18.2.21",
     "@types/react-native": "^0.72.2",
     "eslint": "^8.21.0",
@@ -18,8 +18,7 @@
   "scripts": {
     "build": "turbo run build",
     "native": "cd apps/expo && yarn start:ios",
-    "web": "cd apps/next && yarn next",
-    "server": "cd apps/serverless && yarn start:dev"
+    "web": "cd apps/next && yarn next"
   },
   "resolutions": {
     "metro": "~0.76.7",

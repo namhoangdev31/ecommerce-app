@@ -14,7 +14,9 @@ import {
   HiChevronLeft,
   HiChevronRight,
 } from 'react-icons/hi2'
+import { IoFilterCircleOutline } from 'react-icons/io5'
 import { create } from 'zustand'
+import { categories, FilterSidebar, levels } from './component/FilterSidebar'
 
 // Types and interfaces
 interface Course {
@@ -77,15 +79,7 @@ const useCourseStore = create<CourseState>((set) => ({
   setItemsPerPage: (items) => set({ itemsPerPage: items }),
 }))
 
-const categories = [
-  'All',
-  'Computer Science',
-  'Business',
-  'Data Science',
-  'Language Learning',
-  'Arts and Humanities',
-]
-const levels = ['All', 'Beginner', 'Intermediate', 'Advanced']
+
 
 // Header component
 const Header: React.FC<{
@@ -111,107 +105,6 @@ const Header: React.FC<{
       </div>
     </div>
   </header>
-)
-
-// FilterSidebar component
-const FilterSidebar: React.FC<{
-  selectedCategory: string
-  setSelectedCategory: (category: string) => void
-  sortBy: string
-  setSortBy: (sortBy: string) => void
-  priceRange: [number, number]
-  setPriceRange: (range: [number, number]) => void
-  selectedLevel: string
-  setSelectedLevel: (level: string) => void
-}> = ({
-  selectedCategory,
-  setSelectedCategory,
-  sortBy,
-  setSortBy,
-  priceRange,
-  setPriceRange,
-  selectedLevel,
-  setSelectedLevel,
-}) => (
-  <div className="hidden w-72 flex-shrink-0 bg-gray-800 p-6 lg:block">
-    <h3 className="mb-6 text-2xl font-bold text-gray-100">Bộ lọc khóa học</h3>
-    <div className="space-y-6">
-      <div>
-        <h4 className="mb-2 text-lg font-semibold text-gray-100">Danh mục</h4>
-        <select
-          className="w-full rounded-lg border-2 border-gray-600 bg-gray-700 px-4 py-3 text-base text-gray-100 transition-all duration-300 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
-          value={selectedCategory}
-          onChange={(e) => setSelectedCategory(e.target.value)}
-        >
-          {categories.map((category) => (
-            <option key={category} value={category}>
-              {category}
-            </option>
-          ))}
-        </select>
-      </div>
-      <div>
-        <h4 className="mb-2 text-lg font-semibold text-gray-100">Sắp xếp theo</h4>
-        <select
-          className="w-full rounded-lg border-2 border-gray-600 bg-gray-700 px-4 py-3 text-base text-gray-100 transition-all duration-300 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
-          value={sortBy}
-          onChange={(e) => setSortBy(e.target.value)}
-        >
-          <option value="popularity">Phổ biến nhất</option>
-          <option value="rating">Đánh giá cao nhất</option>
-          <option value="price_low">Giá: Thấp đến cao</option>
-          <option value="price_high">Giá: Cao đến thấp</option>
-        </select>
-      </div>
-      <div>
-        <h4 className="mb-2 text-lg font-semibold text-gray-100">Khoảng giá</h4>
-        <div className="space-y-4">
-          <div className="flex items-center justify-between">
-            <input
-              type="range"
-              min="0"
-              max="1000"
-              step="10"
-              value={priceRange[0]}
-              onChange={(e) =>
-                setPriceRange([Number(e.target.value), priceRange[1]])
-              }
-              className="w-full accent-blue-500"
-            />
-            <span className="ml-4 text-base text-gray-300">${priceRange[0]}</span>
-          </div>
-          <div className="flex items-center justify-between">
-            <input
-              type="range"
-              min="0"
-              max="1000"
-              step="10"
-              value={priceRange[1]}
-              onChange={(e) =>
-                setPriceRange([priceRange[0], Number(e.target.value)])
-              }
-              className="w-full accent-blue-500"
-            />
-            <span className="ml-4 text-base text-gray-300">${priceRange[1]}</span>
-          </div>
-        </div>
-      </div>
-      <div>
-        <h4 className="mb-2 text-lg font-semibold text-gray-100">Cấp độ</h4>
-        <select
-          className="w-full rounded-lg border-2 border-gray-600 bg-gray-700 px-4 py-3 text-base text-gray-100 transition-all duration-300 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
-          value={selectedLevel}
-          onChange={(e) => setSelectedLevel(e.target.value)}
-        >
-          {levels.map((level) => (
-            <option key={level} value={level}>
-              {level}
-            </option>
-          ))}
-        </select>
-      </div>
-    </div>
-  </div>
 )
 
 // FilterModal component (for mobile)
@@ -303,8 +196,8 @@ const FilterModal: React.FC<{
                     <input
                       type="range"
                       min="0"
-                      max="5000000"
-                      step="100000"
+                      max="550"
+                      step="0.5"
                       value={priceRange[0]}
                       onChange={(e) =>
                         setPriceRange([Number(e.target.value), priceRange[1]])
@@ -312,15 +205,15 @@ const FilterModal: React.FC<{
                       className="w-full"
                     />
                     <span className="ml-2 text-sm text-gray-300">
-                      {priceRange[0].toLocaleString()}đ
+                      ${priceRange[0].toLocaleString()}
                     </span>
                   </div>
                   <div className="mt-2 flex items-center justify-between">
                     <input
                       type="range"
                       min="0"
-                      max="5000000"
-                      step="100000"
+                      max="550"
+                      step="0.5"
                       value={priceRange[1]}
                       onChange={(e) =>
                         setPriceRange([priceRange[0], Number(e.target.value)])
@@ -328,7 +221,7 @@ const FilterModal: React.FC<{
                       className="w-full"
                     />
                     <span className="ml-2 text-sm text-gray-300">
-                      {priceRange[1].toLocaleString()}đ
+                      ${priceRange[1].toLocaleString()}
                     </span>
                   </div>
                 </div>
@@ -578,6 +471,42 @@ const CourseScreen: React.FC = () => {
                 price: 69.99,
                 level: 'Beginner',
               },
+              {
+                id: 6,
+                title: 'French for Intermediate Learners',
+                category: 'Language Learning',
+                lessons: 18,
+                duration: '9 weeks',
+                instructor: 'Pierre Dubois',
+                rating: 4.7,
+                enrolled: 1800,
+                price: 74.99,
+                level: 'Intermediate',
+              },
+              {
+                id: 7,
+                title: 'Digital Marketing Essentials',
+                category: 'Marketing',
+                lessons: 14,
+                duration: '7 weeks',
+                instructor: 'Emily Chen',
+                rating: 4.8,
+                enrolled: 2200,
+                price: 64.99,
+                level: 'Beginner',
+              },
+              {
+                id: 8,
+                title: 'Machine Learning Fundamentals',
+                category: 'Data Science',
+                lessons: 16,
+                duration: '8 weeks',
+                instructor: 'Michael Johnson',
+                rating: 4.9,
+                enrolled: 1900,
+                price: 89.99,
+                level: 'Intermediate',
+              },
             ]),
           1000,
         ),
@@ -644,10 +573,7 @@ const CourseScreen: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-gray-900 text-gray-100">
-      <Header
-        searchQuery={searchQuery}
-        setSearchQuery={setSearchQuery}
-      />
+      <Header searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
       <main className="mx-auto flex max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
         <FilterSidebar
           selectedCategory={selectedCategory}
