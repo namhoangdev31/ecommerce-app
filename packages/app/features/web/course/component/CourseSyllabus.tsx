@@ -1,3 +1,5 @@
+"use client";
+
 import { HiChevronRight } from 'react-icons/hi2'
 
 export const CourseSyllabus = ({ syllabus }: { syllabus: string[] }) => (

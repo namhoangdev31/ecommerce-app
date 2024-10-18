@@ -1,3 +1,5 @@
+"use client";
+
 import { Course } from "../types/course"
 import { useRef, useEffect } from "react"
 import { create } from "zustand"

@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useEffect } from "react";
 import { useWriteTaskStore } from '../../native/write-task/zustand-store';
 import {

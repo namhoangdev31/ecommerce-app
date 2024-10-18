@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 import { HiAdjustmentsHorizontal } from 'react-icons/hi2'
@@ -104,7 +106,7 @@ const CourseScreen: React.FC = () => {
                 level: 'Beginner',
                 description: '',
                 syllabus: [],
-                imageUrl: ''
+                imageUrl: '',
               },
               {
                 id: 2,
@@ -119,7 +121,7 @@ const CourseScreen: React.FC = () => {
                 level: 'Advanced',
                 description: '',
                 syllabus: [],
-                imageUrl: ''
+                imageUrl: '',
               },
               {
                 id: 3,
@@ -134,7 +136,7 @@ const CourseScreen: React.FC = () => {
                 level: 'Intermediate',
                 description: '',
                 syllabus: [],
-                imageUrl: ''
+                imageUrl: '',
               },
               {
                 id: 4,
@@ -149,7 +151,7 @@ const CourseScreen: React.FC = () => {
                 level: 'Beginner',
                 description: '',
                 syllabus: [],
-                imageUrl: ''
+                imageUrl: '',
               },
               {
                 id: 5,
@@ -164,7 +166,7 @@ const CourseScreen: React.FC = () => {
                 level: 'Beginner',
                 description: '',
                 syllabus: [],
-                imageUrl: ''
+                imageUrl: '',
               },
               {
                 id: 6,
@@ -179,7 +181,7 @@ const CourseScreen: React.FC = () => {
                 level: 'Intermediate',
                 description: '',
                 syllabus: [],
-                imageUrl: ''
+                imageUrl: '',
               },
               {
                 id: 7,
@@ -194,7 +196,7 @@ const CourseScreen: React.FC = () => {
                 level: 'Beginner',
                 description: '',
                 syllabus: [],
-                imageUrl: ''
+                imageUrl: '',
               },
               {
                 id: 8,
@@ -209,7 +211,7 @@ const CourseScreen: React.FC = () => {
                 level: 'Intermediate',
                 description: '',
                 syllabus: [],
-                imageUrl: ''
+                imageUrl: '',
               },
             ]),
           1000,

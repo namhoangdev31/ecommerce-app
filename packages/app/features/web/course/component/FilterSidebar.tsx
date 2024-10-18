@@ -1,3 +1,5 @@
+"use client";
+
 import { IoFilterCircleOutline } from 'react-icons/io5'
 export const categories = [
   'All',

@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 import type { MenuProps } from 'antd'
 import { Routes } from '../../../constants/Routes'
 import { HiHome, HiDocumentText, HiCollection, HiLogout } from 'react-icons/hi'
-// import { useAuth } from '/hooks/useAuth';
+import { RiPresentationFill, RiPresentationLine } from 'react-icons/ri'
 
 export const MenuSidebar = () => {
   const router = useRouter()
@@ -25,28 +25,34 @@ export const MenuSidebar = () => {
       label: 'Tasks',
       children: [
         {
-          key: '/writing',
+          key: '/write-task',
           label: 'Write Task',
-          onClick: () => push('/writing'),
+          onClick: () => push('/write-task'),
         },
         {
-          key: '/reading',
+          key: '/read-task',
           label: 'Read Task',
-          onClick: () => push('/reading'),
+          onClick: () => push('/read-task'),
         },
         {
-          key: '/reading/multi-choice',
+          key: '/read/multi-choice',
           label: 'Multiple Choice',
-          onClick: () => push('/reading/multi-choice'),
+          onClick: () => push('/read/multi-choice'),
         },
-      ]
+      ],
     },
     {
       key: '/course',
       icon: <HiCollection size={20} />,
       label: 'Training program',
       onClick: () => push('/course'),
-    }
+    },
+    {
+      key: '/class',
+      icon: <RiPresentationFill size={20} />,
+      label: 'ClassRoom',
+      onClick: () => push('/class'),
+    },
   ]
 
   const push = (path: string) => {
@@ -70,18 +76,18 @@ export const MenuSidebar = () => {
       {contextHolder}
       <Menu
         mode="inline"
-        className="bg-gray-800 text-white [&_.ant-menu-item]:text-white [&_.ant-menu-item-icon]:text-white [&_.ant-menu-submenu-title]:text-white [&_.ant-menu-submenu-arrow]:text-white [&_.ant-menu-item-selected]:bg-gray-700 [&_.ant-menu-item-selected]:shadow-[0_-2px_1px_rgba(255,255,255,0.05),0_1px_1px_rgba(255,255,255,0.05)] [&_.ant-menu-item-selected]:font-semibold [&_.ant-menu-item-selected]:text-center font-inter"
+        className="font-inter bg-gray-800 text-white [&_.ant-menu-item-icon]:text-white [&_.ant-menu-item-selected]:bg-gray-700 [&_.ant-menu-item-selected]:text-center [&_.ant-menu-item-selected]:font-semibold [&_.ant-menu-item-selected]:shadow-[0_-2px_1px_rgba(255,255,255,0.05),0_1px_1px_rgba(255,255,255,0.05)] [&_.ant-menu-item]:text-white [&_.ant-menu-submenu-arrow]:text-white [&_.ant-menu-submenu-title]:text-white"
         selectedKeys={optionSelect ? [optionSelect] : []}
         items={OPTION_MENU}
       />
 
       <Menu
         mode="inline"
-        className="mt-auto bg-gray-800 text-white [&_.ant-menu-item]:text-white [&_.ant-menu-item-icon]:text-white [&_.ant-menu-title-content]:text-white [&_.ant-menu-title-content]:font-poppins [&_.ant-menu-title-content]:text-sm [&_.ant-menu-title-content]:font-normal [&_.ant-menu-title-content]:leading-[170%]"
+        className="[&_.ant-menu-title-content]:font-poppins mt-auto bg-gray-800 text-white [&_.ant-menu-item-icon]:text-white [&_.ant-menu-item]:text-white [&_.ant-menu-title-content]:text-sm [&_.ant-menu-title-content]:font-normal [&_.ant-menu-title-content]:leading-[170%] [&_.ant-menu-title-content]:text-white"
         items={[
           {
             key: '1',
-            icon: <HiLogout size={24} color='red'/>,
+            icon: <HiLogout size={24} color="red" />,
             label: 'Logout',
             onClick: logout,
           },

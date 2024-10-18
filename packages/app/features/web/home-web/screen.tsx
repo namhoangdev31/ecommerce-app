@@ -1,8 +1,11 @@
-import React, { useState, useEffect, useMemo } from 'react';
+"use client";
+
+import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
-import { HiAcademicCap, HiChartBar, HiChatAlt2, HiClipboardList, HiClock, HiUserGroup } from 'react-icons/hi';
+import { HiAcademicCap, HiChartBar, HiChatAlt2, HiClipboardList, HiClock, HiUserGroup, HiUser, HiSearch } from 'react-icons/hi';
+import { create } from 'zustand';
 
 interface Course {
   id: number;
@@ -23,41 +26,112 @@ interface Event {
   date: string;
 }
 
+interface DashboardState {
+  userRoles: ('student' | 'teacher')[];
+  userName: string;
+  courses: Course[];
+  selectedRole: 'student' | 'teacher';
+  searchQuery: string;
+  notifications: Notification[];
+  upcomingEvents: Event[];
+  isLoading: boolean;
+  setUserRoles: (roles: ('student' | 'teacher')[]) => void;
+  setUserName: (name: string) => void;
+  setCourses: (courses: Course[]) => void;
+  setSelectedRole: (role: 'student' | 'teacher') => void;
+  setSearchQuery: (query: string) => void;
+  setNotifications: (notifications: Notification[]) => void;
+  setUpcomingEvents: (events: Event[]) => void;
+  setIsLoading: (isLoading: boolean) => void;
+  toggleRole: () => void;
+}
+
+const useDashboardStore = create<DashboardState>((set) => ({
+  userRoles: [],
+  userName: '',
+  courses: [],
+  selectedRole: 'student',
+  searchQuery: '',
+  notifications: [],
+  upcomingEvents: [],
+  isLoading: true,
+  setUserRoles: (roles) => set({ userRoles: roles }),
+  setUserName: (name) => set({ userName: name }),
+  setCourses: (courses) => set({ courses }),
+  setSelectedRole: (role) => set({ selectedRole: role }),
+  setSearchQuery: (query) => set({ searchQuery: query }),
+  setNotifications: (notifications) => set({ notifications }),
+  setUpcomingEvents: (events) => set({ upcomingEvents: events }),
+  setIsLoading: (isLoading) => set({ isLoading }),
+  toggleRole: () => set((state) => ({ selectedRole: state.selectedRole === 'student' ? 'teacher' : 'student' })),
+}));
+
 const DashboardScreen: React.FC = () => {
-  const [userRoles, setUserRoles] = useState<('student' | 'teacher')[]>(['student', 'teacher']);
-  const [userName, setUserName] = useState('John Doe');
-  const [courses, setCourses] = useState<Course[]>([
-    { id: 1, name: 'Mathematics 101', progress: 75, students: 30, status: 'In Progress' },
-    { id: 2, name: 'English Literature', progress: 60, students: 25, status: 'In Progress' },
-    { id: 3, name: 'Physics', progress: 40, students: 20, status: 'Not Started' },
-  ]);
-  const [selectedRole, setSelectedRole] = useState<'student' | 'teacher'>('student');
-  const [searchQuery, setSearchQuery] = useState('');
-  const [notifications] = useState<Notification[]>([
-    { id: 1, message: 'New assignment in Mathematics 101' },
-    { id: 2, message: 'Upcoming quiz in English Literature' },
-  ]);
-  const [upcomingEvents] = useState<Event[]>([
-    { id: 1, title: 'Mathematics Exam', date: '2023-06-15' },
-    { id: 2, title: 'English Literature Presentation', date: '2023-06-20' },
-  ]);
-  const [isLoading, setIsLoading] = useState(true);
+  const {
+    userRoles,
+    userName,
+    courses,
+    selectedRole,
+    searchQuery,
+    notifications,
+    upcomingEvents,
+    isLoading,
+    setUserRoles,
+    setUserName,
+    setCourses,
+    setSelectedRole,
+    setSearchQuery,
+    setNotifications,
+    setUpcomingEvents,
+    setIsLoading,
+    toggleRole,
+  } = useDashboardStore();
+
   const router = useRouter();
+  const [isClient, setIsClient] = useState(false);
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setUserName('Jane Smith');
-      setUserRoles(['student', 'teacher']);
-      setIsLoading(false);
-    }, 1000);
-    return () => clearTimeout(timer);
+    setIsClient(true);
+    const fetchData = async () => {
+      try {
+        // Simulating API calls
+        // Simulating API responses with fake data
+        const userData = {
+          name: 'John Doe',
+          roles: ['student', 'teacher']
+        };
+        const coursesData = [
+          { id: 1, name: 'Introduction to React', progress: 75, students: 150, status: 'In Progress' },
+          { id: 2, name: 'Advanced JavaScript', progress: 40, students: 120, status: 'Not Started' },
+          { id: 3, name: 'Web Design Fundamentals', progress: 90, students: 200, status: 'Completed' }
+        ];
+        const notificationsData = [
+          { id: 1, message: 'New assignment due tomorrow', type: 'assignment' },
+          { id: 2, message: 'Upcoming live session in 2 hours', type: 'live_session' }
+        ];
+        const eventsData = [
+          { id: 1, title: 'Web Development Workshop', date: '2023-06-15' },
+          { id: 2, title: 'Career Fair', date: '2023-06-20' }
+        ];
+
+        setTimeout(() => {
+          setUserName(userData.name);
+          setUserRoles(userData.roles as ('student' | 'teacher')[]);
+          setCourses(coursesData);
+          setNotifications(notificationsData);
+          setUpcomingEvents(eventsData);
+          setIsLoading(false);
+        }, 1000);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+        setIsLoading(false);
+      }
+    };
+
+    fetchData();
   }, []);
 
-  const toggleRole = () => {
-    setSelectedRole(prevRole => prevRole === 'student' ? 'teacher' : 'student');
-  };
-
-  const filteredCourses = useMemo(() => 
+  const filteredCourses = React.useMemo(() =>
     courses.filter(course =>
       course.name.toLowerCase().includes(searchQuery.toLowerCase())
     ), [courses, searchQuery]
@@ -98,13 +172,9 @@ const DashboardScreen: React.FC = () => {
     </motion.div>
   );
 
-  const renderSkeletonItem = () => (
-    <div className="bg-gray-700 rounded-lg p-4 mb-3 animate-pulse">
-      <div className="h-6 bg-gray-600 rounded w-3/4 mb-2"></div>
-      <div className="h-4 bg-gray-600 rounded w-1/2 mb-2"></div>
-      <div className="h-2 bg-gray-600 rounded w-full"></div>
-    </div>
-  );
+  if (!isClient) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <div className="w-full bg-gray-900 min-h-screen p-2 md:p-4">
@@ -116,40 +186,27 @@ const DashboardScreen: React.FC = () => {
       >
         <div className="flex flex-col md:flex-row justify-between items-center mb-4">
           <h1 className="text-2xl md:text-3xl font-bold text-white mb-2 md:mb-0">
-            {isLoading ? (
-              <div className="h-8 bg-gray-700 rounded w-48 animate-pulse"></div>
-            ) : (
-              `Welcome, ${userName}!`
-            )}
+            {`Welcome, ${userName}!`}
           </h1>
           <motion.button
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
             className="bg-gray-700 p-2 rounded-full shadow-lg"
           >
-            <span className="text-white text-xl">👤</span>
+            <HiUser className="text-white text-xl" />
           </motion.button>
         </div>
         <div className="flex flex-col sm:flex-row justify-between items-center">
           <p className="text-lg md:text-xl font-semibold text-white mb-2 sm:mb-0">
-            {isLoading ? (
-              <div className="h-6 bg-gray-700 rounded w-32 animate-pulse"></div>
-            ) : (
-              `Current Role: ${selectedRole.charAt(0).toUpperCase() + selectedRole.slice(1)}`
-            )}
+            {`Current Role: ${selectedRole.charAt(0).toUpperCase() + selectedRole.slice(1)}`}
           </p>
           <motion.button
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             onClick={toggleRole}
             className="bg-blue-600 px-4 py-2 rounded-full text-white font-semibold w-full sm:w-auto transition-colors duration-300 hover:bg-blue-700"
-            disabled={isLoading}
           >
-            {isLoading ? (
-              <div className="h-6 bg-gray-700 rounded w-24 animate-pulse"></div>
-            ) : (
-              `Switch to ${selectedRole === 'student' ? 'Teacher' : 'Student'}`
-            )}
+            {`Switch to ${selectedRole === 'student' ? 'Teacher' : 'Student'}`}
           </motion.button>
         </div>
       </motion.div>
@@ -168,7 +225,7 @@ const DashboardScreen: React.FC = () => {
               whileTap={{ scale: 0.9 }}
               className="bg-gray-700 p-2 rounded-full shadow-lg"
             >
-              <span className="text-white text-xl">🔍</span>
+              <HiSearch className="text-white text-xl" />
             </motion.button>
           </div>
           <input
@@ -180,11 +237,7 @@ const DashboardScreen: React.FC = () => {
             style={{ fontSize: '16px' }}
           />
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {isLoading
-              ? Array(3).fill(null).map((_, index) => (
-                  <div key={index}>{renderSkeletonItem()}</div>
-                ))
-              : filteredCourses.map(renderCourseItem)}
+            {filteredCourses.map(renderCourseItem)}
           </div>
         </motion.div>
 
@@ -197,21 +250,12 @@ const DashboardScreen: React.FC = () => {
           >
             <h2 className="text-xl md:text-2xl font-semibold text-white mb-4">Teacher Dashboard</h2>
             <div className="flex flex-wrap justify-between">
-              {isLoading
-                ? Array(6).fill(null).map((_, index) => (
-                    <div key={index} className="w-full sm:w-[48%] lg:w-[31%] mb-3">
-                      <div className="bg-gray-700 p-4 rounded-lg animate-pulse h-16"></div>
-                    </div>
-                  ))
-                : <>
-                    {renderDashboardItem('Class Overview', '/teacher/class-overview', <HiUserGroup className="text-2xl" />)}
-                    {renderDashboardItem('Manage Lessons', '/teacher/manage-lessons', <HiClipboardList className="text-2xl" />)}
-                    {renderDashboardItem('Student Progress', '/teacher/student-progress', <HiChartBar className="text-2xl" />)}
-                    {renderDashboardItem('Notifications', '/teacher/notifications', <HiChatAlt2 className="text-2xl" />)}
-                    {renderDashboardItem('Teaching Schedule', '/teacher/schedule', <HiClock className="text-2xl" />)}
-                    {renderDashboardItem('Grade Assignments', '/teacher/grade-assignments', <HiAcademicCap className="text-2xl" />)}
-                  </>
-              }
+              {renderDashboardItem('Class Overview', '/teacher/class-overview', <HiUserGroup className="text-2xl" />)}
+              {renderDashboardItem('Manage Lessons', '/teacher/manage-lessons', <HiClipboardList className="text-2xl" />)}
+              {renderDashboardItem('Student Progress', '/teacher/student-progress', <HiChartBar className="text-2xl" />)}
+              {renderDashboardItem('Notifications', '/teacher/notifications', <HiChatAlt2 className="text-2xl" />)}
+              {renderDashboardItem('Teaching Schedule', '/teacher/schedule', <HiClock className="text-2xl" />)}
+              {renderDashboardItem('Grade Assignments', '/teacher/grade-assignments', <HiAcademicCap className="text-2xl" />)}
             </div>
           </motion.div>
         )}
@@ -225,21 +269,12 @@ const DashboardScreen: React.FC = () => {
           >
             <h2 className="text-xl md:text-2xl font-semibold text-white mb-4">Student Dashboard</h2>
             <div className="flex flex-wrap justify-between">
-              {isLoading
-                ? Array(6).fill(null).map((_, index) => (
-                    <div key={index} className="w-full sm:w-[48%] lg:w-[31%] mb-3">
-                      <div className="bg-gray-700 p-4 rounded-lg animate-pulse h-16"></div>
-                    </div>
-                  ))
-                : <>
-                    {renderDashboardItem('Course Overview', '/student/course-overview', <HiClipboardList className="text-2xl" />)}
-                    {renderDashboardItem('Assignments', '/student/assignments', <HiAcademicCap className="text-2xl" />)}
-                    {renderDashboardItem('Progress Tracker', '/student/progress', <HiChartBar className="text-2xl" />)}
-                    {renderDashboardItem('Notifications', '/student/notifications', <HiChatAlt2 className="text-2xl" />)}
-                    {renderDashboardItem('Class Schedule', '/student/schedule', <HiClock className="text-2xl" />)}
-                    {renderDashboardItem('Message Teacher', '/student/message', <HiUserGroup className="text-2xl" />)}
-                  </>
-              }
+              {renderDashboardItem('Course Overview', '/student/course-overview', <HiClipboardList className="text-2xl" />)}
+              {renderDashboardItem('Assignments', '/student/assignments', <HiAcademicCap className="text-2xl" />)}
+              {renderDashboardItem('Progress Tracker', '/student/progress', <HiChartBar className="text-2xl" />)}
+              {renderDashboardItem('Notifications', '/student/notifications', <HiChatAlt2 className="text-2xl" />)}
+              {renderDashboardItem('Class Schedule', '/student/schedule', <HiClock className="text-2xl" />)}
+              {renderDashboardItem('Message Teacher', '/student/message', <HiUserGroup className="text-2xl" />)}
             </div>
           </motion.div>
         )}
@@ -252,26 +287,21 @@ const DashboardScreen: React.FC = () => {
         >
           <h2 className="text-lg md:text-xl font-semibold text-white mb-3">Recent Activity</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {isLoading
-              ? Array(3).fill(null).map((_, index) => (
-                  <div key={index} className="bg-gray-700 p-3 rounded-lg animate-pulse h-12"></div>
-                ))
-              : [
-                  { href: '/activity/1', text: 'Completed Mathematics 101 quiz' },
-                  { href: '/activity/2', text: 'Submitted English Literature essay' },
-                  { href: '/activity/3', text: 'Earned a new badge in Physics' },
-                ].map(({ href, text }) => (
-                  <motion.div
-                    key={href}
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                  >
-                    <Link href={href} className="block bg-gray-700 p-3 rounded-lg flex items-center hover:bg-gray-600 transition-all duration-300 shadow-md hover:shadow-lg">
-                      <span className="text-white ml-3">{text}</span>
-                    </Link>
-                  </motion.div>
-                ))
-            }
+            {[
+              { href: '/activity/1', text: 'Completed Mathematics 101 quiz' },
+              { href: '/activity/2', text: 'Submitted English Literature essay' },
+              { href: '/activity/3', text: 'Earned a new badge in Physics' },
+            ].map(({ href, text }) => (
+              <motion.div
+                key={href}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                <Link href={href} className="block bg-gray-700 p-3 rounded-lg flex items-center hover:bg-gray-600 transition-all duration-300 shadow-md hover:shadow-lg">
+                  <span className="text-white ml-3">{text}</span>
+                </Link>
+              </motion.div>
+            ))}
           </div>
         </motion.div>
 
@@ -283,22 +313,17 @@ const DashboardScreen: React.FC = () => {
             className="bg-gray-800 rounded-lg p-4 shadow-lg"
           >
             <h2 className="text-lg md:text-xl font-semibold text-white mb-3">Notifications</h2>
-            {isLoading
-              ? Array(2).fill(null).map((_, index) => (
-                  <div key={index} className="bg-gray-700 p-3 rounded-lg mb-2 animate-pulse h-12"></div>
-                ))
-              : notifications.map(notification => (
-                  <motion.div
-                    key={notification.id}
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.3 }}
-                    className="bg-gray-700 p-3 rounded-lg mb-2"
-                  >
-                    <p className="text-white">{notification.message}</p>
-                  </motion.div>
-                ))
-            }
+            {notifications.map(notification => (
+              <motion.div
+                key={notification.id}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.3 }}
+                className="bg-gray-700 p-3 rounded-lg mb-2"
+              >
+                <p className="text-white">{notification.message}</p>
+              </motion.div>
+            ))}
             <motion.button
               whileHover={{ scale: 1.01 }}
               whileTap={{ scale: 0.99 }}
@@ -315,23 +340,18 @@ const DashboardScreen: React.FC = () => {
             className="bg-gray-800 rounded-lg p-4 shadow-lg"
           >
             <h2 className="text-lg md:text-xl font-semibold text-white mb-3">Upcoming Events</h2>
-            {isLoading
-              ? Array(2).fill(null).map((_, index) => (
-                  <div key={index} className="bg-gray-700 p-3 rounded-lg mb-2 animate-pulse h-16"></div>
-                ))
-              : upcomingEvents.map(event => (
-                  <motion.div
-                    key={event.id}
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.3 }}
-                    className="bg-gray-700 p-3 rounded-lg mb-2"
-                  >
-                    <p className="text-white font-semibold">{event.title}</p>
-                    <p className="text-gray-300">{event.date}</p>
-                  </motion.div>
-                ))
-            }
+            {upcomingEvents.map(event => (
+              <motion.div
+                key={event.id}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.3 }}
+                className="bg-gray-700 p-3 rounded-lg mb-2"
+              >
+                <p className="text-white font-semibold">{event.title}</p>
+                <p className="text-gray-300">{event.date}</p>
+              </motion.div>
+            ))}
             <motion.button
               whileHover={{ scale: 1.01 }}
               whileTap={{ scale: 0.99 }}
