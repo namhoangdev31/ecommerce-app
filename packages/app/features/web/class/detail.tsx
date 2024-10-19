@@ -83,12 +83,12 @@ const ClassDetail: React.FC = () => {
         </div>
         <div
           className="mb-4 ml-4 w-fit rounded-lg bg-amber-100 p-4 text-xl font-bold text-cyan-900 hover:cursor-pointer"
-          onClick={  () => {
-             router.push({
-              pathname: '/class/stream/[slug]',
+          onClick={() => {
+            router.push({
+              pathname: '/class/whiteboard/[slug]',
               query: {
-                slug: 'asdadasdasdas'
-              }
+                slug: 'asdadasdasdas',
+              },
             })
           }}
         >
