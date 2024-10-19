@@ -11,8 +11,12 @@ import {
   HiX,
   HiUpload,
   HiPresentationChartBar,
-  HiShare,
+  HiShare, HiViewBoards
 } from 'react-icons/hi'
+import { useRouter } from 'next/router'
+import { createParam } from 'solito'
+
+const { useParam, useParams } = createParam()
 
 const StreamingRoom: React.FC = () => {
   const [isMuted, setIsMuted] = useState(false)
@@ -23,6 +27,7 @@ const StreamingRoom: React.FC = () => {
   const [isPresentationMode, setIsPresentationMode] = useState(false)
   const videoRef = useRef<HTMLVideoElement>(null)
   const screenShareRef = useRef<HTMLVideoElement>(null)
+  const router = useRouter()
 
   useEffect(() => {
     if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
@@ -33,6 +38,27 @@ const StreamingRoom: React.FC = () => {
           }
         })
         .catch(err => console.error("Error accessing media devices.", err))
+    }
+
+    const handleVisibilityChange = () => {
+      if (document.hidden) {
+        setIsVideoOff(true)
+        setIsMuted(true)
+        if (videoRef.current && videoRef.current.srcObject) {
+          const videoTrack = (videoRef.current.srcObject as MediaStream).getVideoTracks()[0];
+          const audioTrack = (videoRef.current.srcObject as MediaStream).getAudioTracks()[0];
+          if (videoTrack) {
+            videoTrack.enabled = false;
+          }
+          if (audioTrack) {
+            audioTrack.enabled = false;
+          }
+        }
+      }
+    }
+    document.addEventListener('visibilitychange', handleVisibilityChange)
+    return () => {
+      document.removeEventListener('visibilitychange', handleVisibilityChange)
     }
   }, [])
 
@@ -56,8 +82,13 @@ const StreamingRoom: React.FC = () => {
     }
   }
 
-  const togglePresentationMode = () => {
-    setIsPresentationMode(!isPresentationMode)
+  const togglePresentationMode = async () => {
+    await router.push({
+      pathname: '/class/whiteboard/[slug]',
+      query: {
+        slug: 'query'
+      }
+    })
   }
 
   const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -76,6 +107,16 @@ const StreamingRoom: React.FC = () => {
       }
     }
     setIsVideoOff(!isVideoOff);
+  }
+
+  const toggleMute = () => {
+    if (videoRef.current && videoRef.current.srcObject) {
+      const audioTrack = (videoRef.current.srcObject as MediaStream).getAudioTracks()[0];
+      if (audioTrack) {
+        audioTrack.enabled = isMuted;
+      }
+    }
+    setIsMuted(!isMuted);
   }
 
   return (
@@ -102,7 +143,7 @@ const StreamingRoom: React.FC = () => {
             <motion.button
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.9 }}
-              onClick={() => setIsMuted(!isMuted)}
+              onClick={toggleMute}
               className={`rounded-full p-3 ${
                 isMuted ? 'bg-red-500' : 'bg-gray-700'
               }`}
@@ -157,7 +198,7 @@ const StreamingRoom: React.FC = () => {
                 isPresentationMode ? 'bg-purple-500' : 'bg-gray-700'
               }`}
             >
-              <HiPresentationChartBar size={24} />
+              <HiViewBoards size={24} />
             </motion.button>
             <motion.label
               whileHover={{ scale: 1.1 }}
@@ -185,7 +226,7 @@ const StreamingRoom: React.FC = () => {
         <ul className="space-y-2">
           <li className="rounded bg-gray-700 p-2">John Doe</li>
           <li className="rounded bg-gray-700 p-2">Jane Smith</li>
-          <li className="rounded bg-gray-700 p-2">Alice Johnson</li>
+          <li className="rounded bg-gray-700 p-2">Mike Johnson</li>
         </ul>
       </div>
     </div>

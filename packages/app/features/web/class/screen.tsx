@@ -77,7 +77,7 @@ const ClassScreen: React.FC = () => {
   }
 
   const handleClassClick = (id: string) => {
-    router.push(`/class/${id}`)
+    router.push(`/class/:id`)
   }
 
   const ClassCard: React.FC<{

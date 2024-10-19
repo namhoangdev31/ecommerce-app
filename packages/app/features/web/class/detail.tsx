@@ -10,11 +10,11 @@ import {
   HiBookOpen,
 } from 'react-icons/hi'
 import { InfoItem } from 'app/features/web/class/components/InfoItem'
-import { useRouter } from 'next/router'
+import { useRouter } from 'solito/router'
 
 const ClassDetail: React.FC = () => {
   const router = useRouter()
-  const { id: slug } = router.query
+  // const { id: slug } = router.query
 
   return (
     <div className="container mx-auto bg-gray-900 px-4 py-8 text-gray-100">
@@ -83,10 +83,13 @@ const ClassDetail: React.FC = () => {
         </div>
         <div
           className="mb-4 ml-4 w-fit rounded-lg bg-amber-100 p-4 text-xl font-bold text-cyan-900 hover:cursor-pointer"
-          onClick={() => {
-            if (slug) {
-              router.push(`/class/stream/${slug}`)
-            }
+          onClick={  () => {
+             router.push({
+              pathname: '/class/stream/[slug]',
+              query: {
+                slug: 'asdadasdasdas'
+              }
+            })
           }}
         >
           Join Class
