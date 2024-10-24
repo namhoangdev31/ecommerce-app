@@ -1,12 +1,6 @@
 'use client'
 
 import React, { useState, useRef, useEffect } from 'react'
-import { Document, Page } from 'react-pdf'
-import { pdfjs } from 'react-pdf'
-import { Canvas } from '@react-three/fiber'
-
-// Update the worker source to use a specific version that doesn't rely on Promise.withResolvers
-pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/2.9.359/pdf.worker.min.js`
 
 const WhiteboardScreen: React.FC = () => {
   const [pdfFile, setPdfFile] = useState<string | null>(null)
@@ -76,37 +70,26 @@ const WhiteboardScreen: React.FC = () => {
 
   return (
     <div className="flex flex-col items-center">
-      <input type="file" onChange={onFileChange} accept=".pdf" className="mb-4" />
-      {pdfFile && (
-        <div className="relative">
-          <Document
-            file={pdfFile}
-            onLoadSuccess={onDocumentLoadSuccess}
-          >
-            <Page
-              pageNumber={currentPage}
-              className="mb-4"
-            >
-              <div className="p-4 bg-gray-100">
-                <p>Page {currentPage} of {numPages}</p>
-              </div>
-            </Page>
-          </Document>
-          <canvas
-            ref={canvasRef}
-            width={800}
-            height={1000}
-            onMouseDown={startDrawing}
-            onMouseMove={draw}
-            className="absolute top-0 left-0 z-10"
-          />
-        </div>
-      )}
-      <div className="flex justify-between w-full mt-4">
-        <button onClick={handlePrevPage} disabled={currentPage <= 1} className="text-blue-500">
+      <input
+        type="file"
+        onChange={onFileChange}
+        accept=".pdf"
+        className="mb-4"
+      />
+
+      <div className="mt-4 flex w-full justify-between">
+        <button
+          onClick={handlePrevPage}
+          disabled={currentPage <= 1}
+          className="text-blue-500"
+        >
           Previous
         </button>
-        <button onClick={handleNextPage} disabled={currentPage >= (numPages || 1)} className="text-blue-500">
+        <button
+          onClick={handleNextPage}
+          disabled={currentPage >= (numPages || 1)}
+          className="text-blue-500"
+        >
           Next
         </button>
       </div>
