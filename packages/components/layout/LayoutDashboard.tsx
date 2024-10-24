@@ -13,10 +13,22 @@ interface Props {
 export const LayoutDashboard = ({ children }: Props) => {
   const [collapsed, setCollapsed] = useState(false)
   const { theme, setTheme } = useTheme()
+  const [isMobile, setIsMobile] = useState(false)
 
   React.useEffect(() => {
     setTheme('dark')
   }, [setTheme])
+
+  React.useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768)
+    }
+    
+    window.addEventListener('resize', handleResize)
+    handleResize()
+    
+    return () => window.removeEventListener('resize', handleResize)
+  }, [])
 
   return (
     <Layout className={theme === 'dark' ? 'dark' : 'dark'}>
@@ -26,9 +38,9 @@ export const LayoutDashboard = ({ children }: Props) => {
           return setCollapsed(!collapsed)
         }}
       />
-      <Layout className={`h-screen dark:bg-gray-900 transition-all duration-300`}>
+      <Layout className={`h-screen bg-gray-900 transition-all duration-300 ${isMobile ? 'ml-20' : ''}`}>
         {/* <HeaderDashboard /> */}
-        <Content className="site-layout min-h-[280px] bg-transparent overflow-auto max-h-full dark:text-white">
+        <Content className="site-layout min-h-[280px] bg-transparent overflow-auto max-h-full dark:text-white w-full">
           {children}
         </Content>
       </Layout>
