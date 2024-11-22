@@ -16,7 +16,7 @@
   },
   "scripts": {
     "build": "turbo run build",
-    "native": "cd apps/expo && yarn start:ios",
+    "native": "cd apps/expo && yarn ios",
     "web": "cd apps/next && yarn next"
   },
   "resolutions": {

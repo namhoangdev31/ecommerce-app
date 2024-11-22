@@ -24,7 +24,8 @@
         "image": "./assets/images/doll.png",
         "resizeMode": "contain",
         "backgroundColor": "#3F76FF"
-      }
+      },
+      "minimumOSVersion": "13.0"
     },
     "android": {
       "package": "com.nhn.aienglish"
